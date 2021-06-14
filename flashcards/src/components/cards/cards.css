@@ -1,0 +1,76 @@
+.card {
+  position: relative;
+  /*
+  width: 15vw;
+  min-width: 120px;
+  max-width: 200px;
+  height: 20vw;
+  min-height: 170px;
+  max-height: 300px;*/
+  width: 15vw;
+  min-width: 120px;
+  max-width: 200px;
+  height: 15vw;
+  min-height: 120px;
+  max-height: 200px;
+
+  text-align: center;
+  margin: 20px;
+
+  user-select: none;
+}
+
+.card .front,
+.card .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: burlywood;
+
+  box-shadow: 0 1px 2px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 2vw;
+  padding: 10px;
+}
+
+.card .front {
+  backface-visibility: hidden;
+  transform: perspective(600px) rotateY(0deg);
+  backface-visibility: hidden;
+  transition: transform 0.5s linear 0s;
+}
+
+.card .back {
+  background-color: burlywood;
+
+  backface-visibility: hidden;
+  transform: perspective(600px) rotateY(180deg);
+  transition: transform 0.5s linear 0s;
+}
+
+/*.card:active > .front */
+.show > .front {
+  transform: perspective(600px) rotateY(-180deg);
+}
+/*.card:active > .back */
+.show > .back {
+  transform: perspective(600px) rotateY(0deg);
+}
+
+.card:hover {
+  transform: scale(1.05);
+  transition: transform 0.3s ease-in-out;
+
+  border-radius: 2vw;
+  /*shadow*/
+}
+
+.card p {
+  font-size: 1.1rem;
+  font-weight: 300;
+}
+
+.wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 2vw;
+}

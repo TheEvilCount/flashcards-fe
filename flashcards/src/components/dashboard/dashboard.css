@@ -1,0 +1,23 @@
+.wrapperHome {
+  position: relative;
+  display: flex;
+  margin: 0;
+  padding: 0;
+}
+
+.sideNav {
+  position: relative;
+  background-color: deepskyblue;
+  left: 0;
+  max-width: 30vw;
+  min-width: 180px;
+}
+
+.sideNav li {
+  text-decoration: none;
+}
+
+.contentHome {
+  position: relative;
+  width: fit-content;
+}
