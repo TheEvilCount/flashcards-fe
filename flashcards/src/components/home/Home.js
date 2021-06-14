@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
+import "./home.css"
 
-function Home()
+export default function Home()
 {
     return (
         <div>
-            Home page
+            Welcome to home page of Flashcards
         </div>
     )
 }
-export default Home();

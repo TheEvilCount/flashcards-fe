@@ -1,35 +1,39 @@
-import Login from "../components/login/Login.js";
-import Register from "../components/register/Register.js";
-import Home from "../components/home/Home.js";
-import Dashboard from "../components/dashboard/Dashboard.js";
-import PageNotFound from "../components/404/PageNotFound.js";
+import Login from "../components/login/Login";
+import Register from "../components/register/Register";
+import Home from "../components/home/Home";
+import PageNotFound from "../components/404/PageNotFound";
+import Dashboard from "../components/dashboard/Dashboard";
 
 const routes = [
     {
         path: "/",
-        component: Home,
-        isPrivate: false
+        comp: Home,
+        isPrivate: 0,
+        title: "Home"
     },
     {
         path: "/dashboard",
-        component: Dashboard,
-        isPrivate: true
-
+        comp: Dashboard,
+        isPrivate: 1,
+        title: 'Dashboard'
     },
     {
-        path: "login",
-        component: Login,
-        isPrivate: false
+        path: "/login",
+        comp: Login,
+        isPrivate: 0,
+        title: "Login"
     },
     {
-        path: "register",
-        component: Register,
-        isPrivate: false
+        path: "/register",
+        comp: Register,
+        isPrivate: 0,
+        title: "Register"
     },
     {
         path: "/*",
-        component: PageNotFound,
-        isPrivate: false
+        comp: PageNotFound,
+        isPrivate: 0,
+        title: null
     }
 ]
 export default routes;

@@ -1,12 +1,19 @@
-import React from 'react'
+import React from 'react';
 
-function Register(props)
+export default function Register()
 {
+    const handleRegister = async (e) => 
+    {
+        e.preventDefault();
+        alert("handling register");
+    };
+
     return (
         <div>
             register page
+            <form>
+                <button type="submit" onClick={handleRegister}>Register</button>
+            </form>
         </div>
     )
 }
-
-export default Register;

@@ -6,7 +6,7 @@ import SideNav from '../sideNav/SideNav';
 
 import "./dashboard.css"
 
-function Dashboard()
+export default function Dashboard()
 {
     const mockCardList = [
         { id: 1, question: "Question1", answer: "Answeer1", category: "english" },
@@ -51,5 +51,3 @@ function Dashboard()
         </div>
     )
 }
-
-export default Dashboard;

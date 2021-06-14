@@ -1,13 +1,13 @@
-import React, { useState } from 'react'
-import { loginUser, useAuthState, useAuthDispatch } from "../context"
+import React, { useState } from 'react';
+import "./login.css"
 
-function Login(props)
+export default function Login()
 {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
-    const dispatch = useAuthDispatch();
-    const { loading, errorMessage } = useAuthState(); //read the values of loading and errorMessage from context
+    //const dispatch = useAuthDispatch();
+    //const { loading, errorMessage } = useAuthState(); //read the values of loading and errorMessage from context
 
 
 
@@ -20,8 +20,8 @@ function Login(props)
         //axios.post.....
         try
         {
-            let response = await loginUser(dispatch, { email, password });//loginUser action makes the request and handles all the neccessary state changes
-            if (!response.user) return;
+            //let response = await loginUser(dispatch, { email, password });//loginUser action makes the request and handles all the neccessary state changes
+            //if (!response.user) return;
         }
         catch (error)
         {
@@ -29,8 +29,8 @@ function Login(props)
         }
         //setLoading(false);
         //setUserSession
-        props.history.push('/dashboard') //navigate to dashboard on success
-    };
+        //props.history.push('/dashboard') //navigate to dashboard on success
+    }
 
     return (
         <div>
@@ -47,10 +47,9 @@ function Login(props)
                         <input type="password" id='password' value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                 </div>
-                {errorMessage ? <p style={{ color: 'red' }}>{errorMessage}</p> : null}
-                <button onClick={handleLogin} disabled={loading}>login</button>
+                {/*errorMessage ? <p style={{ color: 'red' }}>{errorMessage}</p> : null*/}
+                <button onClick={handleLogin} disabled={false/*loading*/}>login</button>
             </form>
-        </div>
+        </div >
     )
 }
-export default Login;
