@@ -6,30 +6,35 @@ import Dashboard from "../components/dashboard/Dashboard";
 
 const routes = [
     {
+        key: "home",
         path: "/",
         comp: Home,
         isPrivate: 0,
         title: "Home"
     },
     {
+        key: "dash",
         path: "/dashboard",
         comp: Dashboard,
         isPrivate: 1,
         title: 'Dashboard'
     },
     {
+        key: "login",
         path: "/login",
         comp: Login,
         isPrivate: 0,
         title: "Login"
     },
     {
+        key: "reg",
         path: "/register",
         comp: Register,
         isPrivate: 0,
         title: "Register"
     },
     {
+        key: "pgnf",
         path: "/*",
         comp: PageNotFound,
         isPrivate: 0,
