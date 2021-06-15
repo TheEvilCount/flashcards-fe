@@ -4,10 +4,10 @@ import "./login.css";
 import { useSelector, useDispatch } from "react-redux";
 import { loginAction } from "../../actions"
 
-export default function Login()
+export default function Login(props)
 {
     const dispatch = useDispatch();
-    const userReducer = useSelector(state => state.auth);
+    const authReducer = useSelector(state => state.auth);
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -22,26 +22,30 @@ export default function Login()
     }
 
     return (
-        <div>
-            Login page
-            Login<br /><br />
+        <div className="login-container">
+            <h1 className="text-center">Login</h1>
             <form >
-                <div>
+                <div className="container">
                     <div>
                         <label htmlFor="email">Email</label>
-                        <input type="text" id='email' placeholder="Enter email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                        <input type="text" id='email' placeholder="Enter email" required value={email} onChange={(e) => setEmail(e.target.value)} />
                     </div>
                     <div style={{ marginTop: 10 }}>
                         <label htmlFor="password">Password</label>
-                        <input type="password" id='password' placeholder="Enter password" value={password} onChange={(e) => setPassword(e.target.value)} />
+                        <input type="password" id='password' placeholder="Enter password" required value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
                 </div>
-                {/*errorMessage ? <p style={{ color: 'red' }}>{errorMessage}</p> : null*/}
-                {userReducer.errorMessage ? <p style={{ color: 'red' }}>{userReducer.errorMessage}</p> : null}
-                <button onClick={handleLogin} disabled={userReducer.loading}>login</button>
+                {authReducer.errorMessage ? <p style={{ color: 'red' }}>{authReducer.errorMessage}</p> : null}
+                <button onClick={handleLogin} disabled={authReducer.loading}>login</button>
+
+                <div>
+                    <button type="reset" onClick={() => { setEmail(""); setPassword(""); }}>Cancel</button>
+                    <span className="forgotPsw">Forgot <a href="#">password?</a></span>{/*TODO forgotten password */}
+                </div>
             </form>
-            {/* <button onClick={() => dispatch(loginAction({ username: "TheEvilCount", email: "tt@ggg.com" }))}>Dev login</button> */}
-            <button onClick={() => (loginAction(dispatch, { password: "123", email: "tt@ggg.com" }))}>Dev login</button>
+            <p className="text-center"><a className="login-create" href="/register">Create an Account</a></p>
+            <br></br>
+            <button onClick={() => (loginAction(dispatch, { password: "123", email: "tt@ggg.com" }))}>Dev login</button>{/*TODO delete on prod*/}
         </div >
     )
 }

@@ -1,5 +1,6 @@
 import counterReducer from "./counter";
-import loggedReducer from "./authReducer";
+import { loggedReducer } from "./authReducer";
+import { registerReducer } from "./registerReducer";
 
 import { combineReducers } from "redux";
 
@@ -7,7 +8,8 @@ const allReducers = combineReducers
     (
         {
             counter: counterReducer,
-            auth: loggedReducer
+            auth: loggedReducer,
+            register: registerReducer
         }
     );
 

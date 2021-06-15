@@ -53,3 +53,15 @@ export const logoutAction = (dispatch) =>
 {
     dispatch({ type: Types.LOG_OUT });
 }
+
+export const registerAction = (dispatch, registerPayload) =>
+{
+    dispatch({ type: Types.REGISTER_REQ });
+    /*
+    registerPayload.password;
+    registerPayload.email;
+    registerPayload.username;
+*/
+
+    console.log(registerPayload);
+}

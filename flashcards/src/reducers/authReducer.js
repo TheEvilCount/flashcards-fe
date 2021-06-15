@@ -14,7 +14,7 @@ const initialState =
 }
 
 //REDUCER
-const loggedReducer = (state = initialState, action) =>
+export const loggedReducer = (state = initialState, action) =>
 {
     switch (action.type)
     {
@@ -51,7 +51,7 @@ const loggedReducer = (state = initialState, action) =>
                 errorMessage: ""
             }
         default:
-            throw new Error(`Unhandled action type: ${action.type}`);
+            return { state }
+        //throw new Error(`Unhandled action type: ${action.type}`);
     }
-}
-export default loggedReducer;
+};

@@ -4,40 +4,42 @@ import Home from "../components/home/Home";
 import PageNotFound from "../components/404/PageNotFound";
 import Dashboard from "../components/dashboard/Dashboard";
 
+import { pathConsts } from "./paths"
+
 const routes = [
     {
         key: "home",
-        path: "/",
+        path: pathConsts.home,
         comp: Home,
-        isPrivate: 0,
+        isPrivate: false,
         title: "Home"
     },
     {
         key: "dash",
-        path: "/dashboard",
+        path: pathConsts.dashboard,
         comp: Dashboard,
-        isPrivate: 1,
+        isPrivate: true,
         title: 'Dashboard'
     },
     {
         key: "login",
-        path: "/login",
+        path: pathConsts.login,
         comp: Login,
-        isPrivate: 0,
+        isPrivate: false,
         title: "Login"
     },
     {
         key: "reg",
-        path: "/register",
+        path: pathConsts.register,
         comp: Register,
-        isPrivate: 0,
+        isPrivate: false,
         title: "Register"
     },
     {
         key: "pgnf",
         path: "/*",
         comp: PageNotFound,
-        isPrivate: 0,
+        isPrivate: false,
         title: null
     }
 ]
