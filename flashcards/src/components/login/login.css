@@ -54,7 +54,8 @@
   padding-top: 16px;
 }
 
-.login-container a.login-create {
+.login-container a.login-create,
+.login-container span.forgotPsw a {
   color: #007bff;
   text-decoration: none;
   background-color: transparent;

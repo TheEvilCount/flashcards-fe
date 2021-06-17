@@ -1,7 +1,5 @@
 import { Types } from "../actions/actionTypes"
 
-
-
 const initialState =
 {
     user: {
@@ -9,6 +7,7 @@ const initialState =
         email: ""
     },
     isLogged: false,
+    authToken: null,
     loading: false,
     errorMessage: ""
 }
@@ -31,6 +30,7 @@ export const loggedReducer = (state = initialState, action) =>
                 loading: false,
                 isLogged: true,
                 user: action.payload.user,
+                authToken: action.payload.token,
                 errorMessage: ""
             }
         case Types.LOG_IN_FAIL:
@@ -40,6 +40,7 @@ export const loggedReducer = (state = initialState, action) =>
                 loading: false,
                 isLogged: false,
                 user: {},
+                authToken: null,
                 errorMessage: action.payload.error
             }
         case Types.LOG_OUT:
@@ -48,6 +49,7 @@ export const loggedReducer = (state = initialState, action) =>
                 ...initialState,
                 isLogged: false,
                 user: null,
+                authToken: null,
                 errorMessage: ""
             }
         default:

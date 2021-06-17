@@ -70,12 +70,17 @@
   margin: 0;
   padding: 0;
   height: 100%;
+  width: 100%;
 }
 
 .header li {
   display: inline-flex;
   float: left;
   height: 100%;
+}
+
+.header li.fRight {
+  float: right;
 }
 
 .header ul li a {

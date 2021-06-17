@@ -4,7 +4,13 @@ import Home from "../components/home/Home";
 import PageNotFound from "../components/404/PageNotFound";
 import Dashboard from "../components/dashboard/Dashboard";
 
-import { pathConsts } from "./paths"
+import { pathConsts } from "./paths";
+import Profile from "../components/profile/Profile";
+
+import { useSelector } from "react-redux";
+
+import { FaUser } from "react-icons/fa";
+
 
 const routes = [
     {
@@ -12,35 +18,67 @@ const routes = [
         path: pathConsts.home,
         comp: Home,
         isPrivate: false,
-        title: "Home"
+        showWhenNotLogged: true,
+        show: true,
+        Title: () =>
+        {
+            return (<div>Home</div>)
+        },
+        class: ""
     },
     {
-        key: "dash",
+        key: "dashboard",
         path: pathConsts.dashboard,
         comp: Dashboard,
         isPrivate: true,
-        title: 'Dashboard'
+        showWhenNotLogged: true,
+        show: true,
+        Title: () => { return (<div>Dashboard</div>) },
+        class: ""
     },
     {
         key: "login",
         path: pathConsts.login,
         comp: Login,
         isPrivate: false,
-        title: "Login"
+        showWhenNotLogged: true,
+        show: true,
+        Title: () => { return (<div>Login</div>) },
+        class: "fRight"
     },
     {
-        key: "reg",
+        key: "register",
         path: pathConsts.register,
         comp: Register,
         isPrivate: false,
-        title: "Register"
+        showWhenNotLogged: true,
+        show: true,
+        Title: () => { return (<div>Register</div>) },
+        class: "fRight"
+    },
+    {
+        key: "profile",
+        path: pathConsts.profile,
+        comp: Profile,
+        isPrivate: true,
+        showWhenNotLogged: false,
+        show: true,
+        Title: () =>
+        {
+            const userReducer = useSelector(state => state.auth);
+            return (<div>{userReducer.user.username} <FaUser /></div>)
+        },
+        class: "fRight"
     },
     {
         key: "pgnf",
         path: "/*",
         comp: PageNotFound,
         isPrivate: false,
-        title: null
+        show: false,
+        showWhenNotLogged: false,
+        Title: () => { return (<div></div>) },
+        class: ""
     }
 ]
 export default routes;

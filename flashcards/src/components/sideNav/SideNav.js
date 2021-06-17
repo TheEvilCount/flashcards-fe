@@ -2,11 +2,6 @@ import React, { Component } from 'react'
 
 export default class SideNav extends Component
 {
-    constructor(props)
-    {
-        super(props);
-    }
-
     handleCardsChange = (e) =>
     {
         console.log(e);

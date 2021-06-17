@@ -4,6 +4,8 @@ import "./login.css";
 import { useSelector, useDispatch } from "react-redux";
 import { loginAction } from "../../actions"
 
+import { FaSpinner } from "react-icons/fa";
+
 export default function Login(props)
 {
     const dispatch = useDispatch();
@@ -36,7 +38,7 @@ export default function Login(props)
                     </div>
                 </div>
                 {authReducer.errorMessage ? <p style={{ color: 'red' }}>{authReducer.errorMessage}</p> : null}
-                <button onClick={handleLogin} disabled={authReducer.loading}>login</button>
+                <button onClick={handleLogin} disabled={authReducer.loading}>{authReducer.loading ? <span>Please wait <FaSpinner /></span> : "Login"}</button>
 
                 <div>
                     <button type="reset" onClick={() => { setEmail(""); setPassword(""); }}>Cancel</button>

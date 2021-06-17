@@ -9,5 +9,6 @@ export const pathConsts =
     home: "/",
     dashboard: "/dashboard",
     notfound: "/404",
-    allOthers: "*"
+    allOthers: "*",
+    profile: "/profile"
 };
