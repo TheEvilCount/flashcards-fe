@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import "./login.css";
 
 import { useSelector, useDispatch } from "react-redux";
-import { loginAction } from "../../actions"
+import { loginAction, loginFailAction } from "../../actions"
 
 import { FaSpinner } from "react-icons/fa";
 
@@ -18,9 +18,22 @@ export default function Login(props)
     {
         e.preventDefault();
 
-        //check 
-
-        loginAction(dispatch, { password: password, email: email });
+        if (!(email.length > 0))
+        {
+            loginFailAction(dispatch, "Email cannot be blank!");
+        }
+        else if (!(password.length > 0))
+        {
+            loginFailAction(dispatch, "Password cannot be blank!");
+        }
+        else if (!(password.length >= 5 && password.length <= 100))
+        {
+            loginFailAction(dispatch, "Password must be between 5 and 100 characters!");
+        }
+        else
+        {
+            loginAction(dispatch, { password: password, email: email });
+        }
     }
 
     return (

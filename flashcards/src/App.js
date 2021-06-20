@@ -8,7 +8,7 @@ import routes from "./config/routes.js";
 import { pathConsts } from "./config/paths";
 
 import { useSelector, useDispatch } from "react-redux";
-import { /*increment, decrement,*/ logoutAction } from "./actions";
+import { logoutAction } from "./actions";
 
 
 import { history } from "./helpers/history";
@@ -17,8 +17,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 
 export default function App(props)
 {
-  //const counter = useSelector(state => state.counter);
-  const userReducer = useSelector(state => state.auth);
+  const authReducer = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
 
@@ -27,11 +26,11 @@ export default function App(props)
       <div>
         <div className="header">
           <ul>
-            {userReducer.isLogged && <li className="fRight"><a onClick={() => (logoutAction(dispatch))}>Logout <FaSignOutAlt /></a></li>}
+            {authReducer.isLogged && <li className="fRight"><a onClick={() => (logoutAction(dispatch, { authToken: authReducer.authToken }))}>Logout <FaSignOutAlt /></a></li>}
 
             {
               routes.map((route) => (
-                (!userReducer.isLogged) ?
+                (!authReducer.isLogged) ?
 
                   (route.show && route.showWhenNotLogged &&
                     <li className={route.class} key={("nav-li_" + route.key)}>
@@ -45,14 +44,6 @@ export default function App(props)
                     </li>)
                   )
               ))
-
-
-            }
-
-            {
-              /* <li>Counter: {counter}</li>
-              <li><button onClick={() => dispatch(increment())}>counter +</button></li>
-              <li><button onClick={() => dispatch(decrement())}>counter -</button></li> */
             }
           </ul>
         </div>
@@ -62,10 +53,10 @@ export default function App(props)
             {
               routes.map((route) => (
                 <Route exact key={("r_" + route.key)} path={route.path}>
-                  {route.isPrivate && !userReducer.isLogged ?
+                  {route.isPrivate && !authReducer.isLogged ?
                     (<Redirect to={pathConsts.login} />)
                     :
-                    ((userReducer.isLogged && route.path === pathConsts.login) ?
+                    ((authReducer.isLogged && route.path === pathConsts.login) ?
                       <Redirect to={pathConsts.dashboard} />
                       :
                       <route.comp />)}

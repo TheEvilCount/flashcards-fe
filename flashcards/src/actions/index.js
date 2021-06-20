@@ -4,6 +4,7 @@ import { history } from "../helpers/history";
 import { pathConsts } from "../config/paths";
 import axios from "axios";
 
+/*
 export const increment = () =>
 {
     return {
@@ -16,7 +17,7 @@ export const decrement = () =>
     return {
         type: "DECREMENT"
     }
-}
+}*/
 
 
 /* */
@@ -25,7 +26,39 @@ export const loginAction = (dispatch, loginPayload) =>
     dispatch({ type: Types.LOG_IN });
 
 
-    //TODO axios request
+    //TODO url + make config file with api urls
+    /*
+    axios.post("", {
+        password: loginPayload.password,
+        email: loginPayload.email
+    })
+        .then((response) =>
+        {
+            if (response.status === 200)
+            {
+                dispatch({
+                    type: Types.LOG_IN_SUCCESS,
+                    payload:
+                    {
+                        user: response.data.user,
+                        token: response.data.token
+                    }
+                });
+                console.log("login success" + response.data.user);
+                //TODO set user session??
+            }
+            else
+            {
+                console.log(response.data);
+                dispatch({ type: Types.LOG_IN_FAIL, payload: { error: response.data } });
+            }
+        })
+        .catch((error) =>
+        {
+            console.log(error);
+            dispatch({ type: Types.LOG_IN_FAIL, payload: { error: error.message } });
+        });*/
+
     setTimeout(() =>
     {
         let mockUsername = "TheEvilCount";
@@ -58,10 +91,42 @@ export const loginAction = (dispatch, loginPayload) =>
     }, 1000);
 }
 
-export const logoutAction = (dispatch) =>
+export const loginFailAction = (dispatch, errorMessage) =>
 {
-    dispatch({ type: Types.LOG_OUT });
-    //TODO add request
+    dispatch({ type: Types.LOG_IN_FAIL, payload: { error: errorMessage } });
+}
+
+export const logoutAction = (dispatch, logoutPayload) =>
+{
+    dispatch({ type: Types.LOG_OUT });//dev
+
+
+    //TODO request /logout
+    /*
+    axios.get("", {
+        /*headers: {
+            Authorization: `token ${logoutPayload.authToken}`
+        },*///??????????
+    /*
+    withCredentials: true
+})
+    .then((response) =>
+    {
+        if (response.status === 200)
+        {
+            dispatch({ type: Types.LOG_OUT });
+        }
+        else
+        {
+            console.log(response);
+            alert(response);
+        }
+    })
+    .catch((error) =>
+    {
+        console.log(error);
+        alert(error.message);
+    })*/
 }
 
 
@@ -87,10 +152,10 @@ export const registerAction = (dispatch, registerPayload) =>
                     console.log(response.data);
                     dispatch({ type: Types.REGISTER_FAIL, payload: { error: response.data } });
                 }
-            }).catch((reason) =>
+            }).catch((error) =>
             {
-                console.log(reason);
-                dispatch({ type: Types.REGISTER_FAIL, payload: { error: reason } });
+                console.log(error);
+                dispatch({ type: Types.REGISTER_FAIL, payload: { error: error.message } });
             });
     */
     setTimeout(() => 
@@ -101,3 +166,24 @@ export const registerAction = (dispatch, registerPayload) =>
         history.push(pathConsts.login);
     }, 1000)
 }
+
+export const registerFailAction = (dispatch, errorMessage) =>
+{
+    dispatch({ type: Types.REGISTER_FAIL, payload: { error: errorMessage } });
+}
+
+/*
+export const changePassAction = (dispatch, changePassPayload) =>
+{
+    console.log(changePassPayload);
+    dispatch({ type: Types.CHANGE_PASS_REQ });
+
+    const user = changePassPayload.user;
+    const pass = changePassPayload.password;
+    const newPass = changePassPayload.newPassword;
+
+
+    //dispatch({ type: Types.CHANGE_PASS_FAIL });
+
+    dispatch({ type: Types.CHANGE_PASS_SUCCESS });
+}*/

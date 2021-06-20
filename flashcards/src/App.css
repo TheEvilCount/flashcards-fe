@@ -92,7 +92,12 @@
   margin-bottom: 0;
   padding: 10px;
   height: 100%;
+  background-color: inherit;
+  border: none;
+  user-select: none;
+  cursor: pointer;
 }
+
 .header a:hover:not(.active) {
   color: #111;
   background-color: #282c34;

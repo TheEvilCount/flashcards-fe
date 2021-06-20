@@ -1,4 +1,4 @@
-import { Types } from "../actions/actionTypes"
+/*import { Types } from "../actions/actionTypes"
 
 
 const initialState =
@@ -9,26 +9,26 @@ const initialState =
 }
 
 //REDUCER
-export const registerReducer = (state = initialState, action) =>
+export const profileReducer = (state = initialState, action) =>
 {
     switch (action.type)
     {
-        case Types.REGISTER_REQ:
-            console.log("register request", action.payload);
+        case Types.CHANGE_PASS_REQ:
+            console.log("change pass request", action.payload);
             return {
                 ...initialState,
                 loading: true
             }
-        case Types.REGISTER_SUCCESS:
-            console.log("register success");
+        case Types.CHANGE_PASS_SUCCESS:
+            console.log("change pass success");
             return {
                 ...initialState,
                 loading: false,
                 errorMessage: "",
                 success: true
             }
-        case Types.REGISTER_FAIL:
-            console.log("register fail", action.payload.error);
+        case Types.CHANGE_PASS_FAIL:
+            console.log("change pass fail", action.payload.error);
             return {
                 ...initialState,
                 loading: false,
@@ -39,4 +39,4 @@ export const registerReducer = (state = initialState, action) =>
             return { state }
         //throw new Error(`Unhandled action type: ${action.type}`);
     }
-};
+};*/

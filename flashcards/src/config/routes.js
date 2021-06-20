@@ -9,7 +9,7 @@ import Profile from "../components/profile/Profile";
 
 import { useSelector } from "react-redux";
 
-import { FaUser } from "react-icons/fa";
+import { FaUser, FaSdCard } from "react-icons/fa";
 
 
 const routes = [
@@ -22,7 +22,7 @@ const routes = [
         show: true,
         Title: () =>
         {
-            return (<div>Home</div>)
+            return (<div><FaSdCard /> Home</div>)
         },
         class: ""
     },
