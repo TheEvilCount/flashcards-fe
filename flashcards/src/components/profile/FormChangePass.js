@@ -93,7 +93,7 @@ export default function FormChangePass(props)
     return (
         <div>
             <Popup
-                trigger={<button className="button"> Open Modal </button>}
+                trigger={<button className="button"> Change password </button>}
                 modal
                 nested
 
@@ -103,8 +103,8 @@ export default function FormChangePass(props)
                         <button className="close" onClick={close}>
                             &times;
                         </button>
-                        <div className="header"> Modal Title </div>
-                        <div className="content">
+                        <div className="header"> Change password </div>
+                        <div className="content login-container">
                             <form>
                                 <h2>Change password</h2>
                                 <div>
@@ -131,11 +131,11 @@ export default function FormChangePass(props)
                                 className="button"
                                 onClick={() =>
                                 {
-                                    console.log('modal closed ');
+                                    //console.log('modal closed ');
                                     close();
                                 }}
                             >
-                                Close
+                                Close &times;
                             </button>
                         </div>
                     </div>

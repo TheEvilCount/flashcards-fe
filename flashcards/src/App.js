@@ -9,6 +9,7 @@ import { pathConsts } from "./config/paths";
 
 import { useSelector, useDispatch } from "react-redux";
 import { logoutAction } from "./actions";
+import axios from 'axios';
 
 
 import { history } from "./helpers/history";
@@ -20,13 +21,29 @@ export default function App(props)
   const authReducer = useSelector(state => state.auth);
   const dispatch = useDispatch();
 
+  //logout when unauthorize status appears
+  axios.interceptors.response.use(
+    (response) =>
+    {
+      return response;
+    },
+    (error) =>
+    {
+      if (error.response.status === 401)
+      {
+        logoutAction(dispatch);
+      }
+      return error;
+    },
+  );
+
 
   return (
     <Router history={history}>
       <div>
         <div className="header">
           <ul>
-            {authReducer.isLogged && <li className="fRight"><a onClick={() => (logoutAction(dispatch, { authToken: authReducer.authToken }))}>Logout <FaSignOutAlt /></a></li>}
+            {authReducer.isLogged && <li className="fRight"><a onClick={() => (logoutAction(dispatch))}>Logout <FaSignOutAlt /></a></li>}
 
             {
               routes.map((route) => (

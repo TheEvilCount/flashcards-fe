@@ -30,9 +30,9 @@ export default function Register()
         {
             registerFailAction(dispatch, "Username must be between 3 and 20 characters!");
         }
-        else if (!(password.length >= 5 && password.length <= 100))
+        else if (password.length <= 5 || password.length > 100 || password === password.toLowerCase() || password === password.toUpperCase())
         {
-            registerFailAction(dispatch, "Password must be between 5 and 100 characters!");
+            registerFailAction(dispatch, "Password must be between 5 and 100 characters and must contains at least one lower and one upper case letter!");
         }
         else if (password !== passwordRep)
         {
@@ -44,7 +44,7 @@ export default function Register()
         }
         else if (!emailReg.test(email))
         {
-            registerFailAction(dispatch, "Please provide a valid email addrerss!");
+            registerFailAction(dispatch, "Please provide a valid email address!");
         }
         else
         {
@@ -76,6 +76,7 @@ export default function Register()
                 <button type="reset" onClick={() => { setEmail(""); setPassword(""); setPasswordRep(""); setUsername(""); }}>Cancel</button>
             </form>
             <p className="text-center"><a className="login-create" href="/login">Already registered?</a></p>
+            <button onClick={() => registerAction(dispatch, { email: "dd@gmail.com", username: "tttt", password: "123456Aa" })}>Dev reg</button>
         </div >
     )
 }

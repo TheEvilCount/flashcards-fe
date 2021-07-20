@@ -19,7 +19,7 @@ export const loggedReducer = (state = initialState, action) =>
     switch (action.type)
     {
         case Types.LOG_IN:
-            console.log("login request", action.payload);
+            console.log("login request");
             return {
                 ...initialState,
                 loading: true

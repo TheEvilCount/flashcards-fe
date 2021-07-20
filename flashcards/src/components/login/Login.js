@@ -14,6 +14,8 @@ export default function Login(props)
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
+    const [remember, setRemember] = useState(false);
+
     const handleLogin = async (e) => 
     {
         e.preventDefault();
@@ -32,7 +34,8 @@ export default function Login(props)
         }
         else
         {
-            loginAction(dispatch, { password: password, email: email });
+            console.log({ password: password, email: email });
+            loginAction(dispatch, { password: password, email: email, remember: remember ? "checked" : "" });
         }
     }
 
@@ -49,6 +52,10 @@ export default function Login(props)
                         <label htmlFor="password">Password</label>
                         <input type="password" id='password' placeholder="Enter password" required value={password} onChange={(e) => setPassword(e.target.value)} />
                     </div>
+                    <div>
+                        <label htmlFor="remember">Remember me</label>
+                        <input id="remember" type="checkbox" name="remember" checked={remember} onChange={(e) => setRemember(e.target.checked)} />
+                    </div>
                 </div>
                 {authReducer.errorMessage ? <p style={{ color: 'red' }}>{authReducer.errorMessage}</p> : null}
                 <button onClick={handleLogin} disabled={authReducer.loading}>{authReducer.loading ? <span>Please wait <FaSpinner /></span> : "Login"}</button>
@@ -59,8 +66,6 @@ export default function Login(props)
                 </div>
             </form>
             <p className="text-center"><a className="login-create" href="/register">Create an Account</a></p>
-            <br></br>
-            <button onClick={() => (loginAction(dispatch, { password: "123", email: "tt@ggg.com" }))}>Dev login</button>{/*TODO delete on prod*/}
         </div >
     )
 }

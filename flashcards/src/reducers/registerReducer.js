@@ -4,8 +4,8 @@ import { Types } from "../actions/actionTypes"
 const initialState =
 {
     loading: false,
-    errorMessage: "",
-    success: false
+    success: false,
+    errorMessage: ""
 }
 
 //REDUCER

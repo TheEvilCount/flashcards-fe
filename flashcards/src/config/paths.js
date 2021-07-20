@@ -1,5 +1,5 @@
 export const BASE_URL = "http://localhost:3000";
-export const API_SERVER_URL = "http://localhost:8080";
+export const API_SERVER_URL = "http://localhost:8081/flashcards/api/v1";
 
 export const pathConsts =
 {

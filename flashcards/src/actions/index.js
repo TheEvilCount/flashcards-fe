@@ -1,7 +1,7 @@
 import { Types } from "./actionTypes";
 
 import { history } from "../helpers/history";
-import { pathConsts } from "../config/paths";
+import { API_SERVER_URL, pathConsts } from "../config/paths";
 import axios from "axios";
 
 /*
@@ -27,68 +27,77 @@ export const loginAction = (dispatch, loginPayload) =>
 
 
     //TODO url + make config file with api urls
-    /*
-    axios.post("", {
-        password: loginPayload.password,
-        email: loginPayload.email
-    })
+    var data = new FormData();
+    /*fdata.append("email", loginPayload.password);
+    fdata.append("password", loginPayload.email);*/
+    data.append("email", loginPayload.email);
+    data.append("password", loginPayload.password);
+    // data.append("remember", loginPayload.remember);
+
+    axios.post(API_SERVER_URL + "/login",
+        data,
+        {
+            headers:
+            {
+                "Accept": "application/json",
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+    )
         .then((response) =>
         {
-            if (response.status === 200)
+            if (response.status === 200 && response.data.success !== false)
             {
                 dispatch({
                     type: Types.LOG_IN_SUCCESS,
                     payload:
                     {
                         user: response.data.user,
-                        token: response.data.token
+                        //token: response.data.token
                     }
                 });
-                console.log("login success" + response.data.user);
                 //TODO set user session??
             }
             else
             {
-                console.log(response.data);
-                dispatch({ type: Types.LOG_IN_FAIL, payload: { error: response.data } });
+                dispatch({ type: Types.LOG_IN_FAIL, payload: { error: response.data.errorMessage } });
             }
         })
         .catch((error) =>
         {
-            console.log(error);
             dispatch({ type: Types.LOG_IN_FAIL, payload: { error: error.message } });
-        });*/
-
-    setTimeout(() =>
-    {
-        let mockUsername = "TheEvilCount";
-        let mockToken = "sdvnsjknvjsdnvjsv";
-
-        if (loginPayload.email === "tt@ggg.com" && loginPayload.password === "123")
+        });
+    /*
+        setTimeout(() =>
         {
-            dispatch({
-                type: Types.LOG_IN_SUCCESS,
-                payload:
-                {
-                    user: {
-                        username: mockUsername,
-                        email: loginPayload.email
-                    },
-                    token: mockToken
-                }
-            })
-        }
-        else//mock error
-        {
-            dispatch({
-                type: Types.LOG_IN_FAIL,
-                payload:
-                {
-                    error: "Wrong email or password"//error from request response
-                }
-            })
-        }
-    }, 1000);
+            let mockUsername = "TheEvilCount";
+            let mockToken = "sdvnsjknvjsdnvjsv";
+    
+            if (loginPayload.email === "tt@ggg.com" && loginPayload.password === "123456")
+            {
+                dispatch({
+                    type: Types.LOG_IN_SUCCESS,
+                    payload:
+                    {
+                        user: {
+                            username: mockUsername,
+                            email: loginPayload.email
+                        },
+                        token: mockToken
+                    }
+                })
+            }
+            else//mock error
+            {
+                dispatch({
+                    type: Types.LOG_IN_FAIL,
+                    payload:
+                    {
+                        error: "Wrong email or password"//error from request response
+                    }
+                })
+            }
+        }, 1000);*/
 }
 
 export const loginFailAction = (dispatch, errorMessage) =>
@@ -96,75 +105,81 @@ export const loginFailAction = (dispatch, errorMessage) =>
     dispatch({ type: Types.LOG_IN_FAIL, payload: { error: errorMessage } });
 }
 
-export const logoutAction = (dispatch, logoutPayload) =>
+export const logoutAction = (dispatch) =>
 {
-    dispatch({ type: Types.LOG_OUT });//dev
+    //dispatch({ type: Types.LOG_OUT });//dev
 
 
     //TODO request /logout
-    /*
-    axios.get("", {
-        /*headers: {
-            Authorization: `token ${logoutPayload.authToken}`
-        },*///??????????
-    /*
-    withCredentials: true
-})
-    .then((response) =>
-    {
-        if (response.status === 200)
-        {
-            dispatch({ type: Types.LOG_OUT });
-        }
-        else
-        {
-            console.log(response);
-            alert(response);
-        }
+
+    axios.get(API_SERVER_URL + "/logout", {
+        withCredentials: true
     })
-    .catch((error) =>
-    {
-        console.log(error);
-        alert(error.message);
-    })*/
+        .then((response) =>
+        {
+            if (response.status === 200)
+            {
+                dispatch({ type: Types.LOG_OUT });
+            }
+            else
+            {
+                console.log(response);
+                alert(response);
+            }
+        })
+        .catch((error) =>
+        {
+            console.log(error);
+            alert(error.message);
+        })
 }
 
 
 export const registerAction = (dispatch, registerPayload) =>
 {
     dispatch({ type: Types.REGISTER_REQ });
-    /*TODO
-        axios.post("", {
-            password: registerPayload.password,
-            email: registerPayload.email,
-            username: registerPayload.username
+
+
+    axios.post(API_SERVER_URL + "/users/register", {
+
+        username: registerPayload.username,
+        email: registerPayload.email,
+        password: registerPayload.password
+
+    },
+        {
+            headers:
+            {
+                "Accept": "application/json"
+            }
         })
-            .then((response) =>
+        .then((response) =>
+        {
+            if (response.status === 201)//201 created
             {
-                if (response.status === 200)
-                {
-                    dispatch({ type: Types.REGISTER_SUCCESS });
-                    console.log(registerPayload);
-                    history.push(pathConsts.login);
-                }
-                else
-                {
-                    console.log(response.data);
-                    dispatch({ type: Types.REGISTER_FAIL, payload: { error: response.data } });
-                }
-            }).catch((error) =>
+                dispatch({ type: Types.REGISTER_SUCCESS });
+                console.log(registerPayload);
+                history.push(pathConsts.login + "?msg=Register success");
+            }
+            else
             {
-                console.log(error);
-                dispatch({ type: Types.REGISTER_FAIL, payload: { error: error.message } });
-            });
-    */
+                console.log(JSON.stringify(response));
+                //console.log("registration error: " + response.data.errorMessage);
+                dispatch({ type: Types.REGISTER_FAIL, payload: { error: response.data } });
+                //console.warn(response.data.errorMessage);
+            }
+        }).catch((error) =>
+        {
+            dispatch({ type: Types.REGISTER_FAIL, payload: { error: error } });
+        });
+    /*
     setTimeout(() => 
     {
         dispatch({ type: Types.REGISTER_SUCCESS });
 
         console.log(registerPayload);
         history.push(pathConsts.login);
-    }, 1000)
+    }, 1000)*/
 }
 
 export const registerFailAction = (dispatch, errorMessage) =>

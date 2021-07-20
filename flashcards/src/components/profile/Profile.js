@@ -12,12 +12,12 @@ export default function Profile()
     const dispatch = useDispatch();
 
     return (
-        <div>
+        <div className="text-center">
             <div>{JSON.stringify(authReducer)}</div>
             <h1>Profile</h1>
             <span>
-                <p>{authReducer.user.username}</p>
-                <p>{authReducer.user.email}</p>
+                <p>username: {authReducer.user.username}</p>
+                <p>email: {authReducer.user.email}</p>
             </span>
             {/*  <button onClick={handleChangePass}>Change password</button> */}
             <FormChangePass />
