@@ -1,5 +1,5 @@
 import React, { useState, Component } from 'react'
-import "./cards.css"
+import "./cards.scss"
 
 export default class Cards extends Component
 {

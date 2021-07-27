@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { FaSpinner } from "react-icons/fa";
 
 import Popup from 'reactjs-popup';
-import "./formChangePass.css"
+import "./formChangePass.scss"
 import axios from 'axios';
 import { API_SERVER_URL } from '../../config/paths';
 

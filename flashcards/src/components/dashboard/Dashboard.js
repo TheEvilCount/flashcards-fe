@@ -4,7 +4,7 @@ import axios from "axios"
 import Cards from "../cards/Cards"
 import SideNav from '../sideNav/SideNav';
 
-import "./dashboard.css"
+import "./dashboard.scss"
 
 export default function Dashboard()
 {

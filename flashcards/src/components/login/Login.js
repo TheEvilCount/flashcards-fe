@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import "./login.css";
+import "./login.scss";
 
 import { useSelector, useDispatch } from "react-redux";
 import { loginAction, loginFailAction } from "../../actions"
