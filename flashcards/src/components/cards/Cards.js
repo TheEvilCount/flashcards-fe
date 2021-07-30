@@ -44,6 +44,7 @@ export default class Cards extends Component
 function Card(props)
 {
     const [isVisible, setisVisible] = useState(0);
+    const isLeftSpin = 1;//TODO add toggle to profile and save it somewhere; ?store/localstorage?
 
     function answer(params)
     {
@@ -56,15 +57,14 @@ function Card(props)
     let classes = "card";
 
     return (
-        <div className={isVisible ? classes + " show" : classes} onClick={() => answer(this)}>
+        <div className={isVisible ? (classes + " show" + (isLeftSpin ? "-left" : "-right")) : (classes)} onClick={() => answer(this)}>
             <div className="front">
                 <p>{props.card.question}</p>
             </div>
 
-            <div className="back">
+            <div className={"back back" + (isLeftSpin ? "-left" : "-right")}>
                 <p>{props.card.answer}</p>
             </div>
         </div>
     )
-
 }

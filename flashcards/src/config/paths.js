@@ -8,6 +8,7 @@ export const pathConsts =
     settings: "/settings",
     home: "/",
     dashboard: "/dashboard",
+    about: "/about",
     notfound: "/404",
     allOthers: "*",
     profile: "/profile"

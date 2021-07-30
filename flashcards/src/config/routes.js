@@ -9,8 +9,8 @@ import Profile from "../components/profile/Profile";
 
 import { useSelector } from "react-redux";
 
-import { FaUser, FaSdCard } from "react-icons/fa";
-
+import { Dashboard as DashboardIcon, Person as PersonIcon, FlashOn as FlashOnIcon, ExitToApp as ExitToAppIcon, PersonAdd as PersonAddIcon, Info as InfoIcon, } from '@material-ui/icons';
+import About from "../components/about/About";
 
 const routes = [
     {
@@ -22,39 +22,9 @@ const routes = [
         show: true,
         Title: () =>
         {
-            return (<div><FaSdCard /> Home</div>)
+            return (<> <div className="icon" > <FlashOnIcon /></div > <div className="title"> FlashCards</div></>)
         },
         class: ""
-    },
-    {
-        key: "dashboard",
-        path: pathConsts.dashboard,
-        comp: Dashboard,
-        isPrivate: true,
-        showWhenNotLogged: true,
-        show: true,
-        Title: () => { return (<div>Dashboard</div>) },
-        class: ""
-    },
-    {
-        key: "login",
-        path: pathConsts.login,
-        comp: Login,
-        isPrivate: false,
-        showWhenNotLogged: true,
-        show: true,
-        Title: () => { return (<div>Login</div>) },
-        class: "fRight"
-    },
-    {
-        key: "register",
-        path: pathConsts.register,
-        comp: Register,
-        isPrivate: false,
-        showWhenNotLogged: true,
-        show: true,
-        Title: () => { return (<div>Register</div>) },
-        class: "fRight"
     },
     {
         key: "profile",
@@ -66,9 +36,58 @@ const routes = [
         Title: () =>
         {
             const userReducer = useSelector(state => state.auth);
-            return (<div>{userReducer.user.username} <FaUser /></div>)
+            return (
+                <>
+                    <div className="icon"><PersonIcon /></div>
+                    <div className="title">
+                        Welcome, {userReducer.user.username}
+                        <br />
+                        <small style={{ display: "contents" }}>{userReducer.user.role === "USER" ? "User account" : "Admin account"}</small>
+                    </div>
+                </>
+            )
         },
-        class: "fRight"
+        class: "space-above space-under sidebar-profile"
+    },
+    {
+        key: "login",
+        path: pathConsts.login,
+        comp: Login,
+        isPrivate: false,
+        showWhenNotLogged: true,
+        show: true,
+        Title: () => { return (<><div className="icon"><ExitToAppIcon /></div><div className="title">Login</div></>) },
+        class: "space-above"
+    },
+    {
+        key: "register",
+        path: pathConsts.register,
+        comp: Register,
+        isPrivate: false,
+        showWhenNotLogged: true,
+        show: true,
+        Title: () => { return (<><div className="icon"><PersonAddIcon /></div><div className="title">Register</div></>) },
+        class: "space-under"
+    },
+    {
+        key: "dashboard",
+        path: pathConsts.dashboard,
+        comp: Dashboard,
+        isPrivate: true,
+        showWhenNotLogged: true,
+        show: true,
+        Title: () => { return (<><div className="icon"><DashboardIcon /></div><div className="title"> Dashboard</div></>) },
+        class: ""
+    },
+    {
+        key: "about",
+        path: pathConsts.about,
+        comp: About,
+        isPrivate: false,
+        showWhenNotLogged: true,
+        show: true,
+        Title: () => { return (<><div className="icon"><InfoIcon /></div><div className="title"> About App</div></>) },
+        class: ""
     },
     {
         key: "pgnf",

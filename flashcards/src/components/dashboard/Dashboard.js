@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react'
+
+import { useLocation } from "react-router-dom";
 import axios from "axios"
 
 import Cards from "../cards/Cards"
@@ -6,7 +8,7 @@ import SideNav from '../sideNav/SideNav';
 
 import "./dashboard.scss"
 
-export default function Dashboard()
+export default function Dashboard(props)
 {
     const mockCardList = [
         { id: 1, question: "Question1", answer: "Answeer1", category: "english" },
@@ -21,11 +23,19 @@ export default function Dashboard()
         { id: 10, question: "Question10", answer: "Answeer4", category: "english" }
     ];
 
-    const [cardList, setcardList] = useState(mockCardList);
+    const [cardList, setcardList] = useState();
+
+    const search = useLocation().search;
+    let cardsSP = new URLSearchParams(search).get("cards");
 
     useEffect(() =>
     {
-        axios.get("https://opentdb.com/api.php?amount=20&category=18")
+        selectCards(cardsSP);
+    }, [cardsSP]);
+
+    const getCards = function ()
+    {
+        axios.get("https://opentdb.com/api.php?amount=30&category=18")//TODO mock data cards
             .then(res =>
             {
                 setcardList(res.data.results.map((item, index) =>
@@ -37,15 +47,36 @@ export default function Dashboard()
                     }
                 }))
             })
+    }
 
-    }, [])
+    function selectCards(selector)
+    {
+        console.log(selector)
+        switch (selector)
+        {
+            default:
+            case "my":
+                getCards();//TODO mock data cards
+                break;
+            case "explore":
+                setcardList(mockCardList);//TODO mock data cards
+                break;
+            case "top":
+                setcardList(mockCardList.slice(3, 8));//TODO mock data cards
+                break;
+            case "sub":
+                setcardList(mockCardList.slice(5, 10));//TODO mock data cards
+                break;
+        }
+    }
 
     return (
         <div className="wrapperHome">
-            <div className="sideNav">
+            {/* <div className="sideNav">
                 <SideNav></SideNav>
-            </div>
+            </div> */}
             <div className="contentHome">
+                <div>{cardsSP}</div>
                 <Cards cardList={cardList}></Cards>
             </div>
         </div>
