@@ -9,8 +9,8 @@ const initialState =
     },
     isLogged: false,
     authToken: null,
-    loading: false,
-    errorMessage: ""
+    //loading: false,
+    //errorMessage: ""
 }
 
 //REDUCER
@@ -21,40 +21,40 @@ export const loggedReducer = (state = initialState, action) =>
         case Types.LOG_IN:
             console.log("login request");
             return {
-                ...initialState,
-                loading: true
+                ...state/* ,
+                loading: true */
             }
         case Types.LOG_IN_SUCCESS:
             console.log("login success", action.payload.user);
             return {
-                ...initialState,
-                loading: false,
+                ...state,
+                //loading: false,
                 isLogged: true,
                 user: action.payload.user,
                 authToken: action.payload.token,
-                errorMessage: ""
+                //errorMessage: ""
             }
         case Types.LOG_IN_FAIL:
-            console.log("login fail", action.payload.error);
+            console.log("login fail"/* , action.payload.error */);
             return {
-                ...initialState,
-                loading: false,
+                ...state,
+                //loading: false,
                 isLogged: false,
                 user: {},
                 authToken: null,
-                errorMessage: action.payload.error
+                //errorMessage: action.payload.error
             }
         case Types.LOG_OUT:
             console.log("login out");
             return {
-                ...initialState,
+                ...state,
                 isLogged: false,
                 user: null,
                 authToken: null,
-                errorMessage: ""
+                //errorMessage: ""
             }
         default:
-            return { state }
+            return state
         //throw new Error(`Unhandled action type: ${action.type}`);
     }
 };

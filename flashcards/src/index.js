@@ -4,14 +4,12 @@ import './index.scss';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-import { createStore } from "redux";
-import allReducer from "./reducers";
 import { Provider } from "react-redux";
+import { PersistGate } from 'redux-persist/integration/react';
 
+import configureStore from "./helpers/store";
 
-const store = createStore(
-  allReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
+const { store, persistor } = configureStore();
 /*
 //action increment
 const increment = () =>
@@ -56,7 +54,9 @@ store1.dispatch(decrement());
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
-      <App />
+      <PersistGate loading={null} persistor={persistor}>
+        <App />
+      </PersistGate>
     </Provider>
   </React.StrictMode>,
   document.getElementById('root')

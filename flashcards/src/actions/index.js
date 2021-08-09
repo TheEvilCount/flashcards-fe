@@ -21,7 +21,7 @@ export const decrement = () =>
 
 
 /* */
-export const loginAction = (dispatch, loginPayload) =>
+export const loginAction = (dispatch, payload, actions) =>
 {
     dispatch({ type: Types.LOG_IN });
 
@@ -30,8 +30,8 @@ export const loginAction = (dispatch, loginPayload) =>
     var data = new FormData();
     /*fdata.append("email", loginPayload.password);
     fdata.append("password", loginPayload.email);*/
-    data.append("email", loginPayload.email);
-    data.append("password", loginPayload.password);
+    data.append("email", payload.email);
+    data.append("password", payload.password);
     // data.append("remember", loginPayload.remember);
 
     axios.post(API_SERVER_URL + "/login",
@@ -57,15 +57,21 @@ export const loginAction = (dispatch, loginPayload) =>
                     }
                 });
                 //TODO set user session??
+
+                actions.setSubmitting(false);
             }
             else
             {
-                dispatch({ type: Types.LOG_IN_FAIL, payload: { error: response.data.errorMessage } });
+                dispatch({ type: Types.LOG_IN_FAIL/* , payload: { error: response.data.errorMessage } */ });
+                actions.setStatus({ message: response.data.errorMessage });
+                actions.setSubmitting(false);
             }
         })
         .catch((error) =>
         {
-            dispatch({ type: Types.LOG_IN_FAIL, payload: { error: error.message } });
+            dispatch({ type: Types.LOG_IN_FAIL/* , payload: { error: error.message } */ });
+            actions.setStatus({ message: "" + error });
+            actions.setSubmitting(false);
         });
     /*
         setTimeout(() =>
@@ -100,10 +106,10 @@ export const loginAction = (dispatch, loginPayload) =>
         }, 1000);*/
 }
 
-export const loginFailAction = (dispatch, errorMessage) =>
+/* export const loginFailAction = (dispatch, errorMessage) =>
 {
     dispatch({ type: Types.LOG_IN_FAIL, payload: { error: errorMessage } });
-}
+} */
 
 export const logoutAction = (dispatch) =>
 {
@@ -135,42 +141,47 @@ export const logoutAction = (dispatch) =>
 }
 
 
-export const registerAction = (dispatch, registerPayload) =>
+export const registerAction = (dispatch, payload, actions) =>
 {
     dispatch({ type: Types.REGISTER_REQ });
 
 
     axios.post(API_SERVER_URL + "/users/register", {
 
-        username: registerPayload.username,
-        email: registerPayload.email,
-        password: registerPayload.password
+        username: payload.username,
+        email: payload.email,
+        password: payload.password
 
     },
         {
             headers:
             {
                 "Accept": "application/json"
-            }
+            },
+            timeout: 5000
         })
         .then((response) =>
         {
             if (response.status === 201)//201 created
             {
                 dispatch({ type: Types.REGISTER_SUCCESS });
-                console.log(registerPayload);
+                console.log(payload);
                 history.push(pathConsts.login + "?msg=Register success");
             }
             else
             {
-                console.log(JSON.stringify(response));
+                //console.log(JSON.stringify(response));
                 //console.log("registration error: " + response.data.errorMessage);
-                dispatch({ type: Types.REGISTER_FAIL, payload: { error: response.data } });
+                dispatch({ type: Types.REGISTER_FAIL });
                 //console.warn(response.data.errorMessage);
+                actions.setStatus({ message: response.data });//TODO add better error messages
+                actions.setSubmitting(false);
             }
         }).catch((error) =>
         {
-            dispatch({ type: Types.REGISTER_FAIL, payload: { error: error } });
+            dispatch({ type: Types.REGISTER_FAIL/* , payload: { error: error } */ });
+            actions.setStatus({ message: "" + error });//TODO add better error messages
+            actions.setSubmitting(false);
         });
     /*
     setTimeout(() => 
@@ -182,10 +193,10 @@ export const registerAction = (dispatch, registerPayload) =>
     }, 1000)*/
 }
 
-export const registerFailAction = (dispatch, errorMessage) =>
+/* export const registerFailAction = (dispatch, errorMessage) =>
 {
     dispatch({ type: Types.REGISTER_FAIL, payload: { error: errorMessage } });
-}
+} */
 
 /*
 export const changePassAction = (dispatch, changePassPayload) =>

@@ -4,13 +4,22 @@
   font-size: 15px;
 
   input[type="text"],
-  input[type="password"] {
+  input[type="password"],
+  input[type="email"] {
     width: 100%;
     padding: 12px 20px;
     margin: 8px 0;
     display: inline-block;
     border: 1px solid #ccc;
     box-sizing: border-box;
+  }
+
+  .form-control {
+    margin-bottom: 0px !important;
+  }
+
+  .form-group {
+    margin-bottom: 1.5rem;
   }
 
   button {
@@ -54,6 +63,17 @@
     color: #007bff;
     text-decoration: none;
     background-color: transparent;
+  }
+
+  .error {
+    color: red;
+    position: absolute;
+    font-size: 0.8rem;
+  }
+
+  .message {
+    color: red;
+    margin-bottom: 1rem;
   }
 }
 
