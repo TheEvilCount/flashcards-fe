@@ -3,10 +3,10 @@ import React, { useState, useEffect } from 'react'
 import { useLocation } from "react-router-dom";
 import axios from "axios"
 
-import Cards from "../cards/Cards"
 import SideNav from '../sideNav/SideNav';
 
 import "./dashboard.scss"
+import CardList from '../cards/CardList';
 
 export default function Dashboard(props)
 {
@@ -33,7 +33,12 @@ export default function Dashboard(props)
         selectCards(cardsSP);
     }, [cardsSP]);
 
-    const getCards = function ()
+    useEffect(() =>
+    {
+        getCards();
+    }, []);
+
+    const getCards = () =>
     {
         axios.get("https://opentdb.com/api.php?amount=30&category=18")//TODO mock data cards
             .then(res =>
@@ -56,7 +61,7 @@ export default function Dashboard(props)
         {
             default:
             case "my":
-                getCards();//TODO mock data cards
+                setcardList(mockCardList)//TODO mock data cards
                 break;
             case "explore":
                 setcardList(mockCardList);//TODO mock data cards
@@ -77,7 +82,7 @@ export default function Dashboard(props)
             </div> */}
             <div className="contentHome">
                 <div>{cardsSP}</div>
-                <Cards cardList={cardList}></Cards>
+                <CardList cardList={cardList}></CardList>
             </div>
         </div>
     )

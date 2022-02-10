@@ -1,0 +1,1 @@
+export const apiRequestTimeout = 4000;

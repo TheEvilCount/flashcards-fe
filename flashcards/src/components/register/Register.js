@@ -66,7 +66,7 @@ export default function Register()
                 .max(20, "Username is too long! (max 20 characters)"),
             password: Yup.string()
                 .required("Required field!")
-                .min(6, "Password must contains 6 or more characters!"),
+                .min(8, "Password must contains 8 or more characters!"),
             passwordRepeat: Yup.string()
                 .required("Required field!")
                 .test('passwordsRepeat', "Password do not match!", function (value)

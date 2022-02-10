@@ -1,49 +1,17 @@
 import { Types } from "./actionTypes";
 
 import { history } from "../helpers/history";
-import { API_SERVER_URL, pathConsts } from "../config/paths";
-import axios from "axios";
+import { pathConsts } from "../config/paths";
+import authAPI from "../api/auth/authAPI";
 
-/*
-export const increment = () =>
-{
-    return {
-        type: "INCREMENT"
-    };
-};
-
-export const decrement = () =>
-{
-    return {
-        type: "DECREMENT"
-    }
-}*/
-
-
-/* */
 export const loginAction = (dispatch, payload, actions) =>
 {
     dispatch({ type: Types.LOG_IN });
 
 
-    //TODO url + make config file with api urls
-    var data = new FormData();
-    /*fdata.append("email", loginPayload.password);
-    fdata.append("password", loginPayload.email);*/
-    data.append("email", payload.email);
-    data.append("password", payload.password);
-    // data.append("remember", loginPayload.remember);
 
-    axios.post(API_SERVER_URL + "/login",
-        data,
-        {
-            headers:
-            {
-                "Accept": "application/json",
-                'Content-Type': 'multipart/form-data'
-            }
-        }
-    )
+
+    authAPI.login(payload.email, payload.password)
         .then((response) =>
         {
             if (response.status === 200 && response.data.success !== false)
@@ -73,37 +41,6 @@ export const loginAction = (dispatch, payload, actions) =>
             actions.setStatus({ message: "" + error });
             actions.setSubmitting(false);
         });
-    /*
-        setTimeout(() =>
-        {
-            let mockUsername = "TheEvilCount";
-            let mockToken = "sdvnsjknvjsdnvjsv";
-    
-            if (loginPayload.email === "tt@ggg.com" && loginPayload.password === "123456")
-            {
-                dispatch({
-                    type: Types.LOG_IN_SUCCESS,
-                    payload:
-                    {
-                        user: {
-                            username: mockUsername,
-                            email: loginPayload.email
-                        },
-                        token: mockToken
-                    }
-                })
-            }
-            else//mock error
-            {
-                dispatch({
-                    type: Types.LOG_IN_FAIL,
-                    payload:
-                    {
-                        error: "Wrong email or password"//error from request response
-                    }
-                })
-            }
-        }, 1000);*/
 }
 
 /* export const loginFailAction = (dispatch, errorMessage) =>
@@ -113,14 +50,7 @@ export const loginAction = (dispatch, payload, actions) =>
 
 export const logoutAction = (dispatch) =>
 {
-    //dispatch({ type: Types.LOG_OUT });//dev
-
-
-    //TODO request /logout
-
-    axios.get(API_SERVER_URL + "/logout", {
-        withCredentials: true
-    })
+    authAPI.logout()
         .then((response) =>
         {
             if (response.status === 200)
@@ -145,21 +75,7 @@ export const registerAction = (dispatch, payload, actions) =>
 {
     dispatch({ type: Types.REGISTER_REQ });
 
-
-    axios.post(API_SERVER_URL + "/users/register", {
-
-        username: payload.username,
-        email: payload.email,
-        password: payload.password
-
-    },
-        {
-            headers:
-            {
-                "Accept": "application/json"
-            },
-            timeout: 5000
-        })
+    authAPI.register(payload.username, payload.email, payload.password)
         .then((response) =>
         {
             if (response.status === 201)//201 created
