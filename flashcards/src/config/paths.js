@@ -3,13 +3,24 @@ export const API_SERVER_URL = "http://localhost:8081/flashcards/api/v1";
 
 export const pathConsts =
 {
+    home: "/",
+    about: "/about",
+
     login: "/login",
     register: "/register",
+    verify: "/verify",
+    resetPass: "/reset",
+
     settings: "/settings",
-    home: "/",
-    dashboard: "/dashboard",
-    about: "/about",
+    profile: "/profile",
+
     notfound: "/404",
     allOthers: "*",
-    profile: "/profile"
+
+    dashboard: "/dashboard",
+    adminDashboard: "/admin",
+
+    collections: "/collections",
+    collectionDetail: "/collections/:id/cards",
+    cardDetail: "/collections/:id/cards/:cardId",
 };

@@ -1,118 +1,106 @@
 import { Types } from "./actionTypes";
-
-import { history } from "../helpers/history";
 import { pathConsts } from "../config/paths";
 import authAPI from "../api/auth/authAPI";
+import { push } from 'connected-react-router'
+import { regMsg } from "../components/VerifyPage";
 
-export const loginAction = (dispatch, payload, actions) =>
+export const loginAction = (payload, actions) =>
 {
-    dispatch({ type: Types.LOG_IN });
-
-
-
-
-    authAPI.login(payload.email, payload.password)
-        .then((response) =>
-        {
-            if (response.status === 200 && response.data.success !== false)
-            {
-                dispatch({
-                    type: Types.LOG_IN_SUCCESS,
-                    payload:
-                    {
-                        user: response.data.user,
-                        //token: response.data.token
-                    }
-                });
-                //TODO set user session??
-
-                actions.setSubmitting(false);
-            }
-            else
-            {
-                dispatch({ type: Types.LOG_IN_FAIL/* , payload: { error: response.data.errorMessage } */ });
-                actions.setStatus({ message: response.data.errorMessage });
-                actions.setSubmitting(false);
-            }
-        })
-        .catch((error) =>
-        {
-            dispatch({ type: Types.LOG_IN_FAIL/* , payload: { error: error.message } */ });
-            actions.setStatus({ message: "" + error });
-            actions.setSubmitting(false);
-        });
-}
-
-/* export const loginFailAction = (dispatch, errorMessage) =>
-{
-    dispatch({ type: Types.LOG_IN_FAIL, payload: { error: errorMessage } });
-} */
-
-export const logoutAction = (dispatch) =>
-{
-    authAPI.logout()
-        .then((response) =>
-        {
-            if (response.status === 200)
-            {
-                dispatch({ type: Types.LOG_OUT });
-            }
-            else
-            {
-                console.log(response);
-                alert(response);
-            }
-        })
-        .catch((error) =>
-        {
-            console.log(error);
-            alert(error.message);
-        })
-}
-
-
-export const registerAction = (dispatch, payload, actions) =>
-{
-    dispatch({ type: Types.REGISTER_REQ });
-
-    authAPI.register(payload.username, payload.email, payload.password)
-        .then((response) =>
-        {
-            if (response.status === 201)//201 created
-            {
-                dispatch({ type: Types.REGISTER_SUCCESS });
-                console.log(payload);
-                history.push(pathConsts.login + "?msg=Register success");
-            }
-            else
-            {
-                //console.log(JSON.stringify(response));
-                //console.log("registration error: " + response.data.errorMessage);
-                dispatch({ type: Types.REGISTER_FAIL });
-                //console.warn(response.data.errorMessage);
-                actions.setStatus({ message: response.data });//TODO add better error messages
-                actions.setSubmitting(false);
-            }
-        }).catch((error) =>
-        {
-            dispatch({ type: Types.REGISTER_FAIL/* , payload: { error: error } */ });
-            actions.setStatus({ message: "" + error });//TODO add better error messages
-            actions.setSubmitting(false);
-        });
-    /*
-    setTimeout(() => 
+    return (dispatch) =>
     {
-        dispatch({ type: Types.REGISTER_SUCCESS });
+        dispatch({ type: Types.LOG_IN });
 
-        console.log(registerPayload);
-        history.push(pathConsts.login);
-    }, 1000)*/
+        authAPI.login(payload.email, payload.password)
+            .then((response) =>
+            {
+                if (response.status === 200 && response.data.success !== false)
+                {
+                    dispatch({
+                        type: Types.LOG_IN_SUCCESS,
+                        payload:
+                        {
+                            user: response.data.user,
+                            //token: response.data.token
+                        }
+                    });
+                    //TODO set user session??
+
+                    actions.setSubmitting(false);
+                }
+                else
+                {
+                    dispatch({ type: Types.LOG_IN_FAIL/* , payload: { error: response.data.errorMessage } */ });
+                    actions.setStatus({ message: response.data.errorMessage });
+                    actions.setSubmitting(false);
+                }
+            })
+            .catch((error) =>
+            {
+                dispatch({ type: Types.LOG_IN_FAIL/* , payload: { error: error.message } */ });
+                actions.setStatus({ message: "" + error });
+                actions.setSubmitting(false);
+            });
+    }
 }
 
-/* export const registerFailAction = (dispatch, errorMessage) =>
+export const logoutAction = () =>
 {
-    dispatch({ type: Types.REGISTER_FAIL, payload: { error: errorMessage } });
-} */
+    return (dispatch) =>
+    {
+        authAPI.logout()
+            .then((response) =>
+            {
+                if (response.status === 200)
+                {
+                    dispatch({ type: Types.LOG_OUT });
+                }
+                else
+                {
+                    console.log(response);
+                    alert(response);
+                }
+            })
+            .catch((error) =>
+            {
+                console.log(error);
+                alert(error.message);
+            })
+    }
+}
+
+
+export const registerAction = (email, username, password, actions) =>
+{
+    return (dispatch) =>
+    {
+        dispatch({ type: Types.REGISTER_REQ });
+
+        authAPI.register(username, email, password)
+            .then((response) =>
+            {
+                if (response.status === 201)//201 created
+                {
+                    console.log("register 201 created")
+                    dispatch({ type: Types.REGISTER_SUCCESS });
+                    actions.setSubmitting(false);
+                    dispatch(push(`./${pathConsts.verify}?${regMsg.key}=${regMsg.val}`))
+                }
+                else
+                {
+                    //console.log(JSON.stringify(response));
+                    //console.log("registration error: " + response.data.errorMessage);
+                    dispatch({ type: Types.REGISTER_FAIL });
+                    actions.setStatus({ message: response.data });//TODO add better error messages
+                    actions.setSubmitting(false);
+                }
+            }).catch((error) =>
+            {
+                dispatch({ type: Types.REGISTER_FAIL/* , payload: { error: error } */ });
+                actions.setStatus({ message: "" + error });//TODO add better error messages
+                actions.setSubmitting(false);
+            });
+    }
+}
 
 /*
 export const changePassAction = (dispatch, changePassPayload) =>

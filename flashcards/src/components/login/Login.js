@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { NavLink } from "react-router-dom";
 import "./login.scss";
 
 import { useSelector, useDispatch } from "react-redux";
@@ -9,39 +10,22 @@ import { FaSpinner } from "react-icons/fa";
 import InputTextField from '../InputTextField';
 import { Field, Form, Formik } from 'formik';
 import * as Yup from "yup";
+import { Button, Card, Checkbox, FormControl, FormControlLabel, Typography, Switch } from '@material-ui/core';
+import { LinearProgress } from '@material-ui/core';
+import { pathConsts } from '../../config/paths';
+
 
 export default function Login(props)
 {
     const dispatch = useDispatch();
     const authReducer = useSelector(state => state.auth);
 
-    /* const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [toggle, setToggle] = useState(false);
 
-    const [remember, setRemember] = useState(false); */
-
-    /*  const handleLogin = async (e) => 
-     {
-         e.preventDefault();
- 
-         if (!(email.length > 0))
-         {
-             loginFailAction(dispatch, "Email cannot be blank!");
-         }
-         else if (!(password.length > 0))
-         {
-             loginFailAction(dispatch, "Password cannot be blank!");
-         }
-         else if (!(password.length >= 5 && password.length <= 100))
-         {
-             loginFailAction(dispatch, "Password must be between 5 and 100 characters!");
-         }
-         else
-         {
-             console.log({ password: password, email: email });
-             loginAction(dispatch, { password: password, email: email, remember: remember ? "checked" : "" });
-         } 
-     }*/
+    const handleToggle = () =>
+    {
+        toggle ? setToggle(false) : setToggle(true);
+    };
 
     const formValidation = Yup.object(
         {
@@ -56,22 +40,20 @@ export default function Login(props)
     );
 
     return (
-        <div className="login-container">
-            <h1 className="text-center">Login</h1>
+        <Card id={"login-container"} >
+            <Typography className="text-center" variant="h4">Login</Typography>
             <Formik
                 initialValues={{
                     email: "",
                     password: "",
-                    remember: false
+                    rememberme: true
                 }}
                 validationSchema={formValidation}
                 onSubmit={(values, actions) =>
                 {
                     console.log({ password: values.password, email: values.email });
                     actions.setStatus({ message: null });//reset message
-
-                    //loginAction(dispatch, values, actions);
-                    loginAction(dispatch, { password: values.password, email: values.email, remember: values.remember ? "checked" : "" }, actions);
+                    dispatch(loginAction({ password: values.password, email: values.email, remember: values.remember ? "checked" : "" }, actions));
                 }}
             >
                 {({
@@ -79,50 +61,62 @@ export default function Login(props)
                     handleSubmit,
                     values,
                     status,
-                    resetForm
+                    errors,
+                    touched,
+                    resetForm,
+                    actions,
+                    setFieldValue
                 }) => (
                     <>
                         <Form>
-                            <div className="container">
+                            <Card className="container">
                                 <div>
-                                    {/* <label htmlFor="email">Email</label>
-                                    <input type="text" id='email' placeholder="Enter email" required value={email} onChange={(e) => setEmail(e.target.value)} /> */}
-                                    <InputTextField name="email" type="email" label="E-mail:" placeholder="Enter email" />
+                                    <InputTextField error={errors.email} touched={touched.email} name="email" type="email" label="E-mail" placeholder="@" />
                                 </div>
                                 <div style={{ marginTop: 10 }}>
-                                    {/* <label htmlFor="password">Password</label>
-                                    <input type="password" id='password' placeholder="Enter password" required value={password} onChange={(e) => setPassword(e.target.value)} /> */}
-                                    <InputTextField name="password" type="password" label="Password:" placeholder="Enter password" />
+                                    <InputTextField error={errors.password} touched={touched.password} name="password" type="password" label="Password" placeholder="" />
                                 </div>
-                                <div>
-                                    <label htmlFor="remember">Remember me</label>
-                                    <Field id="remember" type="checkbox" name="remember" checked={values.remember} />
-                                </div>
-                            </div>
+                                <FormControlLabel
+                                    control={
+                                        <Field
+                                            label="Remember Me"
+                                            name="rememberme"
+                                            component={Switch}
+                                            onChange={() => { values.rememberme ? setFieldValue("rememberme", false) : setFieldValue("rememberme", true); }}
+                                            checked={values.rememberme}
+                                        />
+                                    }
+                                    label="Remember Me"
+                                />
+                            </Card>
                             {/* {authReducer.errorMessage ? <p style={{ color: 'red' }}>{authReducer.errorMessage}</p> : null} */}
                             {status && status.message && (
                                 <div className="message">{status.message}</div>
                             )}
-                            {/* <button onClick={handleLogin} disabled={authReducer.loading}>{authReducer.loading ? <span>Please wait <FaSpinner /></span> : "Login"}</button> */}
-                            <button
+                            {isSubmitting && <LinearProgress />}
+                            <Button
                                 color="primary"
                                 type="submit"
-                                onClick={handleSubmit}
+                                onClick={() => { }}
                                 block
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? <span>Please wait <FaSpinner /></span> : "Login"}
-                            </button>
+                            </Button>
 
                             <div>
-                                <button type="reset" onClick={() => { resetForm() }}>Cancel</button>
-                                <span className="forgotPsw">Forgot <a href="#">password?</a></span>{/*TODO forgotten password */}
+                                <Button type="reset" onClick={() => { resetForm() }}>Cancel</Button>
+                                <span className="forgotPsw">
+                                    Forgot <NavLink to={pathConsts.resetPass}>password?</NavLink>
+                                </span>
                             </div>
                         </Form>
-                        <p className="text-center"><a className="login-create" href="/register">Create an Account</a></p>
+                        <p className="text-center">
+                            <NavLink className="login-create" to={pathConsts.register}>Create an Account</NavLink>
+                        </p>
                     </>
                 )}
             </Formik>
-        </div >
+        </Card >
     )
 }

@@ -1,56 +1,18 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
 import './index.scss';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
 import { Provider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
 
-import configureStore from "./helpers/store";
+import configureStore from "./state/store";
 
 const { store, persistor } = configureStore();
-/*
-//action increment
-const increment = () =>
-{
-  return {
-    type: "INCREMENT"
-  }
-}
-//action decrement
-const decrement = () =>
-{
-  return {
-    type: "DECREMENT"
-  }
-}
 
-//REDUCER
-const counter = (state = 0, action) =>
-{
-  switch (action.type)
-  {
-    case "INCREMENT":
-      return state + 1;
-    case "DECREMENT":
-      return state - 1;
-    default:
-      return state;
-  }
-};
-
-let store1 = createStore(counter);
-
-//display it in the console
-store1.subscribe(() => console.log(store1.getState()));
-
-//DISPATCH
-store1.dispatch(increment());
-store1.dispatch(increment());
-store1.dispatch(increment());
-store1.dispatch(decrement());
-*/
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>

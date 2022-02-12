@@ -6,7 +6,18 @@ import { getPaginationParams } from "../helpers";
 
 const getCollections = (type, page, pageSize) =>
 {
-    return axios.get(API_SERVER_URL + `/collections?type=${type}`,
+    return {
+        url: API_SERVER_URL + `/collections?type=${type}`,
+        params: getPaginationParams(page, pageSize),
+        method: "GET",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+    /* return axios.get(API_SERVER_URL + `/collections?type=${type}`,
         {
             withCredentials: true,
             timeout: apiRequestTimeout,
@@ -16,7 +27,7 @@ const getCollections = (type, page, pageSize) =>
             },
             params: getPaginationParams(page, pageSize)
         }
-    )
+    ) */
 };
 
 const getCollectionsPrivate = (page, pageSize) =>
@@ -44,7 +55,23 @@ const getCollectionsFavourite = (page, pageSize) =>
  */
 const postCollection = (title, color, visibility = "PRIVATE", categoryID) =>
 {
-    return axios.post(API_SERVER_URL + "/collections",
+    return {
+        url: API_SERVER_URL + "/collections",
+        method: "POST",
+        data: {
+            title: title,
+            color: color,
+            visibility: visibility,
+            category: { id: categoryID }
+        },
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+    /* return axios.post(API_SERVER_URL + "/collections",
         {
             title: title,
             color: color,
@@ -59,7 +86,7 @@ const postCollection = (title, color, visibility = "PRIVATE", categoryID) =>
                 "Accept": "application/json"
             }
         }
-    )
+    ) */
 };
 
 /**

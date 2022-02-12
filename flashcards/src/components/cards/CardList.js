@@ -37,7 +37,7 @@ const CardList = ({ cardList }) =>
 
 
     return (
-        <div className="wrapper">
+        <div className="cards-wrapper">
             {createCardsFromData()}
         </div>
     );

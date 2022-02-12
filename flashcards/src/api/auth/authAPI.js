@@ -5,16 +5,21 @@ import { API_SERVER_URL } from "../../config/paths";
 
 const register = (username, email, password) =>
 {
-    axios.post(API_SERVER_URL + "/users/register",
+    var data = new FormData();
+    data.append("email", email);
+    data.append("password", password);
+    data.append("username", username);
+    return axios.post(API_SERVER_URL + "/users/register",
         {
-            username: username,
             email: email,
+            username: username,
             password: password
         },
         {
             headers:
             {
-                "Accept": "application/json"
+                "Accept": "application/json",
+                "Content-Type": "application/json"
             },
             timeout: apiRequestTimeout
         }
@@ -48,7 +53,7 @@ const logout = () =>
             withCredentials: true,
             timeout: apiRequestTimeout
         }
-    )
+    )//TODO clear storage
 };
 
 const verify = (token) =>
