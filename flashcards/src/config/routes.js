@@ -196,7 +196,7 @@ const routes = [
     {
         key: "adminDashboard",
         path: pathConsts.adminDashboard,
-        comp: () => { return (<div>admin dashboard component TODO</div>) },
+        comp: () => { return (<div>admin dashboard component TODO</div>) },//TODO lazy loaded?
         isPrivate: true,
         isAdmin: true,
         showWhenNotLogged: false,

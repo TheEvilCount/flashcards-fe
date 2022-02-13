@@ -11,6 +11,7 @@ import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 
 import { MenuItem } from "@material-ui/core";
 import { Menu, SubMenu } from "react-pro-sidebar";
+import MySubMenu from "./MySubMenu";
 
 const SideBarLink = ({ route, auth, collapsed }) =>
 {
@@ -36,6 +37,44 @@ const SideBarLink = ({ route, auth, collapsed }) =>
         </>
     ) */
 
+    const subMenuItems = [
+        {
+            title: "My collections",
+            icon: InventoryIcon,
+            to: pathConsts.collectionsMy,
+            key: "my",
+        }, {
+            title: "explore",
+            icon: ExploreIcon,
+            to: pathConsts.collectionsExplore,
+            key: "explore",
+        }, {
+            title: "Top collections",
+            icon: FilterListIcon,
+            to: pathConsts.collectionsTop,
+            key: "top",
+        }, {
+            title: "Favourite collections",
+            icon: FavoriteIcon,
+            to: pathConsts.collectionsFav,
+            key: "fav",
+        },
+    ]
+
+    const isSubMenu = true;
+
+    const sideBarCollections = (withTitle) =>
+    {
+        return subMenuItems.map((item) =>
+        {
+            return (
+                <MenuItem style={{ paddingBlock: "0", marginBlock: "0" }}>
+                    <SubNavLink key={item.key} to={item.to} Icon={item.icon} title={withTitle ? item.title : ""} />
+                </MenuItem>
+            )
+        })
+    }
+
     return (
         <>
             <MenuItem icon={collapsed ? route.Icon : undefined}>
@@ -43,25 +82,36 @@ const SideBarLink = ({ route, auth, collapsed }) =>
                     <NavLink exact activeClassName="active" to={route.path}>{!collapsed ? <route.Title /> : route.Icon}</NavLink>
                 </div>
             </MenuItem>
+
             {
                 route.path === pathConsts.dashboard && auth.isLogged &&
                 (
-                    <SubMenu icon={<CollectionsBookmarkIcon />} title={"Collections"} open={!collapsed} style={{ padding: "0", margin: "0" }}>
-                        <MenuItem style={{ paddingBlock: "0", marginBlock: "0" }}>
-                            <SubNavLink key={"my"} to={pathConsts.collectionsMy} Icon={InventoryIcon} title={"My collections"} />
-                        </MenuItem>
-                        <MenuItem style={{ paddingBlock: "0", marginBlock: "0" }}>
-                            <SubNavLink key={"explore"} to={pathConsts.collectionsExplore} Icon={ExploreIcon} title={"Explore collections"} />
-                        </MenuItem>
-                        <MenuItem style={{ paddingBlock: "0", marginBlock: "0" }}>
-                            <SubNavLink key={"top"} to={pathConsts.collectionsTop} Icon={FilterListIcon} title={"Top collections"} />
-                        </MenuItem>
-                        <MenuItem style={{ paddingBlock: "0", marginBlock: "0" }}>
-                            <SubNavLink key={"fav"} to={pathConsts.collectionsFav} Icon={FavoriteIcon} title={"Favourite collections"} />
-                        </MenuItem>
-                    </SubMenu >
+                    collapsed ?
+                        (
+                            isSubMenu ?
+                                (<MySubMenu
+                                    icon={<CollectionsBookmarkIcon />} title={"Collections"} open={!collapsed}
+                                    style={{ padding: "0", margin: "0" }}
+                                >
+                                    {sideBarCollections(true)}
+                                </MySubMenu>)
+                                :
+                                (<Menu>
+                                    {sideBarCollections(false)}
+                                </Menu>)
+                        )
+                        :
+                        (
+                            <MySubMenu
+                                icon={<CollectionsBookmarkIcon />} title={"Collections"} style={{ padding: "0", margin: "0" }}>
+                                {
+                                    sideBarCollections(true)
+                                }
+                            </MySubMenu >
+                        )
                 )
             }
+
         </>
     )
 }

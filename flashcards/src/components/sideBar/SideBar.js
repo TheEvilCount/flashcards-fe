@@ -38,7 +38,6 @@ function SideBar({ auth, collapsed, handleToggleSideBar })
                 </Menu>
             </SidebarHeader>
             <SidebarContent>
-
                 <Menu iconShape="square">
                     {
                         routes.map((route) => (
@@ -58,7 +57,6 @@ function SideBar({ auth, collapsed, handleToggleSideBar })
                                             )
                                         )
                                 )
-
                             )
                         ))
                     }
