@@ -3,10 +3,13 @@ import Register from "../components/register/Register";
 import Home from "../components/home/Home";
 import PageNotFound from "../components/404/PageNotFound";
 import Dashboard from "../components/dashboard/Dashboard";
-
-import { pathConsts } from "./paths";
+import About from "../components/about/About";
+import CollectionsPage from "../components/collection/CollectionsPage";
+import VerifyPage from "../components/VerifyPage";
+import { CollectionDetail } from "../components/collection/CollectionDetail";
 import Profile from "../components/profile/Profile";
 
+import { pathConsts } from "./paths";
 import { useSelector } from "react-redux";
 
 import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -15,11 +18,7 @@ import FlashOnIcon from '@mui/icons-material/FlashOn';
 import InfoIcon from '@mui/icons-material/Info';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonIcon from '@mui/icons-material/Person';
-import About from "../components/about/About";
-import { CollectionDetail } from "../components/collection/CollectionDetail";
-import { FaCogs } from "react-icons/fa";
-import VerifyPage from "../components/VerifyPage";
-import CollectionsPage from "../components/collection/CollectionsPage";
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const routes = [
     {
@@ -28,10 +27,12 @@ const routes = [
         comp: Home,
         isPrivate: false,
         showWhenNotLogged: true,
-        show: true,
+        show: false,
+        Icon: <FlashOnIcon />,
+        title: "FlashCards",
         Title: () =>
         {
-            return (<> <div className="icon" > <FlashOnIcon /></div > <div className="title"> FlashCards</div></>)
+            return (<> <div className="icon inner" > <FlashOnIcon /></div > <div className="title inner"> FlashCards</div></>)
         },
         class: ""
     },
@@ -42,13 +43,14 @@ const routes = [
         isPrivate: true,
         showWhenNotLogged: false,
         show: true,
+        Icon: <PersonIcon />,
         Title: () =>
         {
             const userReducer = useSelector(state => state.auth);
             return (
                 <>
-                    <div className="icon"><PersonIcon /></div>
-                    <div className="title">
+                    <div className="icon inner"><PersonIcon /></div>
+                    <div className="title inner">
                         Welcome, {userReducer.user.username}
                         <br />
                         <small style={{ display: "contents" }}>{userReducer.user.role === "USER" ? "User account" : "Admin account"}</small>
@@ -56,7 +58,7 @@ const routes = [
                 </>
             )
         },
-        class: "space-above space-under sidebar-profile"
+        class: "sidebar-profile"//"space-above space-under sidebar-profile"
     },
     {
         key: "login",
@@ -65,7 +67,8 @@ const routes = [
         isPrivate: false,
         showWhenNotLogged: true,
         show: true,
-        Title: () => { return (<><div className="icon"><ExitToAppIcon /></div><div className="title">Login</div></>) },
+        Icon: <ExitToAppIcon />,
+        Title: () => { return (<><div className="icon inner"><ExitToAppIcon /></div><div className="title inner">Login</div></>) },
         class: "space-above"
     },
     {
@@ -75,7 +78,8 @@ const routes = [
         isPrivate: false,
         showWhenNotLogged: true,
         show: true,
-        Title: () => { return (<><div className="icon"><PersonAddIcon /></div><div className="title">Register</div></>) },
+        Icon: <PersonAddIcon />,
+        Title: () => { return (<><div className="icon inner"><PersonAddIcon /></div><div className="title inner">Register</div></>) },
         class: "space-under"
     },
     {
@@ -86,6 +90,7 @@ const routes = [
         isAdmin: false,
         showWhenNotLogged: false,
         show: false,
+        Icon: <></>,
         Title: () => { return (<></>) },
         class: ""
     },
@@ -96,7 +101,8 @@ const routes = [
         isPrivate: true,
         showWhenNotLogged: true,
         show: true,
-        Title: () => { return (<><div className="icon"><DashboardIcon /></div><div className="title"> Dashboard</div></>) },
+        Icon: <DashboardIcon />,
+        Title: () => { return (<><div className="icon inner"><DashboardIcon /></div><div className="title inner"> Dashboard</div></>) },
         class: ""
     },
     {
@@ -106,7 +112,8 @@ const routes = [
         isPrivate: false,
         showWhenNotLogged: true,
         show: true,
-        Title: () => { return (<><div className="icon"><InfoIcon /></div><div className="title"> About App</div></>) },
+        Icon: <InfoIcon />,
+        Title: () => { return (<><div className="icon inner"><InfoIcon /></div><div className="title inner"> About App</div></>) },
         class: ""
     },
     {
@@ -116,6 +123,7 @@ const routes = [
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,
+        Icon: <></>,
         Title: () => { return (<></>) },
         class: ""
     },
@@ -126,6 +134,7 @@ const routes = [
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,
+        Icon: <></>,
         Title: () => { return (<></>) },
         class: ""
     },
@@ -136,6 +145,7 @@ const routes = [
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,
+        Icon: <></>,
         Title: () => { return (<></>) },
         class: ""
     },
@@ -146,6 +156,7 @@ const routes = [
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,
+        Icon: <></>,
         Title: () => { return (<></>) },
         class: ""
     },
@@ -156,6 +167,7 @@ const routes = [
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,
+        Icon: <></>,
         Title: () => { return (<></>) },
         class: ""
     },
@@ -166,6 +178,7 @@ const routes = [
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,
+        Icon: <></>,
         Title: () => { return (<></>) },
         class: ""
     },
@@ -176,6 +189,7 @@ const routes = [
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,
+        Icon: <></>,
         Title: () => { return (<></>) },
         class: ""
     },
@@ -187,7 +201,8 @@ const routes = [
         isAdmin: true,
         showWhenNotLogged: false,
         show: true,
-        Title: () => { return (<><div className="icon"><FaCogs /></div><div className="title"> Admin Dashboard</div></>) },
+        Icon: <AdminPanelSettingsIcon />,
+        Title: () => { return (<><div className="icon inner"><AdminPanelSettingsIcon /></div><div className="title inner"> Admin Dashboard</div></>) },
         class: ""
     },
     {
@@ -197,6 +212,7 @@ const routes = [
         isPrivate: false,
         show: false,
         showWhenNotLogged: false,
+        Icon: <></>,
         Title: () => { return (<div></div>) },
         class: ""
     }

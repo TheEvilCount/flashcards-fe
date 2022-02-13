@@ -41,10 +41,17 @@ export default function App(props)
   );
 
 
+
+  const [sideBarCollapsed, setSideBarCollapsed] = useState(false);
+  const handleToggleSideBar = (what) =>
+  {
+    setSideBarCollapsed(what);
+  }
+
   return (
     <Router history={history}>
 
-      <SideBar auth={authReducer} />
+      <SideBar auth={authReducer} collapsed={sideBarCollapsed} handleToggleSideBar={handleToggleSideBar} />
 
       <div id="content" className='content'>
         <Switch>

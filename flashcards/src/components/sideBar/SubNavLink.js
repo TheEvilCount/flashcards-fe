@@ -6,14 +6,12 @@ import { NavLink } from "react-router-dom";
 const SubNavLink = ({ to, title, Icon }) =>
 {
     return (
-        <li>
-            <NavLink className="submenu-item" exact activeClassName="active" to={to}>
-                {Icon && <div className="icon"><Icon /></div>}
-                <div className="title">
-                    {title}
-                </div>
-            </NavLink>
-        </li>
+        <NavLink className="submenu-item" exact activeClassName="active" to={to}>
+            {Icon && <div className="icon inner"><Icon /></div>}
+            <div className="title inner">
+                {title}
+            </div>
+        </NavLink>
     )
 };
 export default React.memo(SubNavLink);
