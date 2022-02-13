@@ -5,6 +5,8 @@ const Card = ({ card }) =>
     const [isVisible, setisVisible] = useState(0);
     const isLeftSpin = 1;//TODO add toggle to profile and save it somewhere; ?store/localstorage?
 
+    const { id, frontText, backText } = card;
+
     function answer(params)
     {
         if (isVisible === 0)
@@ -18,11 +20,11 @@ const Card = ({ card }) =>
     return (
         <div className={isVisible ? (classes + " show" + (isLeftSpin ? "-left" : "-right")) : (classes)} onClick={() => answer(this)}>
             <div className="front">
-                <p>{card.question}</p>
+                <p>{frontText}</p>
             </div>
 
             <div className={"back back" + (isLeftSpin ? "-left" : "-right")}>
-                <p>{card.answer}</p>
+                <p>{backText}</p>
             </div>
         </div>
     )

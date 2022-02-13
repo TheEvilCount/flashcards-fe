@@ -1,8 +1,21 @@
+import axios from "axios";
+import { apiRequestTimeout } from "../../config/config";
+import { API_SERVER_URL } from "../../config/paths";
 
 //get card
 const getCardsFromCollection = (collectionID) =>
 {
-    return axios.get(API_SERVER_URL + `/collections/${collectionID}/cards`,
+    return {
+        url: API_SERVER_URL + `/collections/${collectionID}/cards`,
+        method: "GET",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+    /* return axios.get(API_SERVER_URL + `/collections/${collectionID}/cards`,
         {
             withCredentials: true,
             timeout: apiRequestTimeout,
@@ -11,7 +24,7 @@ const getCardsFromCollection = (collectionID) =>
                 "Accept": "application/json"
             },
         }
-    )
+    ) */
 };
 
 //post card

@@ -1,6 +1,12 @@
+import { Button, CircularProgress } from '@material-ui/core';
 import axios from 'axios';
+import useAxios from 'axios-hooks';
+import { goBack } from 'connected-react-router';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
+import cardsAPI from '../../api/cards/cardsAPI';
+import collectionsAPI from '../../api/cards/collectionsAPI';
 import CardList from '../cards/CardList';
 
 export const CollectionDetail = () =>
@@ -17,6 +23,9 @@ export const CollectionDetail = () =>
         { id: 9, question: "Question9", answer: "Answeer3", category: "english" },
         { id: 10, question: "Question10", answer: "Answeer4", category: "english" }
     ];
+
+    const { id } = useParams();
+    const dispatch = useDispatch();
 
     const [cardList, setcardList] = useState();
 
@@ -37,13 +46,23 @@ export const CollectionDetail = () =>
             .catch(e => { setcardList(mockCardList) })
     }
 
-    useEffect(() =>
+    /* useEffect(() =>
     {
         getCards();
-    }, []);
+    }, []); */
+
+    const [{ data, isLoading, error }, request] = useAxios(
+        cardsAPI.getCardsFromCollection(id)
+    )
 
 
     return (
-        <CardList cardList={cardList}></CardList>
+        isLoading ?
+            <CircularProgress />
+            :
+            <>
+                <Button variant='contained' onClick={() => { dispatch(goBack()) }}>Go back</Button>
+                <CardList cardList={data}></CardList>
+            </>
     )
 };

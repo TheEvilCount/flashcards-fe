@@ -1,12 +1,14 @@
 import React from "react";
+import { FaCalendar } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
 
 
-const SubNavLink = ({ to, title }) =>
+const SubNavLink = ({ to, title, Icon }) =>
 {
     return (
         <li>
-            <NavLink className="submenu-item" activeClassName="active" to={to}>
+            <NavLink className="submenu-item" exact activeClassName="active" to={to}>
+                {Icon && <div className="icon"><Icon /></div>}
                 <div className="title">
                     {title}
                 </div>

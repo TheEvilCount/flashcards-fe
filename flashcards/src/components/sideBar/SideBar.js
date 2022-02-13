@@ -1,37 +1,30 @@
 import React, { useState } from 'react'
-import { NavLink } from "react-router-dom";
-
 import routes from "../../config/routes.js";
 import { pathConsts } from "../../config/paths";
 import { logoutAction } from "../../actions";
-import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import SubNavLink from './SubNavLink.js';
 import SideBarLink from './SideBarLink.js';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
+import MenuIcon from '@mui/icons-material/Menu';
+import { Collapse } from '@material-ui/core';
+import { useDispatch } from 'react-redux';
+import { NavLink } from 'react-router-dom';
 
-function SideBar(props)
+
+function SideBar({ auth, children })
 {
-    const authReducer = props.auth;
-    const dispatch = props.dispatch;
-    const [isOpen, setIsOpen] = useState(true);
+    const authReducer = auth;
+    const dispatch = useDispatch();
 
-    const handleToggle = function (toWhat)
-    {
-        setIsOpen(toWhat);
-    };
+
+    const [isSideBarMinimized, setIsSideBarMinimized] = useState(false);
 
     return (
         <div className="sidebar">
-            {/*TODO show/hide side panel (content padding remove not working)*/
-                !isOpen &&
-                <div id="show-sidebar" className="btn btn-sm btn-dark" onClick={() => handleToggle(true)}>
-                    <i className="fas fa-bars"></i>Open Sidebar
-                </div>
-            }
-            {
-                isOpen &&
+
+            <Collapse orientation="horizontal" in={isSideBarMinimized} collapsedSize={40} style={{ height: "100%", position: "fixed", zIndex: "100", backgroundColor: "#333", width: "200px" }}>
                 <nav id="sidebar" className="header">
-                    <div id="close-sidebar" onClick={() => handleToggle(false)}>
-                        <i className="fas fa-times"></i>Close Sidebar
+                    <div id="close-sidebar" onClick={() => setIsSideBarMinimized(!isSideBarMinimized)}>
+                        <MenuIcon htmlColor='white' />
                     </div>
                     <ul>
                         {
@@ -52,16 +45,24 @@ function SideBar(props)
                                                     <SideBarLink key={route.key} route={route} auth={authReducer} />
                                                 )
                                             )
-
                                     )
                                 )
                             ))
                         }
-                        {authReducer.isLogged && <li className="logout"><div className="li-item" onClick={() => (dispatch(logoutAction()))}><div className="icon" ><PowerSettingsNewIcon /></div><div className="title">Logout</div></div></li>}
+                        {authReducer.isLogged &&
+                            <li className={"logout"} key={("nav-li_logout")} onClick={() => (dispatch(logoutAction()))}>
+                                <NavLink exact activeClassName="active" to={"/login"}>
+                                    <div className="icon" ><PowerSettingsNewIcon /></div>
+                                    <div className="title">Logout</div>
+                                </NavLink>
+                            </li>
+                        }
                     </ul>
                 </nav>
-            }
-        </div>
+            </Collapse>
+        </div >
+
+
     )
 }
 export default React.memo(SideBar)

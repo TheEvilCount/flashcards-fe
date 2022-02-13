@@ -15,14 +15,11 @@ import FlashOnIcon from '@mui/icons-material/FlashOn';
 import InfoIcon from '@mui/icons-material/Info';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonIcon from '@mui/icons-material/Person';
-/* import { Dashboard as DashboardIcon, Person as PersonIcon, 
-    FlashOn as FlashOnIcon, ExitToApp as ExitToAppIcon, 
-    PersonAdd as PersonAddIcon, Info as InfoIcon, } from '@material-ui/icons'; */
 import About from "../components/about/About";
 import { CollectionDetail } from "../components/collection/CollectionDetail";
-import Collections from "../components/collection/Collections";
 import { FaCogs } from "react-icons/fa";
 import VerifyPage from "../components/VerifyPage";
+import CollectionsPage from "../components/collection/CollectionsPage";
 
 const routes = [
     {
@@ -125,7 +122,47 @@ const routes = [
     {
         key: "collections",
         path: pathConsts.collections,
-        comp: Collections,
+        comp: CollectionsPage,
+        isPrivate: true,
+        showWhenNotLogged: false,
+        show: false,
+        Title: () => { return (<></>) },
+        class: ""
+    },
+    {
+        key: "collectionsMy",
+        path: pathConsts.collectionsMy,
+        comp: CollectionsPage,
+        isPrivate: true,
+        showWhenNotLogged: false,
+        show: false,
+        Title: () => { return (<></>) },
+        class: ""
+    },
+    {
+        key: "collectionsExplore",
+        path: pathConsts.collectionsExplore,
+        comp: CollectionsPage,
+        isPrivate: true,
+        showWhenNotLogged: false,
+        show: false,
+        Title: () => { return (<></>) },
+        class: ""
+    },
+    {
+        key: "collectionsTop",
+        path: pathConsts.collectionsTop,
+        comp: CollectionsPage,
+        isPrivate: true,
+        showWhenNotLogged: false,
+        show: false,
+        Title: () => { return (<></>) },
+        class: ""
+    },
+    {
+        key: "collectionsFav",
+        path: pathConsts.collectionsFav,
+        comp: CollectionsPage,
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,

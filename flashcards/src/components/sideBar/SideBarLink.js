@@ -3,6 +3,11 @@ import { NavLink } from "react-router-dom";
 import { pathConsts } from "../../config/paths";
 import SubNavLink from "./SubNavLink";
 
+import ExploreIcon from '@mui/icons-material/Explore';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FilterListIcon from '@mui/icons-material/FilterList';
+import InventoryIcon from '@mui/icons-material/Inventory';
+
 const SideBarLink = ({ route, auth }) =>
 {
     const isAdmin = auth?.user?.admin;
@@ -17,10 +22,10 @@ const SideBarLink = ({ route, auth }) =>
                 route.path === pathConsts.dashboard && auth.isLogged &&
                 (
                     <div className="submenu">
-                        <SubNavLink key={"my"} to={"/collections?q=my"} title={"My collections"} />
-                        <SubNavLink key={"explore"} to={"/collections?q=explore"} title={"Explore collections"} />
-                        <SubNavLink key={"top"} to={"/collections?q=top"} title={"Top collections"} />
-                        <SubNavLink key={"sub"} to={"/collections?q=sub"} title={"Favourite collections"} />
+                        <SubNavLink key={"my"} to={pathConsts.collectionsMy} Icon={InventoryIcon} title={"My collections"} />
+                        <SubNavLink key={"explore"} to={pathConsts.collectionsExplore} Icon={ExploreIcon} title={"Explore collections"} />
+                        <SubNavLink key={"top"} to={pathConsts.collectionsTop} Icon={FilterListIcon} title={"Top collections"} />
+                        <SubNavLink key={"fav"} to={pathConsts.collectionsFav} Icon={FavoriteIcon} title={"Favourite collections"} />
                     </div>
                 )
             }

@@ -18,14 +18,6 @@ import { pathConsts } from '../../config/paths';
 export default function Login(props)
 {
     const dispatch = useDispatch();
-    const authReducer = useSelector(state => state.auth);
-
-    const [toggle, setToggle] = useState(false);
-
-    const handleToggle = () =>
-    {
-        toggle ? setToggle(false) : setToggle(true);
-    };
 
     const formValidation = Yup.object(
         {
@@ -98,7 +90,6 @@ export default function Login(props)
                                 color="primary"
                                 type="submit"
                                 onClick={() => { }}
-                                block
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? <span>Please wait <FaSpinner /></span> : "Login"}

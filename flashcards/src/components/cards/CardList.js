@@ -12,7 +12,7 @@ const CardList = ({ cardList }) =>
     function shuffleCards()
     {
         if (cardList)
-            this.shuffleArray(cardList);
+            shuffleArray(cardList);
     }
 
     function shuffleArray(array)

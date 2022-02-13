@@ -20,7 +20,15 @@ export const pathConsts =
     dashboard: "/dashboard",
     adminDashboard: "/admin",
 
-    collections: "/collections",
-    collectionDetail: "/collections/:id/cards",
-    cardDetail: "/collections/:id/cards/:cardId",
+    /* collections: "/collections", */
+    collections: "/collections/:type",
+
+    collectionsMy: "/collections/my",
+    collectionsExplore: "/collections/explore",
+    collectionsTop: "/collections/top",
+    collectionsFav: "/collections/favourite",
+
+
+    collectionDetail: "/collections/:type/:id/cards",
+    cardDetail: "/collections/:type/:id/cards/:cardId",
 };

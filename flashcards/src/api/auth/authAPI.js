@@ -53,7 +53,7 @@ const logout = () =>
             withCredentials: true,
             timeout: apiRequestTimeout
         }
-    )//TODO clear storage
+    )
 };
 
 const verify = (token) =>

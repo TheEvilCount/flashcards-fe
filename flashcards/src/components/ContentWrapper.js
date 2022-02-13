@@ -1,8 +1,8 @@
-const ContentWrapper = (props) =>
+const ContentWrapper = ({ children, ...p }) =>
 {
     return (
-        <div className="content">
-            {props.children}
+        <div className="content" {...p}>
+            {children}
         </div>
     );
 }
