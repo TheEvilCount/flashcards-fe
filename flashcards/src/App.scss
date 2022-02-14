@@ -7,7 +7,7 @@ $highlight-color: #dee2ec;
 $icon-bg-color: rgba(255, 255, 255, 0.05);
 $icon-size: 35px;
 
-$sidebar-width: 250px;
+$sidebar-width: 200px;
 $sidebar-collapsed-width: 80px;
 
 #sidebar.pro-sidebar{
@@ -73,17 +73,11 @@ $sidebar-width: 200px;
 } */
 
 #content {
-  /*position: fixed;*/
   display: flex;
-  /*flex-grow: 1;*/
-
-  //padding-left: $sidebar-width;
 }
 
 .content
 {
-  //padding-right: 15px;
-  //padding-left: 15px;
   place-items: center;
   max-width: 90%;
   width: 100%;
@@ -93,63 +87,31 @@ $sidebar-width: 200px;
   margin-right: auto;
 }
 
-.content-sidebar-on {
-  padding-left: $sidebar-width;
-}
 
+
+.space-above {margin-top: 50px;}
+.space-under {margin-bottom: 50px;}
+.small {color: #333;}
 
 #sidebar {
-  .space-above {
-    margin-top: 50px;
-    /* border-top: solid 2px #585f6d; */
-  }
-
-  .space-under {
-    margin-bottom: 50px;
-    /* border-top: solid 2px #585f6d; */
-  }
-  
-
-    /* background: #edf2f4;
-    border-bottom: 1px solid #999;
-    margin: 0;
-    padding: 0;
-    width: $sidebar-width;
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    background-color: #333;
-    position: fixed;
-    z-index: 100; */
-
     ul {
-      /* list-style: none;
-      margin: 0;
-      padding: 0;
-      height: max-content;
-      width: 100%; */
-
       li {
         display: block;
-        /* float: left; */
         width: 100%;
         min-height: 48px;
+        padding-block: 2px;
 
-        .li-item {
+        .li-item, a {
           display: flex;
           color: white;
           text-decoration: none;
           margin: 0;
-          //padding: 20px 10px 0px 10px;
           background-color: inherit;
           border: none;
           user-select: none;
           cursor: pointer;
           height: 100%;
           min-height: 48px;
-        }
-        a{
-          @extend .li-item;
         }
 
         div.inner {
@@ -159,62 +121,48 @@ $sidebar-width: 200px;
         }
       }
 
-      .submenu {
-        margin-left: 33px;
-        border-left: 2px solid #04aa6d;
-
-        .submenu-item {
-          @extend .li-item;
-
-          .title {
-            flex: 80%;
-          }
-          .icon {
-            flex: 20%;
-          }
-        }
-      }
-
-      .icon {
-        flex: 20%;
-      }
-
-      .title {
-        flex: 80%;
-      }
-
-      .small {
-        color: #333;
-      }
-
-      .space-above {
-        margin-top: 50px;
-        /* border-top: solid 2px #585f6d; */
-      }
-
-      .space-under {
-        margin-bottom: 50px;
-        /* border-top: solid 2px #585f6d; */
-      }
-
       .sidebar-profile {
         border: 2px solid #666;
-        width: 90% !important;
+        //width: 90% !important;
         margin-inline: auto;
-        border-radius: 10px;
+        border-radius: 0.5em;
+        display: block;
+        
+        max-width: 150px;
         a {
-          padding-bottom: 10px;
+          padding-bottom: 7px;
           border-radius: 10px;
+
+          div.title{
+            display: block;
+
+            div{
+              display: flex;
+              flex-direction: column;
+
+              span{
+                display: block;
+
+                overflow-inline: hidden;
+                text-overflow: ellipsis;
+                max-width: 100px;
+              }
+              small{
+                
+              }
+            }
+          }
         }
       }
 
-      .li-item:hover:not(.active), .submenu-item:hover:not(.active) {
+      li a:hover:not(.active), .submenu-item:hover:not(.active) {
         color: #04aa6d;
         background-color: #393f4b;
         border-radius: 0.5em;
         border-left: none !important;
         transition: all 0.5s;
       }
+
       @keyframes swing {
         0% {
           transform: rotate(0deg);
@@ -244,8 +192,8 @@ $sidebar-width: 200px;
           transform: rotate(0deg);
         }
       }
-  
-      .li-item:hover > .icon svg, .li-item:hover svg {
+      li:hover:not(.pro-sub-menu) a div.inner.icon svg
+      {
         display: inline-block;
         animation: swing ease-in-out 0.5s 1 alternate;
       }
@@ -265,6 +213,14 @@ $sidebar-width: 200px;
     .submenu-item{
       border-left: 2px solid #04aa6d !important;
       margin: 0;
+      //padding-block: 0px;
+    }
+
+    .pro-sidebar-footer{
+      padding: 0;
+      nav{
+        padding: 0;
+      }
     }
 }
 
@@ -284,6 +240,22 @@ $sidebar-width: 200px;
 
 #sidebar{
 
+  .submenu {
+    margin-left: 33px;
+    border-left: 2px solid #04aa6d;
+
+    .submenu-item {
+      @extend .li-item;
+
+      .title {
+        flex: 80%;
+      }
+      .icon {
+        flex: 20%;
+      }
+    }
+  }
+
   .icon {
     flex: 20%;
   }
@@ -296,54 +268,11 @@ $sidebar-width: 200px;
     color: #333;
   }
 
-  .sidebar-profile {
-    border: 2px solid #666;
-    width: 90% !important;
-    margin-inline: auto;
-    border-radius: 10px;
-    a {
-      padding-bottom: 10px;
-      border-radius: 10px;
-    }
-  }
-
-  .li-item:hover:not(.active), .submenu-item:hover:not(.active) {
+  //li:hover:not(.pro-sub-menu)
+  .li-item:hover:not(.active), .submenu-item:hover:not(.active),
+  li:hover:not(.pro-sub-menu) a:not(.active){
     color: #04aa6d;
     background-color: #393f4b;
-  }
-  @keyframes swing {
-    0% {
-      transform: rotate(0deg);
-    }
-    10% {
-      transform: rotate(10deg);
-    }
-    30% {
-      transform: rotate(0deg);
-    }
-    40% {
-      transform: rotate(-10deg);
-    }
-    50% {
-      transform: rotate(0deg);
-    }
-    60% {
-      transform: rotate(5deg);
-    }
-    70% {
-      transform: rotate(0deg);
-    }
-    80% {
-      transform: rotate(-5deg);
-    }
-    100% {
-      transform: rotate(0deg);
-    }
-  }
-
-  .li-item:hover > .icon svg {
-    display: inline-block;
-    animation: swing ease-in-out 0.5s 1 alternate;
   }
 
   small {
@@ -351,7 +280,7 @@ $sidebar-width: 200px;
     color: #666;
   }
 
-  .active, .submenu .active {
+  .active, .active {
     color: white;
     background-color: #04aa6d !important;
   }
@@ -362,7 +291,7 @@ $sidebar-width: 200px;
 
     .btn-toggle{
       right: 0;
-      padding: 15px;
+      padding: 10px 15px;
       cursor: pointer;
   
       &:hover{
@@ -374,6 +303,10 @@ $sidebar-width: 200px;
 
   .header-brand{
     padding-block: 0;
+    text-transform: uppercase;
+    .pro-inner-item{
+      padding: 0;
+    }
   }
 
 }

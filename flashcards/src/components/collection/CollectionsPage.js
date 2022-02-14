@@ -13,6 +13,7 @@ import { Button } from '@material-ui/core';
 import { goBack } from 'connected-react-router';
 import { useDispatch } from 'react-redux';
 import { TextField } from '@mui/material';
+import apiReqConfig from '../../config/apiReqConfig';
 
 const CollectionsPage = (props) =>
 {
@@ -21,10 +22,10 @@ const CollectionsPage = (props) =>
 
     const getCollectionsRequest = (type) =>
     {
-        if (type === "my") return collectionsAPI.getCollections.private(1, 30);
-        if (type === "explore") return collectionsAPI.discoverCollections(search, 1, 30);
-        if (type === "top") return collectionsAPI.getCollections.public(1, 30);
-        if (type === "favourite") return collectionsAPI.getCollections.favourite(1, 30);
+        if (type === "my") return apiReqConfig.collections.getCollections.private(1, 30);
+        if (type === "explore") return apiReqConfig.collections.discoverCollections(search, 1, 30);
+        if (type === "top") return apiReqConfig.collections.getCollections.public(1, 30);
+        if (type === "favourite") return apiReqConfig.collections.getCollections.favourite(1, 30);
 
         return null;
     }

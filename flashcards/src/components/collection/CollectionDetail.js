@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation, useParams } from 'react-router-dom';
 import cardsAPI from '../../api/cards/cardsAPI';
 import collectionsAPI from '../../api/cards/collectionsAPI';
+import apiReqConfig from '../../config/apiReqConfig';
 import CardList from '../cards/CardList';
 
 export const CollectionDetail = () =>
@@ -52,7 +53,7 @@ export const CollectionDetail = () =>
     }, []); */
 
     const [{ data, isLoading, error }, request] = useAxios(
-        cardsAPI.getCardsFromCollection(id)
+        apiReqConfig.cards.getCardsFromCollection(id)
     )
 
 

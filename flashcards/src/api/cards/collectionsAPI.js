@@ -1,48 +1,31 @@
 import axios from "axios";
-import { apiRequestTimeout } from "../../config/config";
-import { API_SERVER_URL } from "../../config/paths";
-import { getPaginationParams } from "../helpers";
+import apiReqConfig from "../../config/apiReqConfig";
 
-
-const getCollections = (type, page, pageSize) =>
+/**
+ * Returns request which creates new collection based on params
+ * @param {number} type 0-private, 1-public, 2-favourite
+ * @param {number} page page number
+ * @param {number} pageSize items on page
+ * @returns axios request
+ */
+const getCollectionsReq = (type, page, pageSize) =>
 {
-    return {
-        url: API_SERVER_URL + `/collections?type=${type}`,
-        params: getPaginationParams(page, pageSize),
-        method: "GET",
-        withCredentials: true,
-        timeout: apiRequestTimeout,
-        headers:
-        {
-            "Accept": "application/json"
-        }
-    }
-    /* return axios.get(API_SERVER_URL + `/collections?type=${type}`,
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json"
-            },
-            params: getPaginationParams(page, pageSize)
-        }
-    ) */
+    return axios.request(apiReqConfig.collections.getCollections.generic(type, page, pageSize));
 };
 
-const getCollectionsPrivate = (page, pageSize) =>
+const getCollectionsPrivateReq = (page, pageSize) =>
 {
-    return getCollections(0, page, pageSize)
+    return getCollectionsReq(0, page, pageSize)
 };
 
-const getCollectionsPublic = (page, pageSize) =>
+const getCollectionsPublicReq = (page, pageSize) =>
 {
-    return getCollections(1, page, pageSize)
+    return getCollectionsReq(1, page, pageSize)
 };
 
-const getCollectionsFavourite = (page, pageSize) =>
+const getCollectionsFavouriteReq = (page, pageSize) =>
 {
-    return getCollections(2, page, pageSize)
+    return getCollectionsReq(2, page, pageSize)
 };
 
 /**
@@ -51,85 +34,33 @@ const getCollectionsFavourite = (page, pageSize) =>
  * @param {string} color 
  * @param {string} visibility (PRIVATE | PUBLIC)
  * @param {number} categoryID 
- * @returns axios.post
+ * @returns axios request
  */
-const postCollection = (title, color, visibility = "PRIVATE", categoryID) =>
+const postCollectionReq = (title, color, visibility = "PRIVATE", categoryID) =>
 {
-    /* return {
-        url: API_SERVER_URL + "/collections",
-        method: "POST",
-        data: {
-            title: title,
-            color: color,
-            visibility: visibility,
-            category: { id: categoryID }
-        },
-        withCredentials: true,
-        timeout: apiRequestTimeout,
-        headers:
-        {
-            "Accept": "application/json"
-        }
-    } */
-    return axios.post(API_SERVER_URL + "/collections",
-        {
-            title: title,
-            color: color,
-            visibility: visibility,
-            category: { id: categoryID }
-        },
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json"
-            }
-        }
-    )
+    return axios.request(apiReqConfig.collections.postCollection(title, color, visibility, categoryID));
 };
 
 /**
- * 
+ * Returns request which retrieves collections based on search param
  * @param {string} title search string
  * @param {number} page 
  * @param {number} pageSize 
- * @returns 
+ * @returns axios request
  */
-const discoverCollections = (title, page = 1, pageSize = 60) =>
+const discoverCollectionsReq = (title, page = 1, pageSize = 60) =>
 {
-    return {
-        url: API_SERVER_URL + `/collections/discover?title=${title}`,
-        params: getPaginationParams(page, pageSize),
-        method: "GET",
-        withCredentials: true,
-        timeout: apiRequestTimeout,
-        headers:
-        {
-            "Accept": "application/json"
-        }
-    }
-    /* return axios.get(API_SERVER_URL + `/collections/discover?title=${title}`,
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json"
-            },
-            params: getPaginationParams(page, pageSize)
-        }
-    ) */
+    return axios.request(apiReqConfig.collections.discoverCollections(title, page, pageSize))
 };
 
 const collectionsAPI = {
     getCollections: {
-        private: getCollectionsPrivate,
-        public: getCollectionsPublic,
-        favourite: getCollectionsFavourite
+        private: getCollectionsPrivateReq,
+        public: getCollectionsPublicReq,
+        favourite: getCollectionsFavouriteReq
     },
-    postCollection,
-    discoverCollections
+    postCollection: postCollectionReq,
+    discoverCollections: discoverCollectionsReq
 };
 
 export default collectionsAPI;

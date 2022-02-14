@@ -1,7 +1,9 @@
 import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@material-ui/core';
 import { Alert } from '@mui/material';
+import useAxios from 'axios-hooks';
 import React from 'react';
 import { useLocation } from 'react-router-dom';
+import apiReqConfig from '../config/apiReqConfig';
 
 export const regMsg = { key: "msg", val: "RegSucc" }
 
@@ -10,6 +12,9 @@ const VerifyPage = (props) =>
     const search = useLocation().search;
     let msg = new URLSearchParams(search).get(regMsg.key);
     //?msg=RegisterSuccess
+    const token = "";//TODO
+    const [{ data: verifyData, isLoading: verifyIsLoading, error: verifyError }, postVerify] = useAxios(
+        apiReqConfig.auth.verify(token), { manual: true });
 
 
     return (

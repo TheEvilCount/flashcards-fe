@@ -10,7 +10,7 @@ import InventoryIcon from '@mui/icons-material/Inventory';
 import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 
 import { MenuItem } from "@material-ui/core";
-import { Menu, SubMenu } from "react-pro-sidebar";
+import { Menu } from "react-pro-sidebar";
 import MySubMenu from "./MySubMenu";
 
 const SideBarLink = ({ route, auth, collapsed }) =>
@@ -18,43 +18,24 @@ const SideBarLink = ({ route, auth, collapsed }) =>
     const isAdmin = auth?.user?.admin;
     if (route.isAdmin && !isAdmin) return;
 
-    /* return (
-        <>
-            <li className={route.class} key={("nav-li_" + route.key)}>
-                <NavLink exact activeClassName="active" to={route.path}><route.Title /></NavLink>
-            </li>
-            {
-                route.path === pathConsts.dashboard && auth.isLogged &&
-                (
-                    <div className="submenu">
-                        <SubNavLink key={"my"} to={pathConsts.collectionsMy} Icon={InventoryIcon} title={"My collections"} />
-                        <SubNavLink key={"explore"} to={pathConsts.collectionsExplore} Icon={ExploreIcon} title={"Explore collections"} />
-                        <SubNavLink key={"top"} to={pathConsts.collectionsTop} Icon={FilterListIcon} title={"Top collections"} />
-                        <SubNavLink key={"fav"} to={pathConsts.collectionsFav} Icon={FavoriteIcon} title={"Favourite collections"} />
-                    </div>
-                )
-            }
-        </>
-    ) */
-
     const subMenuItems = [
         {
-            title: "My collections",
+            title: "My",
             icon: InventoryIcon,
             to: pathConsts.collectionsMy,
             key: "my",
         }, {
-            title: "explore",
+            title: "Explore",
             icon: ExploreIcon,
             to: pathConsts.collectionsExplore,
             key: "explore",
         }, {
-            title: "Top collections",
+            title: "Top",
             icon: FilterListIcon,
             to: pathConsts.collectionsTop,
             key: "top",
         }, {
-            title: "Favourite collections",
+            title: "Favourite",
             icon: FavoriteIcon,
             to: pathConsts.collectionsFav,
             key: "fav",

@@ -1,145 +1,99 @@
 import axios from "axios";
-import { apiRequestTimeout } from "../../config/config";
-import { API_SERVER_URL } from "../../config/paths";
+import apiReqConfig from "../../config/apiReqConfig";
 
-
-const register = (username, email, password) =>
+/**
+ * Returns request for registration of new user account
+ * @param {string} username 
+ * @param {string} email 
+ * @param {string} password 
+ * @returns axios request
+ */
+const registerReq = (username, email, password) =>
 {
-    var data = new FormData();
-    data.append("email", email);
-    data.append("password", password);
-    data.append("username", username);
-    return axios.post(API_SERVER_URL + "/users/register",
-        {
-            email: email,
-            username: username,
-            password: password
-        },
-        {
-            headers:
-            {
-                "Accept": "application/json",
-                "Content-Type": "application/json"
-            },
-            timeout: apiRequestTimeout
-        }
-    )
+    return axios.request(apiReqConfig.auth.register(username, email, password));
 };
 
-const login = (email, password) =>
+/**
+ * Returns request for login user
+ * @param {string} email 
+ * @param {string} password 
+ * @returns axios request
+ */
+const loginReq = (email, password) =>
 {
-    var data = new FormData();
-    data.append("email", email);
-    data.append("password", password);
-    // data.append("remember", loginPayload.remember);
-    return axios.post(API_SERVER_URL + "/login",
-        data,
-        {
-            headers:
-            {
-                "Accept": "application/json",
-                'Content-Type': 'multipart/form-data'
-            },
-            timeout: apiRequestTimeout
-        }
-    )
+    return axios.request(apiReqConfig.auth.login(email.charAt, password));
 };
 
-const logout = () =>
+/**
+ * Returns request of user logout
+ * @returns axios request
+ */
+const logoutReq = () =>
 {
-    return axios.post(API_SERVER_URL + "/logout",
-        {},
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout
-        }
-    )
+    return axios.request(apiReqConfig.auth.logout());
 };
 
-const verify = (token) =>
+/**
+ * Returns request for verification user account
+ * @param {string} token verification token
+ * @returns axios request
+ */
+const verifyReq = (token) =>
 {
-    return axios.post(API_SERVER_URL + `/users/verify?token=${token}`,
-        {},
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json",
-            },
-        }
-    )
+    return axios.request(apiReqConfig.auth.verify(token));
 };
 
-const resend = (email) =>
+/**
+ * Returns request for resending verification email for provided registered email address
+ * @param {string} email 
+ * @returns axios request
+ */
+const resendReq = (email) =>
 {
-    return axios.post(API_SERVER_URL + `/users/resend?email=${email}`,
-        {},
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json",
-            },
-        }
-    )
+    return axios.request(apiReqConfig.auth.resend(email));
 };
 
-const lostPass = (email) =>
+/**
+ * Returns request for resetting lost password (sends reset link via email) of account with provided email address
+ * @param {string} email 
+ * @returns axios request
+ */
+const lostPassReq = (email) =>
 {
-    return axios.post(API_SERVER_URL + `/users/lostpass?email=${email}`,
-        {},
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json",
-            },
-        }
-    )
+    return axios.request(apiReqConfig.auth.lostPass(email));
 };
 
-const resetPass = (token, newPassword) =>
+/**
+ * Return request for setting new password with provided security token after old password is lost.
+ * @param {string} token reset token
+ * @param {string} newPassword new password
+ * @returns axios request
+ */
+const resetPassReq = (token, newPassword) =>
 {
-    return axios.post(API_SERVER_URL + `/users/resetpass?token=${token}&newPassword=${newPassword}`,
-        {},
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json",
-            },
-        }
-    )
+    return axios.request(apiReqConfig.auth.resetPass(token, newPassword));
 };
 
-const changePass = (oldPassword, newPassword) =>
+/**
+ * Returns request for changing password
+ * @param {string} oldPassword 
+ * @param {string} newPassword 
+ * @returns axios request
+ */
+const changePassReq = (oldPassword, newPassword) =>
 {
-    return axios.post(API_SERVER_URL + `/users/changepass?oldPassword=${oldPassword}&newPassword=${newPassword}`,
-        {},
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json",
-            },
-        }
-    )
+    return axios.request(apiReqConfig.auth.changePass(oldPassword, newPassword));
 };
 
 const authAPI = {
-    register,
-    login,
-    logout,
-    verify,
-    resend,
-    lostPass,
-    resetPass,
-    changePass
+    register: registerReq,
+    login: loginReq,
+    logout: logoutReq,
+    verify: verifyReq,
+    resend: resendReq,
+    lostPass: lostPassReq,
+    resetPass: resetPassReq,
+    changePass: changePassReq
 };
 
 export default authAPI;

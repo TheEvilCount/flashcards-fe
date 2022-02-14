@@ -51,9 +51,12 @@ const routes = [
                 <>
                     <div className="icon inner"><PersonIcon /></div>
                     <div className="title inner">
-                        Welcome, {userReducer.user.username}
-                        <br />
-                        <small style={{ display: "contents" }}>{userReducer.user.role === "USER" ? "User account" : "Admin account"}</small>
+                        <div>
+                            <span>Welcome, </span><span>{userReducer.user.username}</span>
+                            <small style={{ display: "contents" }}>
+                                {userReducer.user.role === "USER" ? "User account" : "Admin account"}
+                            </small>
+                        </div>
                     </div>
                 </>
             )
@@ -134,6 +137,7 @@ const routes = [
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,
+
         Icon: <></>,
         Title: () => { return (<></>) },
         class: ""
@@ -202,7 +206,16 @@ const routes = [
         showWhenNotLogged: false,
         show: true,
         Icon: <AdminPanelSettingsIcon />,
-        Title: () => { return (<><div className="icon inner"><AdminPanelSettingsIcon /></div><div className="title inner"> Admin Dashboard</div></>) },
+        Title: () =>
+        {
+            return (
+                <>
+                    <div className="icon inner"><AdminPanelSettingsIcon />
+                    </div>
+                    <div className="title inner"> Admin Page</div>
+                </>
+            )
+        },
         class: ""
     },
     {

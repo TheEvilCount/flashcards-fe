@@ -1,54 +1,31 @@
 import axios from "axios";
-import { apiRequestTimeout } from "../../config/config";
-import { API_SERVER_URL } from "../../config/paths";
+import apiReqConfig from "../../config/apiReqConfig";
 
-//get card
-const getCardsFromCollection = (collectionID) =>
+/**
+ * Returns request for getting all cards within collection
+ * @param {number} collectionID id of collection
+ * @returns axios request
+ */
+const getCardsFromCollectionReq = (collectionID) =>
 {
-    return {
-        url: API_SERVER_URL + `/collections/${collectionID}/cards`,
-        method: "GET",
-        withCredentials: true,
-        timeout: apiRequestTimeout,
-        headers:
-        {
-            "Accept": "application/json"
-        }
-    }
-    /* return axios.get(API_SERVER_URL + `/collections/${collectionID}/cards`,
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json"
-            },
-        }
-    ) */
+    return axios.request(apiReqConfig.cards.getCardsFromCollection(collectionID));
 };
 
-//post card
-const createCardWithinCollection = (collectionID, frontText, backText) =>
+/**
+ * Returns request for creation of card within collection
+ * @param {number} collectionID id of collection
+ * @param {string} frontText text on the frontside of the card
+ * @param {string} backText text on the backside of the card
+ * @returns axios request
+ */
+const createCardWithinCollectionReq = (collectionID, frontText, backText) =>
 {
-    return axios.post(API_SERVER_URL + `/collections/${collectionID}/cards`,
-        {
-            frontText: frontText,
-            backText: backText
-        },
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json"
-            }
-        }
-    )
+    return axios.request(apiReqConfig.cards.createCardWithinCollection(collectionID, frontText, backText));
 };
 
 const cardsAPI = {
-    getCardsFromCollection,
-    createCardWithinCollection,
+    getCardsFromCollection: getCardsFromCollectionReq,
+    createCardWithinCollection: createCardWithinCollectionReq,
 };
 
 export default cardsAPI;

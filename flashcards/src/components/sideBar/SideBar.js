@@ -10,9 +10,8 @@ import { Collapse } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
-import { ProSidebar, Menu, MenuItem, SubMenu, SidebarHeader, SidebarFooter, SidebarContent } from 'react-pro-sidebar';
+import { ProSidebar, Menu, MenuItem, SidebarHeader, SidebarFooter, SidebarContent } from 'react-pro-sidebar';
 import { Button } from '@mui/material';
-/* import 'react-pro-sidebar/dist/css/styles.css'; */
 
 
 function SideBar({ auth, collapsed, handleToggleSideBar })
@@ -32,9 +31,7 @@ function SideBar({ auth, collapsed, handleToggleSideBar })
                     </Button>
                 </div>
                 <Menu className='header-brand'>
-                    <MenuItem icon={collapsed ? home.Icon : undefined} style={{ padding: "0" }}>
-                        <SideBarLink key={home.key} route={home} auth={authReducer} />
-                    </MenuItem>
+                    <SideBarLink key={home.key} route={home} auth={authReducer} collapsed={collapsed} />
                 </Menu>
             </SidebarHeader>
             <SidebarContent>
@@ -80,51 +77,6 @@ function SideBar({ auth, collapsed, handleToggleSideBar })
             </SidebarFooter>
         </ProSidebar >
     )
-
-    return (
-        <div className="sidebar">
-            <Collapse orientation="horizontal" in={collapsed} collapsedSize={40} style={{ height: "100%", position: "fixed", zIndex: "100", backgroundColor: "#333", width: "200px" }}>
-                <nav id="sidebar">
-                    <div id="close-sidebar" onClick={() => handleToggleSideBar(!collapsed)}>
-                        <MenuIcon htmlColor='white' />
-                    </div>
-                    <ul>
-                        {
-                            routes.map((route) => (
-                                (
-                                    route.show &&
-                                    (
-                                        (!authReducer.isLogged) ?
-
-                                            (route.showWhenNotLogged &&
-
-                                                <SideBarLink key={route.key} route={route} auth={authReducer} />
-                                            )
-                                            :
-                                            (
-                                                !(route.path === pathConsts.register || route.path === pathConsts.login) &&
-                                                (
-                                                    <SideBarLink key={route.key} route={route} auth={authReducer} />
-                                                )
-                                            )
-                                    )
-                                )
-                            ))
-                        }
-                        {authReducer.isLogged &&
-                            <li className={"logout"} key={("nav-li_logout")} onClick={() => (dispatch(logoutAction()))}>
-                                <NavLink exact activeClassName="active" to={"/login"}>
-                                    <div className="icon" ><PowerSettingsNewIcon /></div>
-                                    <div className="title">Logout</div>
-                                </NavLink>
-                            </li>
-                        }
-                    </ul>
-                </nav>
-            </Collapse>
-        </div >
-    )
-
 }
 export default React.memo(SideBar)
 

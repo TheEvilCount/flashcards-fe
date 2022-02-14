@@ -9,27 +9,15 @@ import { FaSpinner } from "react-icons/fa";
 
 import InputTextField from '../InputTextField';
 import { Field, Form, Formik } from 'formik';
-import * as Yup from "yup";
 import { Button, Card, Checkbox, FormControl, FormControlLabel, Typography, Switch } from '@material-ui/core';
 import { LinearProgress } from '@material-ui/core';
 import { pathConsts } from '../../config/paths';
+import loginFormValidation from '../../validations/loginFormValidation';
 
 
 export default function Login(props)
 {
     const dispatch = useDispatch();
-
-    const formValidation = Yup.object(
-        {
-            email: Yup.string()
-                .required("Required field!")
-                .min(5, "Email must contains 5 or more characters!")
-                .email("Please provide a valid email address!"),
-            password: Yup.string()
-                .required("Required field!")
-                .min(6, "Password must contains 6 or more characters!"),
-        }
-    );
 
     return (
         <Card id={"login-container"} >
@@ -40,7 +28,7 @@ export default function Login(props)
                     password: "",
                     rememberme: true
                 }}
-                validationSchema={formValidation}
+                validationSchema={loginFormValidation}
                 onSubmit={(values, actions) =>
                 {
                     console.log({ password: values.password, email: values.email });

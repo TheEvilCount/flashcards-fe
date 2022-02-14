@@ -1,42 +1,28 @@
 import axios from "axios";
-import { apiRequestTimeout } from "../../config/config";
-import { API_SERVER_URL } from "../../config/paths";
+import apiReqConfig from "../../config/apiReqConfig";
 
-
-const getCategories = () =>
+/**
+ * Returns request for getting all categories
+ * @returns axios request
+ */
+const getCategoriesReq = () =>
 {
-    return axios.get(API_SERVER_URL + "/categories",
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json"
-            }
-        }
-    )
+    return axios.request(apiReqConfig.categories.getCategories());
 };
 
-const postCategories = (title) =>
+/**
+ * Returns request for creation of new category
+ * @param {string} title category title
+ * @returns axios request
+ */
+const postCategoriesReq = (title) =>
 {
-    return axios.post(API_SERVER_URL + "/categories",
-        {
-            title: title
-        },
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json"
-            }
-        }
-    )
+    return axios.request(apiReqConfig.categories.postCategory(title));
 };
 
 const categoriesAPI = {
-    getCategories,
-    postCategories
+    getCategories: getCategoriesReq,
+    postCategories: postCategoriesReq
 };
 
 export default categoriesAPI;

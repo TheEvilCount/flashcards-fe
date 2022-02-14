@@ -1,40 +1,23 @@
 import axios from "axios";
-import { apiRequestTimeout } from "../../config/config";
-import { API_SERVER_URL } from "../../config/paths";
+import apiReqConfig from "../../config/apiReqConfig";
 
-
+/**
+ * Returns request for getting data of currently logged user
+ * @returns axios request
+ */
 const getCurrent = () =>
 {
-    return axios.get(API_SERVER_URL + "/users/current",
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json"
-            }
-        }
-    )
+    return axios.request(apiReqConfig.users.getCurrent());
 };
 
 /**
- * reeturns request which updates user preferences
+ * returns request which updates user preferences
  * @param {object} newPrefs . {"darkmode":false, "flipLeft":true}
- * @returns axios.put
+ * @returns axios request
  */
 const updatePrefs = (newPrefs) =>
 {
-    return axios.put(API_SERVER_URL + "/users/updateprefs",
-        newPrefs,
-        {
-            withCredentials: true,
-            timeout: apiRequestTimeout,
-            headers:
-            {
-                "Accept": "application/json"
-            }
-        }
-    )
+    return axios.request(apiReqConfig.users.updatePrefs(newPrefs));
 };
 
 const usersAPI = {
