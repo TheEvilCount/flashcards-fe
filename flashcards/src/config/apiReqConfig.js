@@ -1,11 +1,11 @@
-import { getPaginationParams } from "../api/helpers";
+import { getPaginationParams } from "../helpers/pagination";
 import { apiRequestTimeout } from "./config";
 import { API_SERVER_URL } from "./paths";
 
 //________Collections________
 
 /**
- * Returns configuration for creation of new collection based on params
+ * Returns configuration for getting collections based on type with pagination
  * @param {number} type 0-private, 1-public, 2-favourite
  * @param {number} page page number
  * @param {number} pageSize items on page
@@ -26,17 +26,34 @@ const getCollections = (type, page, pageSize) =>
     }
 };
 
-
+/**
+ * Returns configuration for getting private collection with pagination
+ * @param {*} page page number
+ * @param {*} pageSize items on page
+ * @returns request configuration
+ */
 const getCollectionsPrivate = (page, pageSize) =>
 {
     return getCollections(0, page, pageSize)
 };
 
+/**
+ * Returns configuration for getting public collection with pagination
+ * @param {*} page page number
+ * @param {*} pageSize items on page
+ * @returns request configuration
+ */
 const getCollectionsPublic = (page, pageSize) =>
 {
     return getCollections(1, page, pageSize)
 };
 
+/**
+ * Returns configuration for getting favourite collection with pagination
+ * @param {*} page page number
+ * @param {*} pageSize items on page
+ * @returns request configuration
+ */
 const getCollectionsFavourite = (page, pageSize) =>
 {
     return getCollections(2, page, pageSize)
@@ -91,6 +108,83 @@ const discoverCollections = (title, page = 1, pageSize = 60) =>
         }
     }
 }
+
+/**
+ * Returns configuration for duplication collection based on params
+ * @param {number} collectionID 
+ * @returns request configuration
+ */
+const duplicateCollection = (collectionID) =>
+{
+    return {
+        url: API_SERVER_URL + `/collections/${collectionID}/duplicate`,
+        method: "POST",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
+
+/**
+ * Returns configuration for privatizing collection based on params
+ * @param {number} collectionID 
+ * @returns request configuration
+ */
+const privatizeCollection = (collectionID) =>
+{
+    return {
+        url: API_SERVER_URL + `/collections/${collectionID}/privatize`,
+        method: "POST",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
+
+/**
+ * Returns configuration for publishing collection based on params
+ * @param {number} collectionID 
+ * @returns request configuration
+ */
+const publishCollection = (collectionID) =>
+{
+    return {
+        url: API_SERVER_URL + `/collections/${collectionID}/publish`,
+        method: "POST",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
+
+/**
+ * Returns configuration for deleting collection based on params
+ * @param {number} collectionID 
+ * @returns request configuration
+ */
+const deleteCollection = (collectionID) =>
+{
+    return {
+        url: API_SERVER_URL + `/collections/${collectionID}`,
+        method: "DELETE",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
+
 
 //_______Categories________
 
@@ -406,7 +500,11 @@ const apiReqConfig = {
             generic: getCollections
         },
         postCollection,
-        discoverCollections
+        discoverCollections,
+        duplicateCollection,
+        privatizeCollection,
+        publishCollection,
+        deleteCollection
     },
     categories: {
         getCategories,

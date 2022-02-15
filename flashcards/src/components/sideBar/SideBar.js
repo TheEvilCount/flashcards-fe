@@ -1,12 +1,11 @@
-import React, { useState } from 'react'
+import React from 'react'
 import routes from "../../config/routes.js";
 import { pathConsts } from "../../config/paths";
-import { logoutAction } from "../../actions";
+import { logoutAction } from "../../state/actions";
 import SideBarLink from './SideBarLink.js';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
-import { Collapse } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 

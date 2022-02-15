@@ -2,44 +2,30 @@
 import './App.scss';
 
 import React, { useState } from 'react';
-import { /* Router, */ Route, Switch, NavLink, Redirect } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router } from 'connected-react-router';
 import { ErrorBoundary } from 'react-error-boundary'
 
+import axios from 'axios';
+import { handleTimeout, useClearTimeout, useLogoutOnUnAuth, useTimeout } from './config/axiosInterceptors';
+
 import routes from "./config/routes.js";
 import { pathConsts } from "./config/paths";
-
-import { useSelector, useDispatch } from "react-redux";
-import { logoutAction } from "./actions";
-import axios from 'axios';
+import { history } from './state/store';
 
 import SideBar from './components/sideBar/SideBar';
 import ContentWrapper from './components/ContentWrapper';
-import { history } from './state/store';
-import { Collapse } from '@material-ui/core';
-
 
 export default function App(props)
 {
   const authReducer = useSelector(state => state.auth);
-  const dispatch = useDispatch();
 
-  //logout when unauthorize status appears//TODO check if working
-  axios.interceptors.response.use(
-    (response) =>
-    {
-      return response;
-    },
-    (error) =>
-    {
-      if (error?.response?.status === 401)
-      {
-        dispatch(logoutAction());//TODO or revoke login
-      }
-      return error;
-    },
-  );
+  // Request interceptors
+  axios.interceptors.request.use(useTimeout)
 
+  // Response interceptors
+  axios.interceptors.response.use(useClearTimeout, handleTimeout, useLogoutOnUnAuth)
 
 
   const [sideBarCollapsed, setSideBarCollapsed] = useState(false);

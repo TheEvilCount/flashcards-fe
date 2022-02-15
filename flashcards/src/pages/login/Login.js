@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { NavLink } from "react-router-dom";
 import "./login.scss";
 
-import { useSelector, useDispatch } from "react-redux";
-import { loginAction, loginFailAction } from "../../actions"
+import { useDispatch } from "react-redux";
+import { loginAction } from "../../state/actions"
 
 import { FaSpinner } from "react-icons/fa";
 
-import InputTextField from '../InputTextField';
+import InputTextField from '../../components/InputTextField';
 import { Field, Form, Formik } from 'formik';
-import { Button, Card, Checkbox, FormControl, FormControlLabel, Typography, Switch } from '@material-ui/core';
+import { Button, Card, FormControlLabel, Typography, Switch } from '@material-ui/core';
 import { LinearProgress } from '@material-ui/core';
 import { pathConsts } from '../../config/paths';
 import loginFormValidation from '../../validations/loginFormValidation';

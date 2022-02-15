@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function PageNotFound() 
+const PageNotFoundPage = () => 
 {
     return (
         <div className="wrapperHome" style={{ width: "100%" }}>
@@ -10,3 +10,4 @@ export default function PageNotFound()
         </div>
     )
 }
+export default PageNotFoundPage; 

@@ -1,5 +1,5 @@
 import axios from "axios";
-import apiReqConfig from "../../config/apiReqConfig";
+import apiReqConfig from "../config/apiReqConfig";
 
 /**
  * Returns request for registration of new user account

@@ -1,12 +1,12 @@
-import Login from "../components/login/Login";
-import Register from "../components/register/Register";
-import Home from "../components/home/Home";
-import PageNotFound from "../components/404/PageNotFound";
-import Dashboard from "../components/dashboard/Dashboard";
-import About from "../components/about/About";
-import CollectionsPage from "../components/collection/CollectionsPage";
-import VerifyPage from "../components/VerifyPage";
-import { CollectionDetail } from "../components/collection/CollectionDetail";
+import Login from "../pages/login/Login";
+import Register from "../pages/register/Register";
+import HomePage from "../pages/HomePage";
+import PageNotFoundPage from "../pages/PageNotFoundPage";
+import Dashboard from "../pages/DashboardPage";
+import AboutPage from "../pages/AboutPage";
+import CollectionsPage from "../pages/CollectionsPage";
+import VerifyPage from "../pages/VerifyPage";
+import CollectionDetailPage from "../pages/CollectionDetailPage";
 import Profile from "../components/profile/Profile";
 
 import { pathConsts } from "./paths";
@@ -24,7 +24,7 @@ const routes = [
     {
         key: "home",
         path: pathConsts.home,
-        comp: Home,
+        comp: HomePage,
         isPrivate: false,
         showWhenNotLogged: true,
         show: false,
@@ -111,7 +111,7 @@ const routes = [
     {
         key: "about",
         path: pathConsts.about,
-        comp: About,
+        comp: AboutPage,
         isPrivate: false,
         showWhenNotLogged: true,
         show: true,
@@ -122,7 +122,7 @@ const routes = [
     {
         key: "collectionDetail",
         path: pathConsts.collectionDetail,
-        comp: CollectionDetail,
+        comp: CollectionDetailPage,
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,
@@ -221,7 +221,7 @@ const routes = [
     {
         key: "pgnf",
         path: "/*",
-        comp: PageNotFound,
+        comp: PageNotFoundPage,
         isPrivate: false,
         show: false,
         showWhenNotLogged: false,

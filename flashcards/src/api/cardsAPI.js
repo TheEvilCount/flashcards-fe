@@ -1,5 +1,5 @@
 import axios from "axios";
-import apiReqConfig from "../../config/apiReqConfig";
+import apiReqConfig from "../config/apiReqConfig";
 
 /**
  * Returns request for getting all cards within collection

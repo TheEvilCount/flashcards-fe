@@ -1,11 +1,9 @@
 import React from 'react';
 import { useDispatch } from "react-redux";
-import { registerAction } from "../../actions";
+import { registerAction } from "../../state/actions";
 import { Form, Formik } from 'formik';
-import * as Yup from "yup";
-
 import { FaSpinner } from "react-icons/fa";
-import InputTextField from '../InputTextField';
+import InputTextField from '../../components/InputTextField';
 import { Button, Card, Typography } from '@material-ui/core';
 import { NavLink } from 'react-router-dom';
 import { pathConsts } from '../../config/paths';

@@ -1,10 +1,13 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { FaHeart } from 'react-icons/fa';
 import { useDispatch } from 'react-redux';
 
 import { push } from 'connected-react-router'
-import { Button, CardActionArea } from '@material-ui/core';
+import { Button, CardActionArea, Snackbar } from '@material-ui/core';
 import { Card, CardContent, Container } from '@mui/material';
+import apiReqConfig from "../../config/apiReqConfig";
+
+import useAxios from 'axios-hooks';
 
 const Collection = ({ collection, type, ...p }) =>
 {
@@ -17,6 +20,13 @@ const Collection = ({ collection, type, ...p }) =>
     }, [dispatch])
 
 
+    /* const [{ data, isLoading, error }, request] = useAxios(apiReqConfig.collections.duplicate(id), { manual: true });
+
+    useEffect(() =>
+    {
+        request();
+    }, []); */
+
     return (
         <Card {...p}
             style={{
@@ -26,6 +36,7 @@ const Collection = ({ collection, type, ...p }) =>
                 borderRadius: "0.5em",
                 padding: "5px 20px"
             }}>
+            {/* {data && <Snackbar>{data}</Snackbar>} */}
             <CardContent >
                 <div>{title}</div>
                 <div>category: {category}</div>
@@ -33,6 +44,7 @@ const Collection = ({ collection, type, ...p }) =>
                 <div>cards in collection: {cardNum}</div>
                 <Button variant='contained' color='primary' size='large' onClick={clickF} >Enter</Button>
             </CardContent>
+            {/* //TODO wrap buttons to CardActions?? */}
             {type === "private" && (
                 <div>
                     <Button onClick={() => { }}>Duplicate</Button>

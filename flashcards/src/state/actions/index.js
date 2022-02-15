@@ -1,8 +1,8 @@
 import { Types } from "./actionTypes";
-import { pathConsts } from "../config/paths";
-import authAPI from "../api/auth/authAPI";
+import { pathConsts } from "../../config/paths";
+import authAPI from "../../api/authAPI";
 import { push } from 'connected-react-router'
-import { regMsg } from "../components/VerifyPage";
+import { regMsg } from "../../pages/VerifyPage";
 
 export const loginAction = (payload, actions) =>
 {
@@ -64,6 +64,7 @@ export const logoutAction = () =>
             {
                 console.log(error);
                 alert(error.message);
+                dispatch({ type: Types.LOG_OUT });
             })
     }
 }

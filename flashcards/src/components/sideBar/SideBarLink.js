@@ -1,5 +1,5 @@
 import React from "react";
-import { NavLink, Route } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { pathConsts } from "../../config/paths";
 import SubNavLink from "./SubNavLink";
 
@@ -49,8 +49,8 @@ const SideBarLink = ({ route, auth, collapsed }) =>
         return subMenuItems.map((item) =>
         {
             return (
-                <MenuItem style={{ paddingBlock: "0", marginBlock: "0" }}>
-                    <SubNavLink key={item.key} to={item.to} Icon={item.icon} title={withTitle ? item.title : ""} />
+                <MenuItem key={item.key} style={{ paddingBlock: "0", marginBlock: "0" }}>
+                    <SubNavLink to={item.to} Icon={item.icon} title={withTitle ? item.title : ""} />
                 </MenuItem>
             )
         })

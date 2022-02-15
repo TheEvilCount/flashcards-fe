@@ -1,9 +1,7 @@
 import React, { useMemo } from 'react';
 import Collection from './Collection';
 
-import CircularProgress from '@mui/material/CircularProgress';
-
-const Collections = ({ collections, isLoading, error, displayType }) =>
+const Collections = ({ collections, displayType }) =>
 {
 
     const memoizedCollections = useMemo(() =>
@@ -14,18 +12,13 @@ const Collections = ({ collections, isLoading, error, displayType }) =>
                 <Collection key={"coll" + index} collection={c} type={displayType} />
             )
         })
-    }, [collections]);
+    }, [collections, displayType]);
 
     return (
         <div>
-            <div>{"loading: " + isLoading}</div>
-            <div>{"error: " + error}</div>
             <div>{"dt: " + displayType}</div>
             <div className="collection-wrapper">
-
-                {isLoading ?
-                    <CircularProgress />
-                    :
+                {
                     memoizedCollections?.map((i) => { return i; }) || <>No collection found</>
                 }
             </div>

@@ -1,4 +1,4 @@
-import { Button, Card, CardActions, CardContent, CardHeader, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
 import { Alert } from '@mui/material';
 import useAxios from 'axios-hooks';
 import React from 'react';
@@ -13,7 +13,7 @@ const VerifyPage = (props) =>
     let msg = new URLSearchParams(search).get(regMsg.key);
     //?msg=RegisterSuccess
     const token = "";//TODO
-    const [{ data: verifyData, isLoading: verifyIsLoading, error: verifyError }, postVerify] = useAxios(
+    const [{ data: dataVerify, loading: isLoadingVerify, error: errorVerify }, postVerify] = useAxios(
         apiReqConfig.auth.verify(token), { manual: true });
 
 
