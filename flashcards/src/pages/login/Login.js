@@ -33,7 +33,7 @@ export default function Login(props)
                 {
                     console.log({ password: values.password, email: values.email });
                     actions.setStatus({ message: null });//reset message
-                    dispatch(loginAction({ password: values.password, email: values.email, remember: values.remember ? "checked" : "" }, actions));
+                    dispatch(loginAction({ password: values.password, email: values.email, remember: values.rememberme }, actions));
                 }}
             >
                 {({

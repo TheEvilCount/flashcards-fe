@@ -108,16 +108,20 @@ const publishCollectionsReq = (collectionID) =>
  */
 const deleteCollectionReq = (collectionID) =>
 {
-    return {
-        url: API_SERVER_URL + `/collections/${collectionID}`,
-        method: "DELETE",
-        withCredentials: true,
-        timeout: apiRequestTimeout,
-        headers:
-        {
-            "Accept": "application/json"
-        }
-    }
+    return axios.request(apiReqConfig.collections.deleteCollection(collectionID));
+};
+
+/**
+ * Returns configuration for updating collection based on params
+ * @param {number} collectionID id of updating collection
+ * @param {string} title new title
+ * @param {string} color new color
+ * @param {string} category new category
+ * @returns request configuration
+ */
+const updateCollectionReq = (collectionID, title, color, category) =>
+{
+    return axios.request(apiReqConfig.collections.updateCollection(collectionID, title, color, category));
 };
 
 const collectionsAPI = {
@@ -132,7 +136,8 @@ const collectionsAPI = {
     duplicateCollection: duplicateCollectionsReq,
     privatizeCollection: privatizeCollectionsReq,
     publishCollection: publishCollectionsReq,
-    deleteCollection: deleteCollectionReq
+    deleteCollection: deleteCollectionReq,
+    updateCollection: updateCollectionReq
 };
 
 export default collectionsAPI;

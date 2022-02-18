@@ -1,4 +1,4 @@
-import { Types } from "../../actions/actionTypes"
+import actionTypes from "../actions/actionTypes";
 
 
 const initialState =
@@ -13,13 +13,13 @@ export const registerReducer = (state = initialState, action) =>
 {
     switch (action.type)
     {
-        case Types.REGISTER_REQ:
+        case actionTypes.REGISTER_REQ:
             console.log("register request"/* , action.payload */);
             return {
                 ...state/* ,
                 loading: true */
             }
-        case Types.REGISTER_SUCCESS:
+        case actionTypes.REGISTER_SUCCESS:
             console.log("register success");
             return {
                 ...state,
@@ -27,7 +27,7 @@ export const registerReducer = (state = initialState, action) =>
                 errorMessage: "", */
                 success: true
             }
-        case Types.REGISTER_FAIL:
+        case actionTypes.REGISTER_FAIL:
             console.log("register fail"/* , action.payload.error */);
             return {
                 ...state,

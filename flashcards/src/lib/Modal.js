@@ -12,9 +12,8 @@ const modalElement = document.querySelector("#modal-root");
  * @param {*} style 
  * @returns 
  */
-const Modal = (props, ref) =>
+const Modal = ({ children, defaultOpened = false }, ref) =>
 {
-    const { children, defaultOpened = false } = props;
     const [isToggleOn, toggle] = useToggle(defaultOpened);
 
     useImperativeHandle(

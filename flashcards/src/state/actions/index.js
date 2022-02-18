@@ -1,4 +1,4 @@
-import { Types } from "./actionTypes";
+import actionTypes from "./actionTypes";
 import { pathConsts } from "../../config/paths";
 import authAPI from "../../api/authAPI";
 import { push } from 'connected-react-router'
@@ -8,35 +8,33 @@ export const loginAction = (payload, actions) =>
 {
     return (dispatch) =>
     {
-        dispatch({ type: Types.LOG_IN });
+        dispatch({ type: actionTypes.LOG_IN });
 
-        authAPI.login(payload.email, payload.password)
+        authAPI.login(payload.email, payload.password, payload.remember)
             .then((response) =>
             {
                 if (response.status === 200 && response.data.success !== false)
                 {
                     dispatch({
-                        type: Types.LOG_IN_SUCCESS,
+                        type: actionTypes.LOG_IN_SUCCESS,
                         payload:
                         {
-                            user: response.data.user,
-                            //token: response.data.token
+                            user: response.data.user/* ,
+                            token: response.data?.token || null */
                         }
                     });
-                    //TODO set user session??
-
                     actions.setSubmitting(false);
                 }
                 else
                 {
-                    dispatch({ type: Types.LOG_IN_FAIL/* , payload: { error: response.data.errorMessage } */ });
+                    dispatch({ type: actionTypes.LOG_IN_FAIL/* , payload: { error: response.data.errorMessage } */ });
                     actions.setStatus({ message: response.data.errorMessage });
                     actions.setSubmitting(false);
                 }
             })
             .catch((error) =>
             {
-                dispatch({ type: Types.LOG_IN_FAIL/* , payload: { error: error.message } */ });
+                dispatch({ type: actionTypes.LOG_IN_FAIL/* , payload: { error: error.message } */ });
                 actions.setStatus({ message: "" + error });
                 actions.setSubmitting(false);
             });
@@ -52,19 +50,19 @@ export const logoutAction = () =>
             {
                 if (response.status === 200)
                 {
-                    dispatch({ type: Types.LOG_OUT });
+                    dispatch({ type: actionTypes.LOG_OUT });
                 }
                 else
                 {
-                    console.log(response);
-                    alert(response);
+                    console.log(JSON.stringify(response));
+                    alert("logout response not 200 :" + response);
                 }
             })
             .catch((error) =>
             {
-                console.log(error);
-                alert(error.message);
-                dispatch({ type: Types.LOG_OUT });
+                console.log("logout error: " + JSON.stringify(error));
+                alert("logout error: " + error?.message || "Unexpected error");
+                dispatch({ type: actionTypes.LOG_OUT });
             })
     }
 }
@@ -74,7 +72,7 @@ export const registerAction = (email, username, password, actions) =>
 {
     return (dispatch) =>
     {
-        dispatch({ type: Types.REGISTER_REQ });
+        dispatch({ type: actionTypes.REGISTER_REQ });
 
         authAPI.register(username, email, password)
             .then((response) =>
@@ -82,7 +80,7 @@ export const registerAction = (email, username, password, actions) =>
                 if (response.status === 201)//201 created
                 {
                     console.log("register 201 created")
-                    dispatch({ type: Types.REGISTER_SUCCESS });
+                    dispatch({ type: actionTypes.REGISTER_SUCCESS });
                     actions.setSubmitting(false);
                     dispatch(push(`./${pathConsts.verify}?${regMsg.key}=${regMsg.val}`))
                 }
@@ -90,13 +88,13 @@ export const registerAction = (email, username, password, actions) =>
                 {
                     //console.log(JSON.stringify(response));
                     //console.log("registration error: " + response.data.errorMessage);
-                    dispatch({ type: Types.REGISTER_FAIL });
+                    dispatch({ type: actionTypes.REGISTER_FAIL });
                     actions.setStatus({ message: response.data });//TODO add better error messages
                     actions.setSubmitting(false);
                 }
             }).catch((error) =>
             {
-                dispatch({ type: Types.REGISTER_FAIL/* , payload: { error: error } */ });
+                dispatch({ type: actionTypes.REGISTER_FAIL/* , payload: { error: error } */ });
                 actions.setStatus({ message: "" + error });//TODO add better error messages
                 actions.setSubmitting(false);
             });

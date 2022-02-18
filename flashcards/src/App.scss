@@ -74,6 +74,8 @@ $sidebar-width: 200px;
 
 #content {
   display: flex;
+  height: 100vh;
+  overflow-y: scroll;
 }
 
 .content
@@ -103,7 +105,6 @@ $sidebar-width: 200px;
 
         .li-item, a {
           display: flex;
-          color: white;
           text-decoration: none;
           margin: 0;
           background-color: inherit;
@@ -118,6 +119,8 @@ $sidebar-width: 200px;
           padding-left: 10px;
           display: flex;
           align-items: center;
+          
+          color: white;
         }
       }
 
@@ -156,11 +159,14 @@ $sidebar-width: 200px;
       }
 
       li a:hover:not(.active), .submenu-item:hover:not(.active) {
-        color: #04aa6d;
         background-color: #393f4b;
         border-radius: 0.5em;
         border-left: none !important;
         transition: all 0.5s;
+
+        div.inner {
+          color: #04aa6d;
+        }
       }
 
       @keyframes swing {
@@ -239,6 +245,7 @@ $sidebar-width: 200px;
 }
 
 #sidebar{
+  user-select: none;
 
   .submenu {
     margin-left: 33px;

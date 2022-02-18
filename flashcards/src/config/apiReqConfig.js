@@ -185,6 +185,71 @@ const deleteCollection = (collectionID) =>
     }
 };
 
+/**
+ * Returns configuration for updating collection based on params
+ * @param {number} collectionID id of updating collection
+ * @param {string} title new title
+ * @param {string} color new color
+ * @param {string} category new category
+ * @returns request configuration
+ */
+const updateCollection = (collectionID, title, color, category) =>
+{
+    return {
+        url: API_SERVER_URL + `/collections/${collectionID}`,
+        data: {
+            id: collectionID,
+            title: title,
+            collectionColor: color,
+            category: category,
+        },
+        method: "PUT",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
+
+/**
+ * Returns configuration for adding collection to favourite based on params
+ * @param {number} collectionID 
+ * @returns request configuration
+ */
+const favCollection = (collectionID) =>
+{
+    return {
+        url: API_SERVER_URL + `/collections/${collectionID}/fav`,
+        method: "POST",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
+
+/**
+ * Returns configuration for removing collection from favourite based on params
+ * @param {number} collectionID 
+ * @returns request configuration
+ */
+const unfavCollection = (collectionID) =>
+{
+    return {
+        url: API_SERVER_URL + `/collections/${collectionID}/unfav`,
+        method: "POST",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
 
 //_______Categories________
 
@@ -358,12 +423,12 @@ const register = (username, email, password) =>
  * @param {string} password 
  * @returns request configuration
  */
-const login = (email, password) =>
+const login = (email, password, remember = false) =>
 {
     var data = new FormData();
     data.append("email", email);
     data.append("password", password);
-    // data.append("remember", loginPayload.remember);
+    data.append("remember", remember);
 
     return {
         url: API_SERVER_URL + "/login",
@@ -389,7 +454,11 @@ const logout = () =>
         url: API_SERVER_URL + "/logout",
         method: "POST",
         withCredentials: true,
-        timeout: apiRequestTimeout
+        timeout: apiRequestTimeout,
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json"
+        }
     }
 };
 
@@ -504,7 +573,10 @@ const apiReqConfig = {
         duplicateCollection,
         privatizeCollection,
         publishCollection,
-        deleteCollection
+        deleteCollection,
+        updateCollection,
+        favCollection,
+        unfavCollection
     },
     categories: {
         getCategories,

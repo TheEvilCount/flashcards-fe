@@ -8,7 +8,7 @@ import { ConnectedRouter as Router } from 'connected-react-router';
 import { ErrorBoundary } from 'react-error-boundary'
 
 import axios from 'axios';
-import { handleTimeout, useClearTimeout, useLogoutOnUnAuth, useTimeout } from './config/axiosInterceptors';
+import { handleTimeout, useClearTimeout, useLogoutOnUnAuth, useRejectOnBadStatus, useTimeout } from './config/axiosInterceptors';
 
 import routes from "./config/routes.js";
 import { pathConsts } from "./config/paths";
@@ -17,16 +17,15 @@ import { history } from './state/store';
 import SideBar from './components/sideBar/SideBar';
 import ContentWrapper from './components/ContentWrapper';
 
-export default function App(props)
+export default function App()
 {
   const authReducer = useSelector(state => state.auth);
 
   // Request interceptors
-  axios.interceptors.request.use(useTimeout)
+  axios.interceptors.request.use(useTimeout);
 
   // Response interceptors
-  axios.interceptors.response.use(useClearTimeout, handleTimeout, useLogoutOnUnAuth)
-
+  axios.interceptors.response.use(/* useLogoutOnUnAuth, */ useRejectOnBadStatus, useClearTimeout, handleTimeout);
 
   const [sideBarCollapsed, setSideBarCollapsed] = useState(false);
   const handleToggleSideBar = (what) =>

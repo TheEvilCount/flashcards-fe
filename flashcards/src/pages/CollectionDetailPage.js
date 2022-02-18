@@ -15,13 +15,16 @@ const CollectionDetailPage = () =>
     const { id } = useParams();
     const dispatch = useDispatch();
 
-    const [{ data, isLoading, error }, request] = useAxios(apiReqConfig.cards.getCardsFromCollection(id), {});
+    const [{ data, loading, error }, request] = useAxios(apiReqConfig.cards.getCardsFromCollection(id), {});
+
+    const [{ data: dataCreate, loading: isLoadingCreate, error: errorCreate, response: responseCreate }, requestCreate] = useAxios(
+        apiReqConfig.cards.createCardWithinCollection, { manual: true });
 
 
     return (
         <>
             <Button variant='contained' onClick={() => { dispatch(goBack()) }}>Go back</Button>
-            <ErrorLoadingDataWrapper isLoading={isLoading} error={error} retryRequest={request}>
+            <ErrorLoadingDataWrapper isLoading={loading} error={error} retryRequest={request}>
                 <CardList cardList={data}></CardList>
             </ErrorLoadingDataWrapper>
         </>

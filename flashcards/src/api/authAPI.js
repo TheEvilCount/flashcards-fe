@@ -19,9 +19,9 @@ const registerReq = (username, email, password) =>
  * @param {string} password 
  * @returns axios request
  */
-const loginReq = (email, password) =>
+const loginReq = (email, password, remember = false) =>
 {
-    return axios.request(apiReqConfig.auth.login(email.charAt, password));
+    return axios.request(apiReqConfig.auth.login(email, password, remember));
 };
 
 /**

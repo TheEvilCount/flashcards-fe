@@ -1,4 +1,4 @@
-import { Types } from "../../actions/actionTypes"
+import actionTypes from "../actions/actionTypes"
 
 const initialState =
 {
@@ -18,23 +18,23 @@ export const loggedReducer = (state = initialState, action) =>
 {
     switch (action.type)
     {
-        case Types.LOG_IN:
+        case actionTypes.LOG_IN:
             console.log("login request");
             return {
                 ...state/* ,
                 loading: true */
             }
-        case Types.LOG_IN_SUCCESS:
+        case actionTypes.LOG_IN_SUCCESS:
             console.log("login success", action.payload.user);
             return {
                 ...state,
                 //loading: false,
                 isLogged: true,
-                user: action.payload.user,
-                authToken: action.payload.token,
+                user: action.payload.user/* ,
+                authToken: action.payload.token, */
                 //errorMessage: ""
             }
-        case Types.LOG_IN_FAIL:
+        case actionTypes.LOG_IN_FAIL:
             console.log("login fail"/* , action.payload.error */);
             return {
                 ...state,
@@ -44,7 +44,7 @@ export const loggedReducer = (state = initialState, action) =>
                 authToken: null,
                 //errorMessage: action.payload.error
             }
-        case Types.LOG_OUT:
+        case actionTypes.LOG_OUT:
             console.log("login out");
             return {
                 ...state,

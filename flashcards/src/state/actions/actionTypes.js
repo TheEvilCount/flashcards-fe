@@ -1,4 +1,4 @@
-export const Types =
+const actionTypes =
 {
     LOG_IN: "LOG_IN",
     LOG_IN_FAIL: "LOG_IN_FAIL",
@@ -15,3 +15,4 @@ export const Types =
     CHANGE_PASS_FAIL: "CHANGE_PASS_FAIL",
     CHANGE_PASS_SUCCESS: "CHANGE_PASS_SUCCESS"
 }
+export default actionTypes;
