@@ -10,14 +10,37 @@ import { Provider } from "react-redux";
 import { PersistGate } from 'redux-persist/integration/react';
 
 import configureStore from "./state/store";
+import { QueryClient, QueryClientProvider } from 'react-query';
 
 const { store, persistor } = configureStore();
+
+const queryClient = new QueryClient({
+
+  defaultOptions: {
+    queries: {
+      // query options
+      onError: (err) =>
+      {
+        console.error("Error query: " + err.message);
+      }
+    },
+    mutations: {
+      // mutation options
+      onError: (err) =>
+      {
+        console.error("Error muation: " + err.message);
+      }
+    },
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <App />
+        <QueryClientProvider client={queryClient}>
+          <App />
+        </QueryClientProvider>
       </PersistGate>
     </Provider>
   </React.StrictMode>,

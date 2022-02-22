@@ -1,16 +1,13 @@
 
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress, TextField, Tooltip } from '@mui/material';
-import { color } from '@mui/system';
 import useAxios from 'axios-hooks';
 import { Form, Formik } from 'formik';
-import { FormikCheckboxField, FormikRadioField, FormikRadioGroupField, FormikSelectField } from 'formik-material-fields';
-import FormikCheckboxGroupField from 'formik-material-fields/lib/FormikCheckboxGroupField';
+import { FormikRadioGroupField, FormikSelectField } from 'formik-material-fields';
 import React, { useEffect, useState } from 'react';
-import { array } from 'yup/lib/locale';
-import apiReqConfig from '../../config/apiReqConfig';
+import apiReqConfig from 'config/apiReqConfig';
 import InputTextField from '../InputTextField';
 import { ColorPicker, createColor } from "material-ui-color";
-import collectionsAPI from '../../api/collectionsAPI';
+import collectionsAPI from 'api/collectionsAPI';
 
 
 const useEditDialog = (onSubmitcallback) =>
@@ -26,7 +23,7 @@ const useEditDialog = (onSubmitcallback) =>
     useEffect(() =>
     {
         if (!dataCategories)
-            requestGetCategories();
+            requestGetCategories().catch((error) => console.log("categories: " + error.message));
     }, []);
 
     const handleClickOpen = (data) =>

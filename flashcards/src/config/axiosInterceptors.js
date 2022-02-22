@@ -2,26 +2,52 @@ import axios from "axios";
 import { logoutAction } from "../state/actions";
 import { store } from "../state/store";
 
-//logout when unauthorize status appears
-export const useLogoutOnUnAuth = (error) =>
+
+export const responseInterceptorResponse = (response) =>
 {
-    const dispatch = store.dispatch;
-    //console.warn("___logout interceptor: " + JSON.stringify(error))
+    clearTimeout((response?.config)?.["timeoutId"]);
+
+    if (response?.status === 401)
+    {
+        store.dispatch(logoutAction());//TODO or revoke login
+    }
+
+    return response;
+}
+
+export const responseInterceptorError = (error) =>
+{
     if (error?.response?.status === 401)
     {
-        //console.warn("___logout interceptor success")
-        dispatch(logoutAction());//TODO or revoke login
+        store.dispatch(logoutAction());//TODO or revoke login
+        return error;
     }
-    return error;
+
+    if (error.message === "TIMEOUT")
+        return { ...error, code: "ETIMEDOUT" }
+    return Promise.reject(error);
 }
+
+
+//logout when unauthorize status appears
+export const useLogoutOnUnAuth = (response) =>
+{
+    //console.warn("___logout interceptor: " + JSON.stringify(error))
+    if (response?.status === 401)
+    {
+        //console.warn("___logout interceptor success")
+        store.dispatch(logoutAction());//TODO or revoke login
+    }
+    return response;
+}
+
 
 //error response reject when error code
 export const useRejectOnBadStatus = (error) =>
 {
-    useLogoutOnUnAuth(error);
-    //console.log(error.response.status)
-    return Promise.reject(error); // i didn't have this line before
+    return Promise.reject(error);
 }
+
 
 
 //for timeout
@@ -44,6 +70,7 @@ export const handleTimeout = (error) =>
     Promise.reject(
         error.message === "TIMEOUT" ? { ...error, code: "ETIMEDOUT" } : error,
     )
+
 
 export const useClearTimeout = (response) =>
 {

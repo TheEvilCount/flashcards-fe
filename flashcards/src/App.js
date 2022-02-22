@@ -8,7 +8,7 @@ import { ConnectedRouter as Router } from 'connected-react-router';
 import { ErrorBoundary } from 'react-error-boundary'
 
 import axios from 'axios';
-import { handleTimeout, useClearTimeout, useLogoutOnUnAuth, useRejectOnBadStatus, useTimeout } from './config/axiosInterceptors';
+import { responseInterceptorError, responseInterceptorResponse, useTimeout } from './config/axiosInterceptors';
 
 import routes from "./config/routes.js";
 import { pathConsts } from "./config/paths";
@@ -25,7 +25,16 @@ export default function App()
   axios.interceptors.request.use(useTimeout);
 
   // Response interceptors
-  axios.interceptors.response.use(/* useLogoutOnUnAuth, */ useRejectOnBadStatus, useClearTimeout, handleTimeout);
+  axios.interceptors.response.use(
+    (response) =>
+    {
+      return responseInterceptorResponse(response);
+    },
+    (error) =>
+    {
+      return responseInterceptorError(error);
+    }
+  );
 
   const [sideBarCollapsed, setSideBarCollapsed] = useState(false);
   const handleToggleSideBar = (what) =>

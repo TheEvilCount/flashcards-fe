@@ -23,7 +23,13 @@ const CollectionsPage = (props) =>
     const { type } = useParams();
     const [search, setSearch] = useState("");
 
-    const [{ page, pageSize, pageMax }, setPageTo, ...pg] = usePagination(1, 9, 10);
+    //const [{ page, pageSize, pageMax }, { setPageTo, setPageMax }, ...pg] = usePagination(1, 9, 1);
+    //[{ page, pageSize, pageMax }, {setPageTo, setPageMax}, {nextPage, previousPage, lastPage}]
+
+    const [page, setPage] = useState(1);
+    const [pageSize, setPageSize] = useState(9);
+    const [pageMax, setPageMax] = useState(10);
+
 
     const getCollectionsRequest = (type) =>
     {
@@ -60,29 +66,38 @@ const CollectionsPage = (props) =>
             .then((response) =>
             {
                 const ids = [];
-                response?.data?.forEach((e) => { ids.push(e.id) });
+                response?.data?.collections?.forEach((e) => { ids.push(e.id) });
                 setfavsIds(ids);
-            });
-    }, []);
-
-    useEffect(() =>
-    {
-        requestGetCollections();
-    }, [requestGetCollections, type]);
+            })
+            .catch((error) => console.log("favs: " + error.message))
+    }, [getFavs]);
 
     const refreshCollectionsCallback = useCallback(
         () =>
         {
             requestGetCollections()
+                .then((response) =>
+                {
+                    setPageMax(response.data?.maxPages)
+                })
+                .catch((error) => console.log("colls: " + error.message));
         },
         [requestGetCollections],
     )
+
+    useEffect(() =>
+    {
+        refreshCollectionsCallback();
+    }, [requestGetCollections, type, refreshCollectionsCallback]);
+
+
 
     const dispatch = useDispatch();
 
     const handlePagChange = (event, value) =>
     {
-        setPageTo(value);
+        //setPageTo(value);
+        setPage(value)
     };
 
 
@@ -108,15 +123,15 @@ const CollectionsPage = (props) =>
                 //TODO search by category???
             }
 
-            <ErrorLoadingDataWrapper isLoading={isLoadingCollections} error={errorCollections} retryRequest={requestGetCollections}>
+            <ErrorLoadingDataWrapper isLoading={isLoadingCollections && isLoadingFavs} error={errorCollections || errorFavs} retryRequest={requestGetCollections}>
                 {modal}
-                <Collections favs={favsIds} collections={dataCollections} displayType={getType(type)} refreshCollectionsCallback={refreshCollectionsCallback} openEditModal={openEditModal} />
+                <Collections favs={favsIds} collections={dataCollections?.collections} displayType={getType(type)} refreshCollectionsCallback={refreshCollectionsCallback} openEditModal={openEditModal} />
                 <Pagination
                     style={{ display: "grid", placeContent: "center", marginBottom: "2em" }}
                     color={'primary'}
                     defaultPage={1} page={page} count={pageMax}
                     onChange={handlePagChange}
-                />{/* TODO maxPage */}
+                />
             </ErrorLoadingDataWrapper>
         </>
     )

@@ -27,10 +27,10 @@ const usePagination = (defaultPage = 1, defaultPageSize = 30, defaultPageMax = 1
     }
 
     const lastPage = () =>
-    {//TODO ?????????
-
+    {
+        setPageTo(pageMax);
     }
 
-    return [{ page, pageSize, pageMax }, setPageTo, nextPage, previousPage, lastPage];
+    return [{ page, pageSize, pageMax }, { setPageTo, setPageMax }, { nextPage, previousPage, lastPage }];
 }
 export default usePagination;
