@@ -1,16 +1,20 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import useAxios from 'axios-hooks';
+import { useDispatch } from 'react-redux';
+import { goBack } from 'connected-react-router';
+import axios from 'axios';
+import { useQuery } from 'react-query';
+
+import { Pagination, TextField, Button, Fab, Card, ButtonGroup } from '@mui/material';
+import AddIcon from '@mui/icons-material/Add';
 
 import Collections from '../components/collection/Collections';
-import { Button } from '@material-ui/core';
-import { goBack } from 'connected-react-router';
-import { useDispatch } from 'react-redux';
-import { Pagination, TextField } from '@mui/material';
 import apiReqConfig from '../config/apiReqConfig';
 import ErrorLoadingDataWrapper from '../components/ErrorLoadingDataWrapper';
 import usePagination from '../hooks/usePagination';
 import useEditDialog from '../components/collection/useEditCollectionModal';
+import useCreateCollectionDialog from 'components/collection/useCreateCollectionModal';
+import { KEY_COLLECTIONS, useQueryFavIdsCollections } from 'api/react-query hooks/useCollections';
 
 export const collectionDisplayTypes = {
     private: "private",
@@ -21,17 +25,32 @@ export const collectionDisplayTypes = {
 const CollectionsPage = (props) =>
 {
     const { type } = useParams();
+    const [qType, setqType] = useState("my");
+
     const [search, setSearch] = useState("");
+    const { page, pageSize, pageMax, setPageTo: setPage, setPageMax } = usePagination(1, 9, 1);
 
-    //const [{ page, pageSize, pageMax }, { setPageTo, setPageMax }, ...pg] = usePagination(1, 9, 1);
-    //[{ page, pageSize, pageMax }, {setPageTo, setPageMax}, {nextPage, previousPage, lastPage}]
+    const dispatch = useDispatch();
 
-    const [page, setPage] = useState(1);
-    const [pageSize, setPageSize] = useState(9);
-    const [pageMax, setPageMax] = useState(10);
+    //reseting page to 1 when type of collection changes
+    useEffect(() =>
+    {
+        if (qType !== type)
+        {
+            setPage(1);
+            setqType(type);
+        }
+
+        return () =>
+        {
+            setPage(1);
+            setqType("");
+        }
+    }, [type, setPage])
 
 
-    const getCollectionsRequest = (type) =>
+
+    const getCollectionsRequest = (type, page, pageSize, search) =>
     {
         if (type === "my") return apiReqConfig.collections.getCollections.private(page, pageSize);
         if (type === "explore") return apiReqConfig.collections.discoverCollections(search, page, pageSize);
@@ -50,59 +69,36 @@ const CollectionsPage = (props) =>
         return collectionDisplayTypes.private;
     }
 
-    const [{ data: dataCollections, loading: isLoadingCollections, error: errorCollections, response: responseCollections }, requestGetCollections] = useAxios(
-        getCollectionsRequest(type || null), { manual: true }
-    );
-
-    const [{ data: dataFavs, loading: isLoadingFavs, error: errorFavs, response: responseFavs }, getFavs] = useAxios(
-        apiReqConfig.collections.getCollections.favourite(null, null), { manual: true }
-    );
-
-    const [favsIds, setfavsIds] = useState([]);
-
-    useEffect(() =>
+    const getCollectionsRQ = async (typeC, page, pageSize, search) =>
     {
-        getFavs()
-            .then((response) =>
-            {
-                const ids = [];
-                response?.data?.collections?.forEach((e) => { ids.push(e.id) });
-                setfavsIds(ids);
-            })
-            .catch((error) => console.log("favs: " + error.message))
-    }, [getFavs]);
-
-    const refreshCollectionsCallback = useCallback(
-        () =>
-        {
-            requestGetCollections()
-                .then((response) =>
-                {
-                    setPageMax(response.data?.maxPages)
-                })
-                .catch((error) => console.log("colls: " + error.message));
-        },
-        [requestGetCollections],
-    )
-
-    useEffect(() =>
-    {
-        refreshCollectionsCallback();
-    }, [requestGetCollections, type, refreshCollectionsCallback]);
-
-
-
-    const dispatch = useDispatch();
-
-    const handlePagChange = (event, value) =>
-    {
-        //setPageTo(value);
-        setPage(value)
+        const { data } = await axios.request(getCollectionsRequest(typeC || null, page, pageSize, search))
+        return data;
     };
 
+    const { data: dataCollections, error: errorCollections, isLoading: isLoadingCollections, refetch: requestGetCollections } =
+        useQuery([KEY_COLLECTIONS, type, page, search],
+            () => getCollectionsRQ(type, page, pageSize, search),
+            {
+                keepPreviousData: true,
+                enabled: true,
+                onSuccess: (data) => { setPageMax(data?.maxPages) }
+            }
+        );
 
-    const [modal, openModal] = useEditDialog(refreshCollectionsCallback);
+    const { data: dataFavs, error: errorFavs, isLoading: isLoadingFavs, refetch: refetchFavouriteIds } = useQueryFavIdsCollections();
 
+    const refetchCallback = useCallback(
+        () =>
+        {
+            refetchFavouriteIds();
+            requestGetCollections();
+        },
+        [refetchFavouriteIds, requestGetCollections],
+    )
+
+
+    //modal edit stuff
+    const [modal, openModal] = useEditDialog(requestGetCollections);
     const openEditModal = useCallback(
         (colData) =>
         {
@@ -111,26 +107,41 @@ const CollectionsPage = (props) =>
         [openModal],
     )
 
+    //modal create stuff
+    const [modalCreate, openModalCreate] = useCreateCollectionDialog(requestGetCollections);
+    const openCreateModal = useCallback(
+        () =>
+        {
+            openModalCreate()
+        },
+        [openModalCreate],
+    )
 
     return (
         <>
             <h2>Collections - {type}</h2>
-            <Button variant='contained' onClick={() => { dispatch(goBack()) }}>Go back</Button>
-            <Button variant='contained' color='primary' onClick={refreshCollectionsCallback}>Refresh</Button>
-            {
-                type === "explore" &&
-                <TextField color='primary' label={"Search:"} onChange={(e) => { setSearch(e.target.value) }} value={search} />
-                //TODO search by category???
-            }
+            <Card>
+                <ButtonGroup variant='contained' color='secondary'>
+                    <Button onClick={() => { dispatch(goBack()) }}>Go back</Button>
+                    <Button onClick={requestGetCollections}>Refresh</Button>
+                </ButtonGroup>
 
+                <Fab variant='circular' color="primary" aria-label="add" onClick={() => openCreateModal()}><AddIcon /></Fab>
+                {
+                    type === "explore" &&
+                    <TextField color='primary' label={"Search:"} onChange={(e) => { setSearch(e.target.value) }} value={search} />
+                    //TODO search by category???
+                }
+            </Card>
             <ErrorLoadingDataWrapper isLoading={isLoadingCollections && isLoadingFavs} error={errorCollections || errorFavs} retryRequest={requestGetCollections}>
                 {modal}
-                <Collections favs={favsIds} collections={dataCollections?.collections} displayType={getType(type)} refreshCollectionsCallback={refreshCollectionsCallback} openEditModal={openEditModal} />
+                {modalCreate}
+                <Collections favsIds={dataFavs} collections={dataCollections?.collections} displayType={getType(type)} refreshCollectionsCallback={refetchCallback} openEditModal={openEditModal} />
                 <Pagination
                     style={{ display: "grid", placeContent: "center", marginBottom: "2em" }}
                     color={'primary'}
                     defaultPage={1} page={page} count={pageMax}
-                    onChange={handlePagChange}
+                    onChange={(event, value) => setPage(value)}
                 />
             </ErrorLoadingDataWrapper>
         </>

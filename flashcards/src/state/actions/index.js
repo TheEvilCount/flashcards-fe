@@ -3,6 +3,7 @@ import { pathConsts } from "../../config/paths";
 import authAPI from "../../api/authAPI";
 import { push } from 'connected-react-router'
 import { regMsg } from "../../pages/VerifyPage";
+import usersAPI from "api/usersAPI";
 
 export const loginAction = (payload, actions) =>
 {
@@ -15,6 +16,7 @@ export const loginAction = (payload, actions) =>
             {
                 if (response.status === 200 && response.data.success !== false)
                 {
+                    actions.setSubmitting(false);
                     dispatch({
                         type: actionTypes.LOG_IN_SUCCESS,
                         payload:
@@ -23,7 +25,6 @@ export const loginAction = (payload, actions) =>
                             token: response.data?.token || null */
                         }
                     });
-                    actions.setSubmitting(false);
                 }
                 else
                 {
@@ -67,6 +68,36 @@ export const logoutAction = () =>
     }
 }
 
+export const preferencesChangeAction = (payload) =>
+{
+    return (dispatch) =>
+    {
+        usersAPI.updatePrefs(payload.preferences)
+            .then((response) =>
+            {
+                if (response.status === 200 && response.data.success !== false)
+                {
+                    dispatch({
+                        type: actionTypes.PREFERENCES_CHANGE,
+                        payload:
+                        {
+                            preferences: payload.preferences,
+                            user: response.data
+                        }
+                    });
+                }
+                else
+                {
+                    //TODO toast
+                    console.error("update prefs then error");
+                }
+            })
+            .catch((error) =>
+            {
+                console.error("update prefs catch error" + error);
+            });
+    }
+}
 
 export const registerAction = (email, username, password, actions) =>
 {
@@ -80,8 +111,8 @@ export const registerAction = (email, username, password, actions) =>
                 if (response.status === 201)//201 created
                 {
                     console.log("register 201 created")
-                    dispatch({ type: actionTypes.REGISTER_SUCCESS });
                     actions.setSubmitting(false);
+                    dispatch({ type: actionTypes.REGISTER_SUCCESS });
                     dispatch(push(`./${pathConsts.verify}?${regMsg.key}=${regMsg.val}`))
                 }
                 else

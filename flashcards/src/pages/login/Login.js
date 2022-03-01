@@ -3,14 +3,13 @@ import { NavLink } from "react-router-dom";
 import "./login.scss";
 
 import { useDispatch } from "react-redux";
-import { loginAction } from "../../state/actions"
+import { loginAction } from "state/actions"
 
 import { FaSpinner } from "react-icons/fa";
 
 import InputTextField from '../../components/InputTextField';
 import { Field, Form, Formik } from 'formik';
-import { Button, Card, FormControlLabel, Typography, Switch } from '@material-ui/core';
-import { LinearProgress } from '@material-ui/core';
+import { Button, LinearProgress, Card, FormControlLabel, Typography, Switch } from '@mui/material';
 import { pathConsts } from '../../config/paths';
 import loginFormValidation from '../../validations/loginFormValidation';
 
@@ -31,7 +30,7 @@ export default function Login(props)
                 validationSchema={loginFormValidation}
                 onSubmit={(values, actions) =>
                 {
-                    console.log({ password: values.password, email: values.email });
+                    console.log(JSON.stringify(values));
                     actions.setStatus({ message: null });//reset message
                     dispatch(loginAction({ password: values.password, email: values.email, remember: values.rememberme }, actions));
                 }}
@@ -76,6 +75,7 @@ export default function Login(props)
                             {isSubmitting && <LinearProgress />}
                             <Button
                                 color="primary"
+                                variant="contained"
                                 type="submit"
                                 onClick={() => { }}
                                 disabled={isSubmitting}

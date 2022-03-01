@@ -1,18 +1,23 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router'
 
-import { Button } from '@material-ui/core';
-import { Card, CardActions, CardContent } from '@mui/material';
+import { Card, CardActions, CardContent, Button, ButtonGroup, Typography, Tooltip } from '@mui/material';
 
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import FavoriteIcon from '@mui/icons-material/Favorite';
+import HelpIcon from '@mui/icons-material/Help';
+import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
+import CollectionIcon from '@mui/icons-material/Collections';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
-import apiReqConfig from "../../config/apiReqConfig";
 import useAxios from 'axios-hooks';
+import apiReqConfig from "../../config/apiReqConfig";
 
-const Collection = ({ collection, type, refreshCollectionsCallback, openEditModal, isFaved = false, ...p }) =>
+const Collection = (
+    { collection, type, refreshCollectionsCallback, openEditModal, isFaved = false, ...p }
+) =>
 {
     const { id, title, counterFav, counterDup, cardNum, category, collectionColor } = collection;
     const dispatch = useDispatch();
@@ -20,7 +25,7 @@ const Collection = ({ collection, type, refreshCollectionsCallback, openEditModa
     const clickF = useCallback(() =>
     {
         dispatch(push(`collections/${id}/cards`))
-    }, [dispatch])
+    }, [dispatch, id])
 
 
     const [{ data: dataDuplicate, isLoading: isLoadingDuplicate, error: errorDuplicate }, request] = useAxios(
@@ -75,12 +80,16 @@ const Collection = ({ collection, type, refreshCollectionsCallback, openEditModa
             })
     }
 
-    const favCollection = () =>
+    const favCollection = () =>//TODO mutation of favs
     {//TODO
         requestFav()
             .then(() =>
             {
                 alert("fav success");
+            })
+            .then(() =>
+            {
+                refreshCollectionsCallback();
             })
             .catch((error) =>
             {
@@ -96,6 +105,10 @@ const Collection = ({ collection, type, refreshCollectionsCallback, openEditModa
             {
                 alert("unfav success");
             })
+            .then(() =>
+            {
+                refreshCollectionsCallback();
+            })
             .catch((error) =>
             {
                 alert("unfav error: " + error.response?.data?.errorMessage || error);
@@ -103,6 +116,7 @@ const Collection = ({ collection, type, refreshCollectionsCallback, openEditModa
             })
     }
 
+    const btnDuplicate = (innerText) => <Tooltip title={innerText} placement={'top-end'}><Button variant='contained' color='secondary' onClick={duplicate}>Duplicate <HelpIcon fontSize='small' /></Button></Tooltip>;
     return (
         <Card {...p}
             style={{
@@ -110,51 +124,50 @@ const Collection = ({ collection, type, refreshCollectionsCallback, openEditModa
                 marginBottom: "10px",
                 border: "1px solid black",
                 borderRadius: "0.5em",
-                padding: "5px 20px"
+                paddingRight: "10px"
             }}>
             {/* {data && <Snackbar>{data}</Snackbar>} */}
-            <CardContent >
-                <div>{title}</div>
-                <div>category: {category}</div>
-
-                <div style={{
-                    display: "flex",
-                    alignItems: "baseline",
-                    gap: "1.5em",
-                }}>
-                    <span>visibility: {collection.visibility}</span>
-                    <span><FavoriteIcon htmlColor='red' />:{counterFav}</span>
-                    <span>duplicated: {counterDup}</span>
+            <Typography variant="h6" component={"h1"} textAlign={'center'}>{title}</Typography>
+            <CardContent style={{
+                display: "flex",
+                paddingRight: "5px",
+                justifyContent: "space-evenly"
+            }}>
+                <div style={{ display: "grid" }}>
+                    <div>category: {category}</div>
+                    <Tooltip title={"Collection visibility"} placement={'top-start'}><span><VisibilityIcon />: {collection.visibility}</span></Tooltip>
+                    <div><FavoriteIcon htmlColor='red' />:{counterFav}</div>
+                    <Tooltip title={"Number of private duplications"} placement={'top-start'}><span><DynamicFeedIcon />: {counterDup}</span></Tooltip>
+                    <Tooltip title={"Number of card within collection"} placement={'top-start'}><span><CollectionIcon />: {cardNum}</span></Tooltip>
                 </div>
-                <div>cards: {cardNum}</div>
-            </CardContent>
-            <CardActions style={{ backgroundColor: "rgba(255, 255, 255, 0.45)", borderRadius: "1em", flexWrap: "wrap", display: "flex" }}>
-                <Button variant='contained' color='primary' size='large' onClick={clickF} style={{ margin: "4px 8px" }} >Enter</Button>
+                <CardActions style={{ backgroundColor: "rgba(255, 255, 255, 0.55)", borderRadius: "1em", /* flexWrap: "wrap", */ display: "flex", flexDirection: "column" }}>
+                    <Button variant='contained' color='primary' size='large' onClick={clickF} style={{ margin: "4px 8px" }} >Enter</Button>
+                    {type === "private" && (
+                        <ButtonGroup orientation='vertical'>
+                            {btnDuplicate("Duplicate")}
+                            <Button onClick={() => openEditModal(collection)}>Edit <EditIcon /></Button>
+                            <Button onClick={deleteCollection}>Delete<DeleteForeverIcon /></Button>
+                        </ButtonGroup>
+                    )}
+                    {type === "public" && (
+                        <ButtonGroup orientation='vertical'>
+                            {btnDuplicate("Duplicate to private")}
+                            {
+                                isFaved ?
+                                    <Button onClick={unfavCollection}>Remove from favs <FavoriteIcon htmlColor='red' /></Button> :
+                                    <Button onClick={favCollection}>Add to Favs<FavoriteIcon htmlColor='darkgray' /></Button>
+                            }
+                        </ButtonGroup>
+                    )}
+                    {type === "favourite" && (
+                        <ButtonGroup orientation='vertical'>
+                            {btnDuplicate("Duplicate to private")}
+                            <Button onClick={unfavCollection}>Remove from favs <FavoriteIcon htmlColor='red' /></Button>
+                        </ButtonGroup>
+                    )}
+                </CardActions>
 
-                {type === "private" && (
-                    <>
-                        <Button variant='contained' onClick={duplicate}>Duplicate</Button>
-                        <Button onClick={() => openEditModal(collection)}>Edit <EditIcon /></Button>
-                        <Button onClick={deleteCollection}>Delete<DeleteForeverIcon /></Button>
-                    </>
-                )}
-                {type === "public" && (
-                    <>
-                        <Button variant='contained' onClick={duplicate}>Duplicate to private</Button>
-                        {
-                            isFaved ?
-                                <Button onClick={unfavCollection}>remove from favs <FavoriteIcon htmlColor='red' /></Button> :
-                                <Button onClick={favCollection}>Add to Favs<FavoriteIcon htmlColor='darkgray' /></Button>
-                        }
-                    </>
-                )}
-                {type === "favorite" && (
-                    <>
-                        <Button onClick={duplicate}>Duplicate to private</Button>
-                        <Button onClick={duplicate}>Unfav</Button>
-                    </>
-                )}
-            </CardActions>
+            </CardContent>
         </Card >
     )
 };

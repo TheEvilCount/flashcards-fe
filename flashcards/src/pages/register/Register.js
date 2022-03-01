@@ -4,7 +4,7 @@ import { registerAction } from "../../state/actions";
 import { Form, Formik } from 'formik';
 import { FaSpinner } from "react-icons/fa";
 import InputTextField from '../../components/InputTextField';
-import { Button, Card, Typography } from '@material-ui/core';
+import { Typography, Button, Card } from '@mui/material';
 import { NavLink } from 'react-router-dom';
 import { pathConsts } from '../../config/paths';
 import registerFormValidation from '../../validations/registerFormValidation';
@@ -59,7 +59,6 @@ export default function Register()
                                 color="primary"
                                 type="submit"
                                 onClick={handleSubmit}
-                                block
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? <span>Please wait <FaSpinner /></span> : "Register"}

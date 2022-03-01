@@ -8,15 +8,15 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FilterListIcon from '@mui/icons-material/FilterList';
 import InventoryIcon from '@mui/icons-material/Inventory';
 import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
+import { MenuItem } from "@mui/material";
 
-import { MenuItem } from "@material-ui/core";
 import { Menu } from "react-pro-sidebar";
 import MySubMenu from "./MySubMenu";
 
 const SideBarLink = ({ route, auth, collapsed }) =>
 {
     const isAdmin = auth?.user?.admin;
-    if (route.isAdmin && !isAdmin) return;
+    if (route.isAdmin && !isAdmin) return <></>;
 
     const subMenuItems = [
         {
@@ -60,7 +60,7 @@ const SideBarLink = ({ route, auth, collapsed }) =>
         <>
             <MenuItem icon={collapsed ? route.Icon : undefined}>
                 <div className={route.class} key={("nav-li_" + route.key)}>
-                    <NavLink exact activeClassName="active" to={route.path}>{!collapsed ? <route.Title /> : route.Icon}</NavLink>
+                    <NavLink exact activeClassName="active" to={route.path} style={{ color: "white" }}>{!collapsed ? <route.Title /> : route.Icon}</NavLink>
                 </div>
             </MenuItem>
 
@@ -71,7 +71,7 @@ const SideBarLink = ({ route, auth, collapsed }) =>
                         (
                             isSubMenu ?
                                 (<MySubMenu
-                                    icon={<CollectionsBookmarkIcon />} title={"Collections"} open={!collapsed}
+                                    icon={<CollectionsBookmarkIcon htmlColor="white" />} title={"Collections"} open={!collapsed}
                                     style={{ padding: "0", margin: "0" }}
                                 >
                                     {sideBarCollections(true)}
@@ -84,7 +84,7 @@ const SideBarLink = ({ route, auth, collapsed }) =>
                         :
                         (
                             <MySubMenu
-                                icon={<CollectionsBookmarkIcon />} title={"Collections"} style={{ padding: "0", margin: "0" }}>
+                                icon={<CollectionsBookmarkIcon htmlColor="white" />} title={"Collections"} style={{ padding: "0", margin: "0" }}>
                                 {
                                     sideBarCollections(true)
                                 }

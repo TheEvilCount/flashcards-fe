@@ -5,8 +5,10 @@ const initialState =
     user: {
         id: null,
         username: "",
-        email: ""
+        email: "",
+        preferences: ""
     },
+    parsedPrefs: { flipLeft: true, darkmode: true },
     isLogged: false,
     authToken: null,
     //loading: false,
@@ -30,7 +32,9 @@ export const loggedReducer = (state = initialState, action) =>
                 ...state,
                 //loading: false,
                 isLogged: true,
-                user: action.payload.user/* ,
+                user: action.payload.user,
+                parsedPrefs: action.payload.user.preferences ? JSON.parse(action.payload.user.preferences) : initialState.parsedPrefs
+                /* ,
                 authToken: action.payload.token, */
                 //errorMessage: ""
             }
@@ -51,7 +55,14 @@ export const loggedReducer = (state = initialState, action) =>
                 isLogged: false,
                 user: null,
                 authToken: null,
+                parsedPrefs: null
                 //errorMessage: ""
+            }
+        case actionTypes.PREFERENCES_CHANGE:
+            return {
+                ...state,
+                parsedPrefs: action.payload.preferences,
+                user: action.payload.user
             }
         default:
             return state

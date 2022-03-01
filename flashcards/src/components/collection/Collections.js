@@ -1,10 +1,10 @@
+import { Alert } from '@mui/material';
 import React, { useMemo } from 'react';
-import { collectionDisplayTypes } from '../../pages/CollectionsPage';
 import Collection from './Collection';
 
-const Collections = ({ collections, displayType, refreshCollectionsCallback, openEditModal, favs }) =>
+const Collections = ({ collections, displayType, refreshCollectionsCallback, openEditModal, favsIds }) =>
 {
-    const isInFavs = (id) =>
+    const isInFavs = (id, favs) =>
     {
         if (favs?.includes(id))
             return true;
@@ -13,23 +13,24 @@ const Collections = ({ collections, displayType, refreshCollectionsCallback, ope
 
     const memoizedCollections = useMemo(() =>
     {
+        if (!collections || collections.length === 0) return (<Alert severity='info'>No collection found</Alert>)
         return collections?.map((c, index) =>
         {
             return (
-                <Collection key={"coll" + index} collection={c} type={displayType}
-                    isFaved={displayType === collectionDisplayTypes.public ? isInFavs(c.id) : false}
-                    refreshCollectionsCallback={refreshCollectionsCallback} openEditModal={openEditModal} />
+                <Collection key={"coll" + index}
+                    collection={c}
+                    type={displayType}
+                    isFaved={isInFavs(c.id, favsIds)}
+                    refreshCollectionsCallback={refreshCollectionsCallback}
+                    openEditModal={openEditModal} />
             )
         })
-    }, [collections, displayType]);
+    }, [collections, displayType, refreshCollectionsCallback, openEditModal, favsIds]);
 
     return (
         <div>
-            {/* <div>{"dt: " + displayType}</div> */}
             <div className="collection-wrapper">
-                {
-                    memoizedCollections?.map((i) => { return i; }) || <>No collection found</>
-                }
+                {memoizedCollections}
             </div>
         </div>
     )

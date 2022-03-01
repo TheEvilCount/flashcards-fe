@@ -4,13 +4,13 @@ import { pathConsts } from "../../config/paths";
 import { logoutAction } from "../../state/actions";
 import SideBarLink from './SideBarLink.js';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import CloseIcon from '@mui/icons-material/Close';
+import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import MenuIcon from '@mui/icons-material/Menu';
 import { useDispatch } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 import { ProSidebar, Menu, MenuItem, SidebarHeader, SidebarFooter, SidebarContent } from 'react-pro-sidebar';
-import { Button } from '@mui/material';
+import { IconButton } from '@mui/material';
 
 
 function SideBar({ auth, collapsed, handleToggleSideBar })
@@ -25,9 +25,15 @@ function SideBar({ auth, collapsed, handleToggleSideBar })
         >
             <SidebarHeader>
                 <div className='sidebar-toggle'>
-                    <Button className="btn-toggle" onClick={() => handleToggleSideBar(!collapsed)}>
-                        {collapsed ? <MenuIcon htmlColor='white' /> : <CloseIcon htmlColor='white' />}
-                    </Button>
+                    <div style={{
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: collapsed ? "center" : 'flex-end'
+                    }}>
+                        <IconButton className="btn-toggle" onClick={() => handleToggleSideBar(!collapsed)}>
+                            {collapsed ? <MenuIcon htmlColor='white' /> : <ChevronLeftIcon htmlColor='white' />}
+                        </IconButton>
+                    </div>
                 </div>
                 <Menu className='header-brand'>
                     <SideBarLink key={home.key} route={home} auth={authReducer} collapsed={collapsed} />

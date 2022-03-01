@@ -1,45 +1,51 @@
-import React, { useEffect } from 'react'
+import { Alert, Button } from '@mui/material';
+import { shuffleArray } from 'helpers/shuffleArray';
+import React, { useCallback, useEffect, useState } from 'react'
 import Card from './Card';
 import "./cards.scss"
 
-const CardList = ({ cardList }) =>
+const CardList = ({ collectionDetail, openUpdateModal }) =>
 {
+    const { cardList, id, title, collectionColor } = collectionDetail;
+
+    const [cardListState, setCardListState] = useState(null);
+
     useEffect(() =>
     {
-        shuffleCards();    //shuffle cards
-    }, []);
+        setCardListState(cardList);
 
-    function shuffleCards()
-    {
-        if (cardList)
-            shuffleArray(cardList);
-    }
-
-    function shuffleArray(array)
-    {
-        for (let i = array.length - 1; i > 0; i--) 
+        return () =>
         {
-            const j = Math.floor(Math.random() * (i + 1));
-            [array[i], array[j]] = [array[j], array[i]];
+            setCardListState(null);
         }
-    }
+    }, [cardList])
 
-    function createCardsFromData()
+
+    const shuffleCards = useCallback(() =>
+    {
+        if (cardListState)
+            setCardListState(shuffleArray(cardListState));
+    }, [cardListState, setCardListState])
+
+
+    const cardElements = (cardList) =>
     {
         if (cardList && cardList.length > 0)
         {
-            return cardList.map(card => <Card key={card.id} card={card}></Card>);
+            return cardList.map(card => <Card key={card.id} card={card} collectionId={id} openUpdateModal={openUpdateModal}></Card>);
         }
         else
-            return <div>No cards yet.</div>;
+            return (<Alert severity='info'>No card present. Do you want create one?</Alert>)
 
     }
 
-
     return (
-        <div className="cards-wrapper">
-            {createCardsFromData()}
-        </div>
+        <>
+            <Button onClick={() => { shuffleCards() }}>Shuffle</Button>
+            <div className="cards-wrapper">
+                {cardElements(cardListState)}
+            </div>
+        </>
     );
 }
 export default CardList;

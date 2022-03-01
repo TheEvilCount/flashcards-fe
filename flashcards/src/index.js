@@ -11,6 +11,13 @@ import { PersistGate } from 'redux-persist/integration/react';
 
 import configureStore from "./state/store";
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { CssBaseline } from '@mui/material';
+
+import { ReactQueryDevtools } from 'react-query/devtools'
+
+import axios from 'axios';
+import { responseInterceptorError, responseInterceptorResponse, useTimeout } from './config/axiosInterceptors';
+
 
 const { store, persistor } = configureStore();
 
@@ -22,7 +29,7 @@ const queryClient = new QueryClient({
       onError: (err) =>
       {
         console.error("Error query: " + err.message);
-      }
+      },
     },
     mutations: {
       // mutation options
@@ -34,12 +41,29 @@ const queryClient = new QueryClient({
   },
 });
 
+// Request interceptors
+axios.interceptors.request.use(useTimeout);
+
+// Response interceptors
+axios.interceptors.response.use(
+  (response) =>
+  {
+    return responseInterceptorResponse(response);
+  },
+  (error) =>
+  {
+    return responseInterceptorError(error);
+  }
+);
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
+          <CssBaseline />
           <App />
+          <ReactQueryDevtools initialIsOpen={false} position={'bottom-right'} />
         </QueryClientProvider>
       </PersistGate>
     </Provider>

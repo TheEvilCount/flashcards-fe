@@ -1,8 +1,9 @@
-import { Button, Card, CardActions, CardContent, Typography } from '@material-ui/core';
-import { Alert } from '@mui/material';
 import useAxios from 'axios-hooks';
 import React, { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
+
+import { Alert, Button, Card, CardActions, CardContent, Typography } from '@mui/material';
+
 import ErrorLoadingDataWrapper from '../components/ErrorLoadingDataWrapper';
 import apiReqConfig from '../config/apiReqConfig';
 

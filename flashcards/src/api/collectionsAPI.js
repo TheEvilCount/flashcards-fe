@@ -2,7 +2,18 @@ import axios from "axios";
 import apiReqConfig from "../config/apiReqConfig";
 
 /**
- * Returns request which creates new collection based on params
+ * Returns request for getting collection detail by id
+ * @param {number} id 
+ * @returns axios request
+ */
+const getCollectionReq = (id) =>
+{
+    return axios.request(apiReqConfig.collections.getCollection(id));
+};
+
+
+/**
+ * Returns request for getting collection based on params
  * @param {number} type 0-private, 1-public, 2-favourite
  * @param {number} page page number
  * @param {number} pageSize items on page
@@ -130,6 +141,7 @@ const collectionsAPI = {
         public: getCollectionsPublicReq,
         favourite: getCollectionsFavouriteReq
     },
+    getCollection: getCollectionReq,
     postCollection: postCollectionReq,
     discoverCollections: discoverCollectionsReq,
 

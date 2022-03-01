@@ -19,12 +19,16 @@ export const responseInterceptorError = (error) =>
 {
     if (error?.response?.status === 401)
     {
+        console.log(error)
         store.dispatch(logoutAction());//TODO or revoke login
         return error;
     }
 
     if (error.message === "TIMEOUT")
-        return { ...error, code: "ETIMEDOUT" }
+    {
+        console.error("timeout");
+        return Promise.reject({ ...error, code: "ETIMEDOUT" })
+    }
     return Promise.reject(error);
 }
 

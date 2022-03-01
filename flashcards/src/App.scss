@@ -38,16 +38,9 @@ $sidebar-collapsed-width: 80px;
 
 @import '~react-pro-sidebar/dist/scss/styles.scss';
 
-//vars
-$sidebar-width: 200px;
-
 /*____________*/
 #root{
   display: flex;
-}
-
-.App {
-  text-align: center;
 }
 
 .page-container {
@@ -162,7 +155,8 @@ $sidebar-width: 200px;
         background-color: #393f4b;
         border-radius: 0.5em;
         border-left: none !important;
-        transition: all 0.5s;
+        transition: color 0.5s;
+        transition: background-color 0.5s;
 
         div.inner {
           color: #04aa6d;
@@ -219,7 +213,7 @@ $sidebar-width: 200px;
     .submenu-item{
       border-left: 2px solid #04aa6d !important;
       margin: 0;
-      //padding-block: 0px;
+      transition: background-color 0.5s;
     }
 
     .pro-sidebar-footer{
@@ -234,13 +228,9 @@ $sidebar-width: 200px;
 
 
 .collection-wrapper {
-  //display: flex;
-  //flex-wrap: wrap;
-  //padding: 2vw;
-
   display: grid;
   grid-column-gap: 0.5rem;
-  grid-template-columns: repeat( auto-fit, minmax(250px, 1fr) );
+  grid-template-columns: repeat( auto-fill, minmax(260px, 1fr) );
   grid-auto-rows: 1fr;
 }
 
@@ -250,17 +240,6 @@ $sidebar-width: 200px;
   .submenu {
     margin-left: 33px;
     border-left: 2px solid #04aa6d;
-
-    .submenu-item {
-      @extend .li-item;
-
-      .title {
-        flex: 80%;
-      }
-      .icon {
-        flex: 20%;
-      }
-    }
   }
 
   .icon {
@@ -271,20 +250,10 @@ $sidebar-width: 200px;
     flex: 80%;
   }
 
-  .small {
-    color: #333;
-  }
-
-  //li:hover:not(.pro-sub-menu)
   .li-item:hover:not(.active), .submenu-item:hover:not(.active),
   li:hover:not(.pro-sub-menu) a:not(.active){
     color: #04aa6d;
     background-color: #393f4b;
-  }
-
-  small {
-    display: block;
-    color: #666;
   }
 
   .active, .active {
@@ -298,7 +267,7 @@ $sidebar-width: 200px;
 
     .btn-toggle{
       right: 0;
-      padding: 10px 15px;
+      padding: 10px 10px;
       cursor: pointer;
   
       &:hover{
@@ -308,11 +277,27 @@ $sidebar-width: 200px;
     }
   }
 
-  .header-brand{
-    padding-block: 0;
-    text-transform: uppercase;
-    .pro-inner-item{
-      padding: 0;
+  .pro-sidebar-header{
+    border-bottom: none;
+    margin-bottom: 0.5rem;
+
+    .header-brand{
+      padding-block: 0;
+      text-transform: uppercase;
+      
+      & a{
+        border-radius: 0.5em;
+
+        &:not(.active){background-color: #04aa6d80 !important;}
+        
+        &:hover{
+          background-color: #04aa6d !important;
+          & div.inner{
+            color: white;
+            //background-color: #04aa6d !important;
+          }
+        }
+      }
     }
   }
 

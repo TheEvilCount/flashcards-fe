@@ -1,30 +1,32 @@
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress, TextField, Tooltip } from '@mui/material';
-import useAxios from 'axios-hooks';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress, Tooltip } from '@mui/material';
 import { Form, Formik } from 'formik';
-import { FormikRadioGroupField, FormikSelectField } from 'formik-material-fields';
-import React, { useEffect, useState } from 'react';
-import apiReqConfig from 'config/apiReqConfig';
+import React, { useState } from 'react';
 import InputTextField from '../InputTextField';
-import { ColorPicker, createColor } from "material-ui-color";
-import collectionsAPI from 'api/collectionsAPI';
+import { ColorPicker, createColor } from "mui-color";
+import useCategories from 'api/react-query hooks/useCategories';
+import collectionValidation from 'validations/collectionValidation';
+import FormikMaterialUISelectInput from 'lib/FormikMaterialUISelectInput';
+import FormikMaterialUIRadioInput from 'lib/FormikMaterialUIRadioInput';
+import { useMutationPrivatizeCollection, useMutationPublishCollection, useMutationUpdateCollection } from 'api/react-query hooks/useCollections';
 
-
+/**
+ * 
+ * @param {*} onSubmitcallback 
+ * @returns [MyDialog(), handleClickOpen - handles open and passing data]
+ */
 const useEditDialog = (onSubmitcallback) =>
 {
     const [open, setOpen] = useState(false);
     const [collectionData, setCollectionData] = useState({});
 
+    const { data: dataCategories, error: errorCategories, isLoading: isLoadingCategories } = useCategories();
 
-    const [{ data: dataCategories, loading: isLoadingCategories, error: errorCategories, response: responseCategories }, requestGetCategories] = useAxios(
-        apiReqConfig.categories.getCategories(), { manual: true }
-    );
+    const mutationUpdateCollection = useMutationUpdateCollection();
 
-    useEffect(() =>
-    {
-        if (!dataCategories)
-            requestGetCategories().catch((error) => console.log("categories: " + error.message));
-    }, []);
+    const mutationPublishCollection = useMutationPublishCollection();
+
+    const mutationPrivatizeCollection = useMutationPrivatizeCollection();
 
     const handleClickOpen = (data) =>
     {
@@ -38,16 +40,74 @@ const useEditDialog = (onSubmitcallback) =>
         setOpen(false);
     };
 
-    const getCollectionCategory = (categoryTitle) =>
+    const publish = () =>
     {
-        if (dataCategories)
-        {
-            const cat = dataCategories.find((el) => { return el.title === categoryTitle })
-            return cat?.id || "";
-        }
+        mutationPublishCollection.mutateAsync(collectionData.id)
+            .then((response) =>
+            {
+                if (response.status === 200)
+                {
+                    setOpen(false);
+                    onSubmitcallback();
+                }
+                else
+                {
+                    alert({ message: response?.data?.errorMessage || "Unexpected error" });
+                }
+            })
+            .catch((error) =>
+            {
+                alert({ message: "Error: " + error?.response?.data?.errorMessage || "Unexpected error" });
+            })
     }
-    const publish = () => { alert("visibility changed!"); handleClose() }//TODO
-    const privatize = () => { publish() }
+
+    const privatize = () =>
+    {
+        mutationPrivatizeCollection.mutateAsync(collectionData.id)
+            .then((response) =>
+            {
+                if (response.status === 200)
+                {
+                    setOpen(false);
+                    onSubmitcallback();
+                }
+                else
+                {
+                    alert({ message: response?.data?.errorMessage || "Unexpected error" });
+                }
+            })
+            .catch((error) =>
+            {
+                alert({ message: "Error: " + error?.response?.data?.errorMessage || "Unexpected error" });
+            })
+    }
+
+    const update = (values, actions) =>
+    {
+        mutationUpdateCollection.mutateAsync(
+            {
+                id: collectionData.id,
+                title: values.title,
+                collectionColor: values.collectionColor.hex,
+                category: values.category
+            })
+            .then((response) =>
+            {
+                if (response.status === 200)
+                {
+                    setOpen(false);
+                    onSubmitcallback();
+                }
+                else
+                {
+                    actions.setStatus({ message: response?.data?.errorMessage || "Unexpected error" });
+                }
+            })
+            .catch((error) =>
+            {
+                actions.setStatus({ message: "Error: " + error?.response?.data?.errorMessage || "Unexpected error" });
+            })
+    }
 
     return [MyDialog(), handleClickOpen];
 
@@ -62,30 +122,13 @@ const useEditDialog = (onSubmitcallback) =>
                         category: collectionData.category || "",
                         collectionColor: createColor(collectionData.collectionColor ? "#" + collectionData.collectionColor : "white")
                     }}
-                    /*TODO validationSchema={ } */
+                    validationSchema={collectionValidation}
                     onSubmit={(values, actions) =>
                     {
                         actions.setStatus({ message: null });//reset message
                         actions.setSubmitting(true);
 
-                        collectionsAPI.updateCollection(
-                            collectionData.id, values.title, values.collectionColor.hex, values.category)
-                            .then((response) =>
-                            {
-                                if (response.status === 200)
-                                {
-                                    setOpen(false);
-                                    onSubmitcallback();
-                                }
-                                else
-                                {
-                                    actions.setStatus({ message: response?.data?.errorMessage || "Unexpected error" });
-                                }
-                            })
-                            .catch((error) =>
-                            {
-                                actions.setStatus({ message: "Error: " + error?.response?.data?.errorMessage || "Unexpected error" });
-                            })
+                        update(values, actions);
 
                         console.log(collectionData.id, values.title, values.collectionColor.hex, values.category);//TODO
                         actions.setSubmitting(false);
@@ -99,8 +142,6 @@ const useEditDialog = (onSubmitcallback) =>
                         status,
                         errors,
                         touched,
-                        resetForm,
-                        actions,
                         setFieldValue
                     }) => (
                         <>
@@ -115,14 +156,12 @@ const useEditDialog = (onSubmitcallback) =>
                                         name="title" type="text" label="Title" placeholder="" />
 
                                     <div className="form-group">
-                                        <FormikRadioGroupField
-                                            name="visibility"
+                                        <FormikMaterialUIRadioInput
+                                            formikName="visibility"
                                             label="Visibility"
                                             margin="normal"
                                             row
                                             disabled
-                                            touched={touched.visibility}
-                                            error={errors.visibility}
                                             options={[
                                                 { label: 'Private', value: 'PRIVATE' },
                                                 { label: 'Public', value: 'PUBLIC' },
@@ -135,21 +174,23 @@ const useEditDialog = (onSubmitcallback) =>
                                         <Tooltip title="make private"><span><Button onClick={privatize} disabled={values.visibility === "PRIVATE"}>Privatize</Button></span></Tooltip>
                                     </div>
                                     <div className="form-group">
-                                        <FormikSelectField name="category" label={"Category"}
-                                            touched={touched.category} error={errors.category}
+                                        <FormikMaterialUISelectInput
+                                            formikName={"category"}
+                                            label={"Categories"}
+                                            options={(() =>
+                                            {
+                                                const arr = [];
+                                                dataCategories?.forEach((el) => { arr.push({ label: el.title, value: el.title }) })
+                                                return arr;
+                                            })()}
                                             fullWidth
-                                            options={
-                                                (() =>
-                                                {
-                                                    const arr = [];
-                                                    dataCategories?.forEach((el) => { arr.push({ label: el.title, value: el.title }) })
-                                                    return arr;
-                                                })()
-                                            }
+                                            required
                                         />
                                     </div>
                                     <div className="form-group">
-                                        <ColorPicker name={"collectionColor"} value={values.collectionColor}
+                                        <ColorPicker
+                                            name={"collectionColor"}
+                                            value={values.collectionColor}
                                             onChange={(value) => setFieldValue("collectionColor", value)}
                                         />
                                     </div>

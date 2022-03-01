@@ -6,6 +6,8 @@ const actionTypes =
 
     LOG_OUT: "LOG_OUT",
 
+    PREFERENCES_CHANGE: "PREFERENCES_CHANGE",
+
     // register actions
     REGISTER_REQ: "REGISTER_REQ",
     REGISTER_FAIL: "REGISTER_FAIL",

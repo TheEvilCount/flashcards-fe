@@ -19,7 +19,7 @@ const ErrorLoadingDataWrapper = ({ error, isLoading, children, retryRequest, tit
                 </Fade>
                 {
                     error &&
-                    <Alert severity="error" style={{ borderRadius: "1em", width: "fit-content", border: " 2px dashed #fe4e4e", alignSelf: "center" }}>
+                    <Alert severity="error" style={{ marginTop: "1em", borderRadius: "1em", width: "fit-content", border: " 2px dashed #fe4e4e", alignSelf: "center" }}>
                         <Typography>
                             {title}
                         </Typography>

@@ -5,6 +5,25 @@ import { API_SERVER_URL } from "./paths";
 //________Collections________
 
 /**
+ * Returns configuration for getting collection by id
+ * @param {number} id 0-private, 1-public, 2-favourite
+ * @returns request configuration
+ */
+const getCollection = (id) =>
+{
+    return {
+        url: API_SERVER_URL + `/collections/${id}`,
+        method: "GET",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
+
+/**
  * Returns configuration for getting collections based on type with pagination
  * @param {number} type 0-private, 1-public, 2-favourite
  * @param {number} page page number
@@ -74,9 +93,9 @@ const postCollection = (title, color, visibility = "PRIVATE", categoryID) =>
         method: "POST",
         data: {
             title: title,
-            color: color,
+            collectionColor: color,
             visibility: visibility,
-            category: { id: categoryID }
+            category: categoryID
         },
         withCredentials: true,
         timeout: apiRequestTimeout,
@@ -340,6 +359,52 @@ const createCardWithinCollection = (collectionID, frontText, backText) =>
     }
 };
 
+/**
+ * Returns configuration for deletion of card within collection
+ * @param {number} collectionID id of collection
+ * @param {string} cardID text on the frontside of the card
+ * @returns request configuration
+ */
+const deleteCardWithinCollection = (collectionID, cardID) =>
+{
+    return {
+        url: API_SERVER_URL + `/collections/${collectionID}/cards/${cardID}`,
+        method: "DELETE",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
+
+/**
+ * Returns configuration for deletion of card within collection
+ * @param {number} collectionID id of collection
+ * @param {string} cardID id of the card
+ * @param {string} frontText text on the frontside of the card
+ * @param {string} backText text on the backside of the card
+ * @returns request configuration
+ */
+const updateCardWithinCollection = (collectionID, cardID, frontText, backText) =>
+{
+    return {
+        url: API_SERVER_URL + `/collections/${collectionID}/cards/${cardID}`,
+        data: {
+            //id: cardID,
+            frontText: frontText,
+            backText: backText,
+        },
+        method: "PUT",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
 
 //______Users______
 
@@ -370,13 +435,13 @@ const updateUserPrefs = (newPrefs) =>
 {
     return {
         url: API_SERVER_URL + "/users/updateprefs",
-        method: "POST",
-        data: newPrefs,
+        method: "PUT",
+        data: { preferences: JSON.stringify(newPrefs) },
         withCredentials: true,
         timeout: apiRequestTimeout,
         headers:
         {
-            "Accept": "application/json"
+            "Accept": "application/json",
         }
     }
 };
@@ -549,7 +614,7 @@ const changePass = (oldPassword, newPassword) =>
 {
     return {
         url: API_SERVER_URL + `/users/changepass?oldPassword=${oldPassword}&newPassword=${newPassword}`,
-        method: "POST",
+        method: "PUT",
         withCredentials: true,
         timeout: apiRequestTimeout,
         headers:
@@ -562,6 +627,7 @@ const changePass = (oldPassword, newPassword) =>
 
 const apiReqConfig = {
     collections: {
+        getCollection,
         getCollections: {
             private: getCollectionsPrivate,
             public: getCollectionsPublic,
@@ -584,7 +650,9 @@ const apiReqConfig = {
     },
     cards: {
         getCardsFromCollection,
-        createCardWithinCollection
+        createCardWithinCollection,
+        deleteCardWithinCollection,
+        updateCardWithinCollection
     },
     users: {
         getCurrent: getCurrentUser,
