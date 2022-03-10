@@ -473,7 +473,7 @@ const register = (username, email, password) =>
             password: password
         },
         withCredentials: true,
-        timeout: apiRequestTimeout,
+        timeout: apiRequestTimeout * 10,
         headers:
         {
             "Accept": "application/json",
@@ -557,7 +557,7 @@ const resend = (email) =>
         url: API_SERVER_URL + `/users/resend?email=${email}`,
         method: "POST",
         withCredentials: true,
-        timeout: apiRequestTimeout,
+        timeout: apiRequestTimeout * 10,
         headers:
         {
             "Accept": "application/json",

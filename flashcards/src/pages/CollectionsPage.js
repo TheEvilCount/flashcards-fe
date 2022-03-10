@@ -22,24 +22,21 @@ export const collectionDisplayTypes = {
     favourite: "favourite",
 };
 
-const CollectionsPage = (props) =>
+const CollectionsPage = () =>
 {
     const { type } = useParams();
     const [qType, setqType] = useState("my");
 
     const [search, setSearch] = useState("");
-    const { page, pageSize, pageMax, setPageTo: setPage, setPageMax } = usePagination(1, 9, 1);
+    const { page, pageSize, pageMax, setPageTo: setPage, setPageMax } = usePagination(1, 6, 1);
 
     const dispatch = useDispatch();
 
     //reseting page to 1 when type of collection changes
     useEffect(() =>
     {
-        if (qType !== type)
-        {
-            setPage(1);
-            setqType(type);
-        }
+        setPage(1);
+        setqType(type);
 
         return () =>
         {

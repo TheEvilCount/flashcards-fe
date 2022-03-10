@@ -1,9 +1,9 @@
 import
 {
     Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle,
-    FormControl, LinearProgress, TextField
+    FormControl, LinearProgress
 } from '@mui/material';
-import { Form, Formik, useField } from 'formik';
+import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import InputTextField from '../InputTextField';
 import { ColorPicker, createColor } from "mui-color";
@@ -119,6 +119,8 @@ const useCreateCollectionDialog = (onSubmitcallback) =>
                                                 dataCategories?.forEach((el) => { arr.push({ label: el.title, value: el.title }) })
                                                 return arr;
                                             })()}
+                                            isLoading={isLoadingCategories}
+                                            loadingError={errorCategories}
                                             fullWidth
                                             required
                                         />
@@ -149,16 +151,3 @@ const useCreateCollectionDialog = (onSubmitcallback) =>
 }
 export default useCreateCollectionDialog;
 
-export const FormikTextField = ({ formikKey, ...props }) =>
-{
-    const [field, meta, helpers] = useField(formikKey);
-    return <TextField
-        id={field.name}
-        name={field.name}
-        helperText={meta.touched ? meta.error : ""}
-        error={meta.touched && Boolean(meta.error)}
-        value={field.value}
-        onChange={field.onChange}
-        {...props}
-    />
-}

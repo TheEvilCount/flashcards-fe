@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import React from "react";
 import { NavLink } from "react-router-dom";
 import { pathConsts } from "../../config/paths";
@@ -42,7 +43,7 @@ const SideBarLink = ({ route, auth, collapsed }) =>
         },
     ]
 
-    const isSubMenu = true;
+    const isSubMenu = !collapsed;
 
     const sideBarCollections = (withTitle) =>
     {
@@ -95,5 +96,23 @@ const SideBarLink = ({ route, auth, collapsed }) =>
 
         </>
     )
+}
+
+SideBarLink.propTypes = {
+    auth: PropTypes.shape({
+        isLogged: PropTypes.any,
+        user: PropTypes.shape({
+            admin: PropTypes.any
+        })
+    }),
+    collapsed: PropTypes.bool,
+    route: PropTypes.shape({
+        Icon: PropTypes.any,
+        Title: PropTypes.any,
+        class: PropTypes.any,
+        isAdmin: PropTypes.any,
+        key: PropTypes.any,
+        path: PropTypes.any
+    })
 }
 export default React.memo(SideBarLink);

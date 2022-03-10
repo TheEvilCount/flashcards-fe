@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import React from 'react'
 import routes from "../../config/routes.js";
 import { pathConsts } from "../../config/paths";
@@ -82,6 +83,12 @@ function SideBar({ auth, collapsed, handleToggleSideBar })
             </SidebarFooter>
         </ProSidebar >
     )
+}
+
+SideBar.propTypes = {
+    auth: PropTypes.any,
+    collapsed: PropTypes.bool,
+    handleToggleSideBar: PropTypes.func
 }
 export default React.memo(SideBar)
 

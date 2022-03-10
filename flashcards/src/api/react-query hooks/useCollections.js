@@ -64,7 +64,7 @@ export const useMutationPrivatizeCollection = () =>
     {
         return collectionsAPI.privatizeCollection(collectionId)
     }, {
-        onSuccess: (data, variables) =>
+        onSuccess: () =>
         {
             queryClient.invalidateQueries(KEY_COLLECTIONS);
             queryClient.invalidateQueries(KEY_COLLECTIONS_FAV_IDS);

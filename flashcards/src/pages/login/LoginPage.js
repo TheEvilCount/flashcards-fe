@@ -1,20 +1,19 @@
 import React from 'react';
 import { NavLink } from "react-router-dom";
-import "./login.scss";
 
 import { useDispatch } from "react-redux";
 import { loginAction } from "state/actions"
+import { pathConsts } from '../../config/paths';
+import loginFormValidation from '../../validations/loginFormValidation';
 
 import { FaSpinner } from "react-icons/fa";
 
 import InputTextField from '../../components/InputTextField';
 import { Field, Form, Formik } from 'formik';
 import { Button, LinearProgress, Card, FormControlLabel, Typography, Switch } from '@mui/material';
-import { pathConsts } from '../../config/paths';
-import loginFormValidation from '../../validations/loginFormValidation';
 
 
-export default function Login(props)
+export default function LoginPage()
 {
     const dispatch = useDispatch();
 
@@ -43,7 +42,6 @@ export default function Login(props)
                     errors,
                     touched,
                     resetForm,
-                    actions,
                     setFieldValue
                 }) => (
                     <>
@@ -77,14 +75,14 @@ export default function Login(props)
                                 color="primary"
                                 variant="contained"
                                 type="submit"
-                                onClick={() => { }}
+                                onClick={handleSubmit}
                                 disabled={isSubmitting}
                             >
                                 {isSubmitting ? <span>Please wait <FaSpinner /></span> : "Login"}
                             </Button>
 
                             <div>
-                                <Button type="reset" onClick={() => { resetForm() }}>Cancel</Button>
+                                <Button type="reset" onClick={resetForm}>Cancel</Button>
                                 <span className="forgotPsw">
                                     Forgot <NavLink to={pathConsts.resetPass}>password?</NavLink>
                                 </span>

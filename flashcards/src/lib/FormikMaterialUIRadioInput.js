@@ -1,9 +1,10 @@
+import PropTypes from "prop-types"
 import { FormControl, FormControlLabel, FormHelperText, FormLabel, Radio, RadioGroup } from '@mui/material';
 import { useField } from 'formik';
 
 export default function FormikMaterialUIRadioInput({ formikName, label, options, row, ...props })
 {
-    const [field, meta, helpers] = useField(formikName);
+    const [field, meta] = useField(formikName);
     return (
         <FormControl
             variant='standard'
@@ -40,4 +41,10 @@ export default function FormikMaterialUIRadioInput({ formikName, label, options,
             <FormHelperText>{meta.touched ? meta.error : ""}</FormHelperText>
         </FormControl>
     );
+}
+FormikMaterialUIRadioInput.propTypes = {
+    formikName: PropTypes.string,
+    label: PropTypes.string,
+    options: PropTypes.array,
+    row: PropTypes.bool
 }

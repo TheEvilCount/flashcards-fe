@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 
 import './index.scss';
 
+import 'react-toastify/dist/ReactToastify.min.css';
+import { ToastContainer } from 'react-toastify';
+
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
@@ -62,6 +65,18 @@ ReactDOM.render(
       <PersistGate loading={null} persistor={persistor}>
         <QueryClientProvider client={queryClient}>
           <CssBaseline />
+          <ToastContainer
+            position="top-center"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme={"colored"}
+          />
           <App />
           <ReactQueryDevtools initialIsOpen={false} position={'bottom-right'} />
         </QueryClientProvider>

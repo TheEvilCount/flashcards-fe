@@ -1,0 +1,27 @@
+{
+    "env": {
+        "browser": true,
+        "es6": true,
+        "jest": true
+    },
+    "extends": [
+        "plugin:react/recommended",
+        "plugin:jest/recommended",
+        "plugin:react-hooks/recommended",
+        "eslint:recommended"
+    ],
+    "parserOptions": {
+        "ecmaFeatures": {
+            "jsx": true
+        },
+        "ecmaVersion": 12,
+        "sourceType": "module"
+    },
+    "plugins": [
+        "only-warn",
+        "import" // eslint-plugin-import plugin. https://www.npmjs.com/package/eslint-plugin-import
+    ],
+    "rules": {
+        "react/react-in-jsx-scope": "off"
+    }
+}

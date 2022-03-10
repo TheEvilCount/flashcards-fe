@@ -183,6 +183,8 @@ const useEditDialog = (onSubmitcallback) =>
                                                 dataCategories?.forEach((el) => { arr.push({ label: el.title, value: el.title }) })
                                                 return arr;
                                             })()}
+                                            isLoading={isLoadingCategories}
+                                            loadingError={errorCategories}
                                             fullWidth
                                             required
                                         />

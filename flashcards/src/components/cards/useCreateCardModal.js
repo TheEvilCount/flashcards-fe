@@ -1,5 +1,5 @@
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, LinearProgress } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress } from '@mui/material';
 import { useMutationCreateCard } from 'api/react-query hooks/useCards';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
@@ -58,13 +58,13 @@ const useCreateCardDialog = (onSubmitcallback) =>
                                 }
                                 else
                                 {
-                                    actions.setStatus({ message: response?.data?.errorMessage || "Unexpected error" });
+                                    actions.setStatus({ message: response?.data?.message || "Unexpected error" });
                                 }
                             })
                             .catch((error) =>
                             {
                                 console.log(error)
-                                actions.setStatus({ message: "Error: " + error?.response?.data?.errorMessage || "Unexpected error" });
+                                actions.setStatus({ message: "Error: " + error?.data?.message || "Unexpected error" });
                             })
                         actions.setSubmitting(false);
                     }}
@@ -72,11 +72,7 @@ const useCreateCardDialog = (onSubmitcallback) =>
                     {({
                         isSubmitting,
                         handleSubmit,
-                        values,
                         status,
-                        errors,
-                        touched,
-                        setFieldValue
                     }) => (
                         <>
                             <Form>
@@ -85,10 +81,10 @@ const useCreateCardDialog = (onSubmitcallback) =>
                                     <DialogContentText>
 
                                     </DialogContentText>
-                                    <InputTextField error={errors.frontText} touched={touched.frontText}
-                                        name="frontText" type="text" label="Front" placeholder="" />
-                                    <InputTextField error={errors.backText} touched={touched.backText}
-                                        name="backText" type="text" label="Back" placeholder="" />
+                                    <InputTextField name="frontText" type="text" label="Front"
+                                        placeholder="" required multiline />
+                                    <InputTextField name="backText" type="text" label="Back"
+                                        placeholder="" required multiline />
                                     {status && status.message && (
                                         <div className="message">{status.message}</div>
                                     )}

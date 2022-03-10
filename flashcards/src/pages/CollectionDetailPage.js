@@ -6,8 +6,7 @@ import { useParams } from 'react-router-dom';
 import CardList from '../components/cards/CardList';
 import ErrorLoadingDataWrapper from '../components/ErrorLoadingDataWrapper';
 
-import { Button, Card, Fab } from '@mui/material';
-import AddIcon from '@mui/icons-material/Add';
+import { Button, Card } from '@mui/material';
 
 import useCreateCardDialog from 'components/cards/useCreateCardModal';
 import useUpdateCardDialog from 'components/cards/useUpdateCardModal';
@@ -43,15 +42,14 @@ const CollectionDetailPage = () =>
 
     return (
         <>
-            <h2>Collection: {data?.title}</h2>
-            <Card>
-                <Button variant='contained' color='secondary' onClick={() => { dispatch(goBack()) }}>Go back</Button>
-                <Fab variant='circular' color="primary" aria-label="add" onClick={() => openCreateModal(id)}><AddIcon /></Fab>
+            <Card style={{ display: "inline-flex", padding: "0.1em 0.5em", width: "100%" }}>
+                <h2>Collection: {data?.title}</h2>
+                <span style={{ display: "inline-flex", alignItems: "center", marginLeft: "auto" }}><Button variant='contained' color='secondary' onClick={() => { dispatch(goBack()) }}>Go back</Button></span>
             </Card>
             {modalCreate}
             {modalUpdate}
             <ErrorLoadingDataWrapper isLoading={isLoading} error={error} retryRequest={refetch}>
-                <CardList collectionDetail={data} openUpdateModal={openUpdateModal}></CardList>
+                <CardList collectionDetail={data} openUpdateModal={openUpdateModal} openCreateModal={openCreateModal}></CardList>
             </ErrorLoadingDataWrapper>
         </>
     )

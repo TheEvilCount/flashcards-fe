@@ -1,6 +1,6 @@
 import React from 'react'
 
-export default function AboutPage(props)
+export default function AboutPage()
 {
     return (
         <div className="page-container">

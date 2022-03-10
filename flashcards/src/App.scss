@@ -83,10 +83,61 @@ $sidebar-collapsed-width: 80px;
 }
 
 
+.flex{display: flex;}
+.block{display: block;}
+
+.btn-block {
+  display: block;
+  width: 100%;
+}
+
+.bold{font-weight: bold;}
+
+.mr-auto,
+.mx-auto {
+  margin-right: auto !important;
+}
+.m0{margin: 0 !important;}
+
+.ml-1{margin-left: 1rem !important;}
+.ml-2{margin-left: 2rem !important;}
+.ml-3{margin-left: 3rem !important;}
+.ml-5{margin-left: 5rem !important;}
+
+.ml-0_5{margin-left: 0.55rem !important;}
+
+.mt-1{margin-top: 1rem !important;}
+.mt-2{margin-top: 2rem !important;}
+.mt-3{margin-top: 3rem !important;}
+
+.mb-3{margin-bottom: 3rem !important;}
+
+.pl-1{padding-left: 1rem !important;}
+.pl-2{padding-left: 2rem !important;}
+
+.no-t-decor{text-decoration: none !important;}
+
+.no-select{user-select: none !important;}
 
 .space-above {margin-top: 50px;}
 .space-under {margin-bottom: 50px;}
 .small {color: #333;}
+
+
+.dashboard-item{
+  text-decoration: none;
+
+  div{
+    background-color: rgb(197, 196, 196);
+    padding: 1em 2em 3em 2em;
+  }
+
+  &:hover{
+    transform: scale(1.02);
+    transition: all 0.25s ease-in;
+  }
+}
+
 
 #sidebar {
     ul {
@@ -142,9 +193,6 @@ $sidebar-collapsed-width: 80px;
                 overflow-inline: hidden;
                 text-overflow: ellipsis;
                 max-width: 100px;
-              }
-              small{
-                
               }
             }
           }
@@ -225,8 +273,6 @@ $sidebar-collapsed-width: 80px;
 }
 
 
-
-
 .collection-wrapper {
   display: grid;
   grid-column-gap: 0.5rem;
@@ -301,4 +347,90 @@ $sidebar-collapsed-width: 80px;
     }
   }
 
+}
+
+html body .fab-card-add{
+  margin-left: auto;
+  position: absolute;
+  right: 57px;
+  bottom: 57px;
+  z-index: 999;
+}
+
+#login-container {
+  width: 340px;
+  margin: 50px auto 0 auto;
+  font-size: 15px;
+  background-color: #f7f7f7;
+  padding-top: 1rem;
+
+  .form-control {
+    margin-bottom: 0px !important;
+  }
+
+  button {
+    background-color: #04aa6d;
+    color: white;
+    padding: 14px 20px;
+    margin: 8px 0;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &[type="reset"] {
+      width: auto;
+      padding: 10px 18px;
+      background-color: #f44336;
+    }
+  }
+
+  form{
+    margin-bottom: 15px;
+    box-shadow: 0px 2px 2px rgba(0, 0, 0, 0.3);
+    padding: 30px;
+  }
+
+  .container {
+    padding: 16px;
+  }
+
+  span.forgotPsw {
+    float: right;
+    padding-top: 16px;
+  }
+
+  a.login-create,
+  span.forgotPsw a {
+    color: #007bff;
+    text-decoration: none;
+    background-color: transparent;
+  }
+
+  .error {
+    color: red;
+    position: absolute;
+    font-size: 0.8rem;
+  }
+}
+
+.message {
+  color: red;
+  margin-bottom: 1rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+
+
+@media only screen and (max-width: 779px) {
+  html body .fab-card-add{ 
+    position: relative;
+    inset: unset;
+  }
 }

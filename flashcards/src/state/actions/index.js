@@ -4,6 +4,7 @@ import authAPI from "../../api/authAPI";
 import { push } from 'connected-react-router'
 import { regMsg } from "../../pages/VerifyPage";
 import usersAPI from "api/usersAPI";
+import errorParse from "helpers/errorParse";
 
 export const loginAction = (payload, actions) =>
 {
@@ -28,15 +29,16 @@ export const loginAction = (payload, actions) =>
                 }
                 else
                 {
-                    dispatch({ type: actionTypes.LOG_IN_FAIL/* , payload: { error: response.data.errorMessage } */ });
-                    actions.setStatus({ message: response.data.errorMessage });
+                    dispatch({ type: actionTypes.LOG_IN_FAIL });
+                    //actions.setStatus({ message: response.data.errorMessage });
+                    actions.setStatus({ message: errorParse(response.data) });
                     actions.setSubmitting(false);
                 }
             })
             .catch((error) =>
             {
                 dispatch({ type: actionTypes.LOG_IN_FAIL/* , payload: { error: error.message } */ });
-                actions.setStatus({ message: "" + error });
+                actions.setStatus({ message: errorParse(error) });
                 actions.setSubmitting(false);
             });
     }
@@ -113,20 +115,24 @@ export const registerAction = (email, username, password, actions) =>
                     console.log("register 201 created")
                     actions.setSubmitting(false);
                     dispatch({ type: actionTypes.REGISTER_SUCCESS });
-                    dispatch(push(`./${pathConsts.verify}?${regMsg.key}=${regMsg.val}`))
+                    dispatch(push(`${pathConsts.verify}?${regMsg.key}=${regMsg.val}&email=${email}`))
                 }
                 else
                 {
                     //console.log(JSON.stringify(response));
                     //console.log("registration error: " + response.data.errorMessage);
                     dispatch({ type: actionTypes.REGISTER_FAIL });
-                    actions.setStatus({ message: response.data });//TODO add better error messages
+                    console.log("res")
+                    console.log(response)
+                    actions.setStatus({ message: errorParse(response.data) });//TODO add better error messages
                     actions.setSubmitting(false);
                 }
             }).catch((error) =>
             {
+                console.log("err")
+                console.log(JSON.stringify(error))
                 dispatch({ type: actionTypes.REGISTER_FAIL/* , payload: { error: error } */ });
-                actions.setStatus({ message: "" + error });//TODO add better error messages
+                actions.setStatus({ message: errorParse(error.data || error) });//TODO add better error messages
                 actions.setSubmitting(false);
             });
     }

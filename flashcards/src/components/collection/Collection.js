@@ -1,3 +1,4 @@
+import PropTypes from "prop-types"
 import React, { useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import { push } from 'connected-react-router'
@@ -16,10 +17,10 @@ import useAxios from 'axios-hooks';
 import apiReqConfig from "../../config/apiReqConfig";
 
 const Collection = (
-    { collection, type, refreshCollectionsCallback, openEditModal, isFaved = false, ...p }
+    { collection, type, refreshCollectionsCallback, openEditModal, isFaved = false, isOwned, ...p }
 ) =>
 {
-    const { id, title, counterFav, counterDup, cardNum, category, collectionColor } = collection;
+    const { id, title, counterFav, counterDup, cardNum, category, collectionColor, owner } = collection;
     const dispatch = useDispatch();
 
     const clickF = useCallback(() =>
@@ -28,25 +29,25 @@ const Collection = (
     }, [dispatch, id])
 
 
-    const [{ data: dataDuplicate, isLoading: isLoadingDuplicate, error: errorDuplicate }, request] = useAxios(
+    const [{ /* data: dataDuplicate,*/isLoading: isLoadingDuplicate/*, error: errorDuplicate  */ }, requestDuplicate] = useAxios(
         apiReqConfig.collections.duplicateCollection(id), { manual: true }
     );
 
-    const [{ data: dataDelete, isLoading: isLoadingDelete, error: errorDelete }, requestDelete] = useAxios(
+    const [{ /* data: dataDelete,*/isLoading: isLoadingDelete/*, error: errorDelete */ }, requestDelete] = useAxios(
         apiReqConfig.collections.deleteCollection(id), { manual: true }
     );
 
-    const [{ data: dataFav, loading: isLoadingFav, error: errorFav, response: responseFav }, requestFav] = useAxios(
+    const [{/*  data: dataFav,*/loading: isLoadingFav/*, error: errorFav, response: responseFav */ }, requestFav] = useAxios(
         apiReqConfig.collections.favCollection(id), { manual: true }
     );
 
-    const [{ data: dataUnFav, loading: isLoadingUnFav, error: errorUnFav, response: responseUnFav }, requestUnFav] = useAxios(
+    const [{ /* data: dataUnFav,*/loading: isLoadingUnFav/*, error: errorUnFav, response: responseUnFav  */ }, requestUnFav] = useAxios(
         apiReqConfig.collections.unfavCollection(id), { manual: true }
     );
 
     const duplicate = () =>
     {//TODO
-        request()
+        requestDuplicate()
             .then(() =>
             {
                 alert("duplication success");
@@ -57,7 +58,7 @@ const Collection = (
             })
             .catch((error) =>
             {
-                alert("duplicate error: " + error);
+                alert("duplicate error: " + error?.data?.message || error);
                 console.error(error);
             })
     }
@@ -75,12 +76,12 @@ const Collection = (
             })
             .catch((error) =>
             {
-                alert("deletion error: " + error);
+                alert("deletion error: " + error?.data?.message || error);
                 console.error(error);
             })
     }
 
-    const favCollection = () =>//TODO mutation of favs
+    const favCollection = () =>
     {//TODO
         requestFav()
             .then(() =>
@@ -93,7 +94,7 @@ const Collection = (
             })
             .catch((error) =>
             {
-                alert("fav error: " + error.response?.data?.errorMessage || error);
+                alert("fav error: " + error?.data?.message || error);
                 //console.error(error);
             })
     }
@@ -111,12 +112,12 @@ const Collection = (
             })
             .catch((error) =>
             {
-                alert("unfav error: " + error.response?.data?.errorMessage || error);
+                alert("unfav error: " + error?.data?.message || error);
                 //console.error(error);
             })
     }
 
-    const btnDuplicate = (innerText) => <Tooltip title={innerText} placement={'top-end'}><Button variant='contained' color='secondary' onClick={duplicate}>Duplicate <HelpIcon fontSize='small' /></Button></Tooltip>;
+    const btnDuplicate = (innerText) => <Tooltip title={innerText} placement={'top-end'}><Button variant='contained' color='secondary' onClick={duplicate}>Duplicate<HelpIcon style={{ marginLeft: "6px" }} fontSize='small' /></Button></Tooltip>;
     return (
         <Card {...p}
             style={{
@@ -124,10 +125,21 @@ const Collection = (
                 marginBottom: "10px",
                 border: "1px solid black",
                 borderRadius: "0.5em",
-                paddingRight: "10px"
+                paddingInline: "8px"
             }}>
-            {/* {data && <Snackbar>{data}</Snackbar>} */}
-            <Typography variant="h6" component={"h1"} textAlign={'center'}>{title}</Typography>
+            <div className="flex" style={{ justifyContent: "space-between", alignItems: "center", paddingInline: "auto" }}>
+                <Typography variant="h6" component={"h1"} textAlign={'left'} marginRight={"10px"}>{title}</Typography>
+
+                {type !== "private" &&
+                    <Tooltip title={"Author"} placement={"top"}>
+                        {isOwned ?
+                            <small className="bold flex">My<HelpIcon style={{ marginLeft: "6px" }} fontSize='small' /></small>
+                            :
+                            (<small>{owner}</small>)
+                        }
+                    </Tooltip>
+                }
+            </div>
             <CardContent style={{
                 display: "flex",
                 paddingRight: "5px",
@@ -171,7 +183,23 @@ const Collection = (
         </Card >
     )
 };
-Collection.propTypes = {
 
+Collection.propTypes = {
+    collection: PropTypes.shape({
+        cardNum: PropTypes.number,
+        category: PropTypes.string,
+        collectionColor: PropTypes.string,
+        counterDup: PropTypes.number,
+        counterFav: PropTypes.number,
+        id: PropTypes.number,
+        owner: PropTypes.string,
+        title: PropTypes.string,
+        visibility: PropTypes.string
+    }),
+    isFaved: PropTypes.bool,
+    isOwned: PropTypes.bool,
+    openEditModal: PropTypes.func,
+    refreshCollectionsCallback: PropTypes.func,
+    type: PropTypes.string
 }
 export default React.memo(Collection);

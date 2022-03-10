@@ -24,12 +24,18 @@ export const responseInterceptorError = (error) =>
         return error;
     }
 
+    /* if (error?.response?.status === 409)
+    {
+        console.log("interc_ 409");
+        return Promise.resolve(error.response);
+    } */
+
     if (error.message === "TIMEOUT")
     {
         console.error("timeout");
         return Promise.reject({ ...error, code: "ETIMEDOUT" })
     }
-    return Promise.reject(error);
+    return Promise.reject(error.response || error);
 }
 
 

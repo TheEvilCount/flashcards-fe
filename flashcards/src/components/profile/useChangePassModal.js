@@ -1,5 +1,5 @@
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress, Tooltip } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress } from '@mui/material';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import InputTextField from '../InputTextField';
@@ -14,17 +14,14 @@ import changePassValidation from 'validations/changePassValidation';
 const useChangePassDialog = (onSubmitcallback) =>
 {
     const [open, setOpen] = useState(false);
-    const [data, setData] = useState({});
 
-    const handleClickOpen = (data) =>
+    const handleClickOpen = () =>
     {
-        setData(data || {});
         setOpen(true);
     };
 
     const handleClose = () =>
     {
-        setData({});
         setOpen(false);
     };
 
@@ -74,23 +71,21 @@ const useChangePassDialog = (onSubmitcallback) =>
                     {({
                         isSubmitting,
                         handleSubmit,
-                        status,
-                        errors,
-                        touched
+                        status
                     }) => (
                         <>
-                            <Form style={{ minWidth: "40ch" }}>
+                            <Form style={{ minWidth: "30ch", display: "grid", justifyContent: "center" }}>
                                 <DialogTitle>Change password</DialogTitle>
                                 <DialogContent>
                                     <DialogContentText>
                                     </DialogContentText>
 
-                                    <InputTextField error={errors.title} touched={touched.title}
-                                        name="oldPassword" type="password" label="Current password" placeholder="" />
-                                    <InputTextField error={errors.title} touched={touched.title}
-                                        name="newPassword" type="password" label="New Password" placeholder="" />
-                                    <InputTextField error={errors.title} touched={touched.title}
-                                        name="newPasswordRep" type="password" label="Repeat new Password" placeholder="" />
+                                    <InputTextField name="oldPassword" type="password" required sx={{ display: "block" }}
+                                        label="Current password" placeholder="" />
+                                    <InputTextField name="newPassword" type="password" required sx={{ display: "block" }}
+                                        label="New Password" placeholder="" />
+                                    <InputTextField name="newPasswordRep" type="password" required sx={{ display: "block" }}
+                                        label="Repeat new Password" placeholder="" />
                                     {status && status.message && (
                                         <div className="message">{status.message}</div>
                                     )}

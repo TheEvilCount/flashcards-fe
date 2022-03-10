@@ -10,7 +10,7 @@ import { pathConsts } from '../../config/paths';
 import registerFormValidation from '../../validations/registerFormValidation';
 
 
-export default function Register()
+export default function RegisterPage()
 {
     const dispatch = useDispatch();
 
@@ -33,7 +33,6 @@ export default function Register()
                 {({
                     isSubmitting,
                     handleSubmit,
-                    values,
                     status,
                     resetForm
                 }) => (

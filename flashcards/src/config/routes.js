@@ -1,5 +1,5 @@
-import Login from "../pages/login/Login";
-import Register from "../pages/register/Register";
+import Login from "../pages/login/LoginPage";
+import Register from "../pages/register/RegisterPage";
 import HomePage from "../pages/HomePage";
 import PageNotFoundPage from "../pages/PageNotFoundPage";
 import Dashboard from "../pages/DashboardPage";
@@ -89,6 +89,18 @@ const routes = [
         key: "verify",
         path: pathConsts.verify,
         comp: VerifyPage,
+        isPrivate: false,
+        isAdmin: false,
+        showWhenNotLogged: false,
+        show: false,
+        Icon: <></>,
+        Title: () => { return (<></>) },
+        class: ""
+    },
+    {
+        key: "reset",
+        path: pathConsts.resetPass,
+        comp: () => <>Reset password page TODO</>,
         isPrivate: false,
         isAdmin: false,
         showWhenNotLogged: false,
