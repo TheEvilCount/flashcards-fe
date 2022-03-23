@@ -1,5 +1,5 @@
 import categoriesAPI from "api/categoriesAPI";
-import { useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 
 
 export const KEY_CATEGORIES = "categories";
@@ -20,5 +20,22 @@ const useCategories = () => useQuery(
         cacheTime: 60
     }
 );
+
+//create category mutation
+export const useMutationCreateCategory = () =>
+{
+    const queryClient = useQueryClient();
+    const mutation = useMutation((newCategory) =>
+    {
+        return categoriesAPI.postCategories(newCategory.title)
+    }, {
+        onSuccess: () =>
+        {
+            queryClient.invalidateQueries(KEY_CATEGORIES);
+        }
+    });
+
+    return mutation;
+}
 
 export default useCategories;

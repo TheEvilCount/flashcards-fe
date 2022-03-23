@@ -123,6 +123,26 @@ const deleteCollectionReq = (collectionID) =>
 };
 
 /**
+ * Returns request for adding collection to favs based on id
+ * @param {number} collectionID 
+ * @returns axios request
+ */
+const favCollectionReq = (collectionID) =>
+{
+    return axios.request(apiReqConfig.collections.favCollection(collectionID));
+};
+
+/**
+* Returns request for removing collection from favs based on id
+* @param {number} collectionID 
+* @returns axios request
+*/
+const unfavCollectionReq = (collectionID) =>
+{
+    return axios.request(apiReqConfig.collections.unfavCollection(collectionID));
+};
+
+/**
  * Returns configuration for updating collection based on params
  * @param {number} collectionID id of updating collection
  * @param {string} title new title
@@ -149,7 +169,9 @@ const collectionsAPI = {
     privatizeCollection: privatizeCollectionsReq,
     publishCollection: publishCollectionsReq,
     deleteCollection: deleteCollectionReq,
-    updateCollection: updateCollectionReq
+    updateCollection: updateCollectionReq,
+    favCollection: favCollectionReq,
+    unfavCollection: unfavCollectionReq
 };
 
 export default collectionsAPI;

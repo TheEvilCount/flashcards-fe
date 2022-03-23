@@ -56,6 +56,7 @@ export const useMutationPublishCollection = () =>
     });
     return mutationPublishCollection;
 }
+
 //privatize mutation
 export const useMutationPrivatizeCollection = () =>
 {
@@ -71,6 +72,74 @@ export const useMutationPrivatizeCollection = () =>
         }
     });
     return mutationPrivatizeCollection;
+}
+
+//duplicate mutation
+export const useMutationDuplicateCollection = () =>
+{
+    const queryClient = useQueryClient();
+    const mutation = useMutation((collectionId) =>
+    {
+        return collectionsAPI.duplicateCollection(collectionId)
+    }, {
+        onSuccess: () =>
+        {
+            queryClient.invalidateQueries(KEY_COLLECTIONS);
+            queryClient.invalidateQueries(KEY_COLLECTIONS_FAV_IDS);
+        }
+    });
+    return mutation;
+}
+
+//delete mutation
+export const useMutationDeleteCollection = () =>
+{
+    const queryClient = useQueryClient();
+    const mutation = useMutation((collectionId) =>
+    {
+        return collectionsAPI.deleteCollection(collectionId)
+    }, {
+        onSuccess: () =>
+        {
+            queryClient.invalidateQueries(KEY_COLLECTIONS);
+            queryClient.invalidateQueries(KEY_COLLECTIONS_FAV_IDS);
+        }
+    });
+    return mutation;
+}
+
+//fav mutation
+export const useMutationFavCollection = () =>
+{
+    const queryClient = useQueryClient();
+    const mutation = useMutation((collectionId) =>
+    {
+        return collectionsAPI.favCollection(collectionId)
+    }, {
+        onSuccess: () =>
+        {
+            queryClient.invalidateQueries(KEY_COLLECTIONS);
+            queryClient.invalidateQueries(KEY_COLLECTIONS_FAV_IDS);
+        }
+    });
+    return mutation;
+}
+
+//unfav mutation
+export const useMutationUnfavCollection = () =>
+{
+    const queryClient = useQueryClient();
+    const mutation = useMutation((collectionId) =>
+    {
+        return collectionsAPI.unfavCollection(collectionId)
+    }, {
+        onSuccess: () =>
+        {
+            queryClient.invalidateQueries(KEY_COLLECTIONS);
+            queryClient.invalidateQueries(KEY_COLLECTIONS_FAV_IDS);
+        }
+    });
+    return mutation;
 }
 
 

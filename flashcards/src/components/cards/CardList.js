@@ -56,7 +56,7 @@ const CardList = ({ collectionDetail, openUpdateModal, openCreateModal }) =>
                         aria-label="add" onClick={() => openCreateModal(id)}><AddIcon /></Fab>}
             </CardMui>
             <div className="cards-wrapper">
-                {cardElements(cardListState)}
+                {collectionDetail && cardElements(cardListState)}
             </div>
         </>
     );

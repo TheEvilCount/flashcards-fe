@@ -36,8 +36,8 @@ const VerifyPage = () =>
                 })
                 .catch((error) =>
                 {
-                    console.error(error);
                     toast.error(error.data.message || "Verification error!");
+                    console.error(error);
                 });
 
         return () =>
@@ -58,8 +58,8 @@ const VerifyPage = () =>
             })
             .catch((error) =>
             {
-                console.error(error);
                 toast.update(resendToastRef.current, { type: "error", render: error.data.message || "Error!" })
+                console.error(error);
             });
     }
 
@@ -91,7 +91,6 @@ const VerifyPage = () =>
                 token &&
                 <ErrorLoadingDataWrapper isLoading={isLoadingVerify} error={errorVerify?.data} retryRequest={postVerify} title={"Account Verification"}>
                     <Alert severity='success'>Account successfully verified!<br /><NavLink to={pathConsts.login}>Login</NavLink></Alert>
-                    {/* TODO success verification on success */}
                 </ErrorLoadingDataWrapper>
             }
         </>

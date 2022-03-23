@@ -1,10 +1,9 @@
-//import logo from './logo.svg';
 import './App.scss';
 
 import React, { useState } from 'react';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
-import { ConnectedRouter as Router } from 'connected-react-router';
+import { ConnectedRouter as Router, push } from 'connected-react-router';
 import { ErrorBoundary } from 'react-error-boundary'
 
 import routes from "./config/routes.js";
@@ -14,9 +13,14 @@ import { history } from './state/store';
 import SideBar from './components/sideBar/SideBar';
 import ContentWrapper from './components/ContentWrapper';
 
+import CookieConsent from "react-cookie-consent";
+import { toast } from 'react-toastify';
+import { Button } from '@mui/material';
+
 export default function App()
 {
   const authReducer = useSelector(state => state.auth);
+  const dispatch = useDispatch();
 
   const [sideBarCollapsed, setSideBarCollapsed] = useState(false);
   const handleToggleSideBar = (what) =>
@@ -75,6 +79,56 @@ export default function App()
           }
         </Switch>
       </div>
+      <CookieConsent
+        location={"bottom"}
+        buttonText={"I understand."}
+        cookieName={"cookieConsent"}
+        style={{ background: "#2B373B", zIndex: "2000" }}
+        buttonStyle={{ color: "#4e503b", fontSize: "1.2em", borderRadius: "10px" }}
+        ButtonComponent={Button}
+        customButtonProps={{ color: "primary" }}
+        expires={666}
+        overlay={false}
+        /* debug={true} */
+        /* acceptOnScroll={true}
+        acceptOnScrollPercentage={50} */
+        onAccept={() =>
+        {
+          toast.info("Cookie consent given.");
+        }}
+      >
+        This website uses session cookies necessary for application functions.
+        More at
+        <a className='nav-link' onClick={() =>
+        {
+          dispatch(push(pathConsts.about));
+          setTimeout(() =>
+          {
+            const node = document.getElementById('cpolicy');
+            node.scrollIntoView({ behavior: "smooth" });
+          }, 0);
+        }}
+        >
+          Cookies Policy
+        </a>.
+        <br />
+        <small>
+          By using our website, you agree to our
+          <a className='nav-link' onClick={() =>
+          {
+            dispatch(push(pathConsts.about));
+            setTimeout(() =>
+            {
+              const node = document.getElementById('ppolicy');
+              node.scrollIntoView({ behavior: "smooth" });
+            }, 0);
+          }}
+          >
+            Privacy Policy
+          </a>
+          and our cookies usage.
+        </small>
+      </CookieConsent>
     </Router >
   )
 }

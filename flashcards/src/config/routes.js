@@ -19,6 +19,7 @@ import InfoIcon from '@mui/icons-material/Info';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonIcon from '@mui/icons-material/Person';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
+import AdminPage from "pages/AdminPage";
 
 const routes = [
     {
@@ -212,7 +213,7 @@ const routes = [
     {
         key: "adminDashboard",
         path: pathConsts.adminDashboard,
-        comp: () => { return (<div>admin dashboard component TODO</div>) },//TODO lazy loaded?
+        comp: AdminPage,//TODO lazy loaded?
         isPrivate: true,
         isAdmin: true,
         showWhenNotLogged: false,

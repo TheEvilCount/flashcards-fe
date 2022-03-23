@@ -446,7 +446,55 @@ const updateUserPrefs = (newPrefs) =>
     }
 };
 
+/**
+ * Returns configuration for all admin accounts (only for admins!)
+ * @returns request configuration
+ */
+const getAdmins = () =>
+{
+    return {
+        url: API_SERVER_URL + "/users/admins",
+        method: "GET",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
 
+/**
+ * Returns configuration for all admin accounts (only for admins!)
+ * @returns request configuration
+ */
+const promoteUserToAdmin = (userId) =>
+{
+    return {
+        url: API_SERVER_URL + `/users/${userId}/promote`,
+        method: "POST",
+        withCredentials: true,
+        timeout: apiRequestTimeout
+    }
+};
+
+/**
+ * Returns configuration for getting all registered user (only for admins!)
+ * @returns request configuration
+ */
+const getAllUsers = () =>
+{
+    return {
+        url: API_SERVER_URL + "/users",
+        method: "GET",
+        withCredentials: true,
+        timeout: apiRequestTimeout,
+        headers:
+        {
+            "Accept": "application/json"
+        }
+    }
+};
 
 //______Auth______
 
@@ -656,7 +704,10 @@ const apiReqConfig = {
     },
     users: {
         getCurrent: getCurrentUser,
-        updatePrefs: updateUserPrefs
+        updatePrefs: updateUserPrefs,
+        getAdmins: getAdmins,
+        promoteUserToAdmin: promoteUserToAdmin,
+        getAll: getAllUsers,
     },
     auth: {
         register,

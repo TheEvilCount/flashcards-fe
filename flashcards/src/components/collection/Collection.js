@@ -12,9 +12,8 @@ import HelpIcon from '@mui/icons-material/Help';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import CollectionIcon from '@mui/icons-material/Collections';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-
-import useAxios from 'axios-hooks';
-import apiReqConfig from "../../config/apiReqConfig";
+import { useMutationDeleteCollection, useMutationDuplicateCollection, useMutationFavCollection, useMutationUnfavCollection } from "api/react-query hooks/useCollections";
+import { toast } from "react-toastify";
 
 const Collection = (
     { collection, type, refreshCollectionsCallback, openEditModal, isFaved = false, isOwned, ...p }
@@ -28,29 +27,17 @@ const Collection = (
         dispatch(push(`collections/${id}/cards`))
     }, [dispatch, id])
 
-
-    const [{ /* data: dataDuplicate,*/isLoading: isLoadingDuplicate/*, error: errorDuplicate  */ }, requestDuplicate] = useAxios(
-        apiReqConfig.collections.duplicateCollection(id), { manual: true }
-    );
-
-    const [{ /* data: dataDelete,*/isLoading: isLoadingDelete/*, error: errorDelete */ }, requestDelete] = useAxios(
-        apiReqConfig.collections.deleteCollection(id), { manual: true }
-    );
-
-    const [{/*  data: dataFav,*/loading: isLoadingFav/*, error: errorFav, response: responseFav */ }, requestFav] = useAxios(
-        apiReqConfig.collections.favCollection(id), { manual: true }
-    );
-
-    const [{ /* data: dataUnFav,*/loading: isLoadingUnFav/*, error: errorUnFav, response: responseUnFav  */ }, requestUnFav] = useAxios(
-        apiReqConfig.collections.unfavCollection(id), { manual: true }
-    );
+    const mutationDuplicateCollection = useMutationDuplicateCollection();
+    const mutationDeleteCollection = useMutationDeleteCollection();
+    const mutationFavCollection = useMutationFavCollection();
+    const mutationUnfavCollection = useMutationUnfavCollection();
 
     const duplicate = () =>
-    {//TODO
-        requestDuplicate()
+    {
+        mutationDuplicateCollection.mutateAsync(id)
             .then(() =>
             {
-                alert("duplication success");
+                toast.success("Collection duplicated.");
             })
             .then(() =>
             {
@@ -58,17 +45,17 @@ const Collection = (
             })
             .catch((error) =>
             {
-                alert("duplicate error: " + error?.data?.message || error);
+                toast.error("Duplication error: " + error?.data?.message || error);
                 console.error(error);
             })
     }
 
     const deleteCollection = () =>
-    {//TODO
-        requestDelete()
+    {
+        mutationDeleteCollection.mutateAsync(id)
             .then(() =>
             {
-                alert("deletion success");
+                toast.success("Collection deleted.");
             })
             .then(() =>
             {
@@ -76,17 +63,17 @@ const Collection = (
             })
             .catch((error) =>
             {
-                alert("deletion error: " + error?.data?.message || error);
+                toast.error("Deletion error: " + error?.data?.message || error);
                 console.error(error);
             })
     }
 
     const favCollection = () =>
-    {//TODO
-        requestFav()
+    {
+        mutationFavCollection.mutateAsync(id)
             .then(() =>
             {
-                alert("fav success");
+                toast.success("Collection added to favourite");
             })
             .then(() =>
             {
@@ -94,17 +81,17 @@ const Collection = (
             })
             .catch((error) =>
             {
-                alert("fav error: " + error?.data?.message || error);
-                //console.error(error);
+                toast.error("Adding to favourite error: " + error?.data?.message || error);
+                console.error(error?.data?.message || error);
             })
     }
 
     const unfavCollection = () =>
-    {//TODO
-        requestUnFav()
+    {
+        mutationUnfavCollection.mutateAsync(id)
             .then(() =>
             {
-                alert("unfav success");
+                toast.success("Collection removed from favourite");
             })
             .then(() =>
             {
@@ -112,12 +99,30 @@ const Collection = (
             })
             .catch((error) =>
             {
-                alert("unfav error: " + error?.data?.message || error);
-                //console.error(error);
+                toast.error("Removing from collection error: " + error?.data?.message || error);
+                console.error(error?.data?.message || error);
             })
     }
 
-    const btnDuplicate = (innerText) => <Tooltip title={innerText} placement={'top-end'}><Button variant='contained' color='secondary' onClick={duplicate}>Duplicate<HelpIcon style={{ marginLeft: "6px" }} fontSize='small' /></Button></Tooltip>;
+    const btnDuplicate = (innerText) => <Tooltip title={innerText} placement={'top-end'}>
+        <Button variant='contained' color='secondary' onClick={duplicate}>
+            Duplicate<HelpIcon style={{ marginLeft: "6px" }} fontSize='small' />
+        </Button>
+    </Tooltip>;
+
+    const getBtnDuplicateByType = (type) =>
+    {
+        switch (type)
+        {
+            default:
+            case "private":
+                return btnDuplicate("Duplicate");
+            case "public":
+            case "favourite":
+                return btnDuplicate("Duplicate to private");
+        }
+    }
+
     return (
         <Card {...p}
             style={{
@@ -141,39 +146,45 @@ const Collection = (
                 }
             </div>
             <CardContent style={{
-                display: "flex",
-                paddingRight: "5px",
+                /* display: "flex", */
+                padding: "10px 5px 10px 5px",
                 justifyContent: "space-evenly"
             }}>
-                <div style={{ display: "grid" }}>
-                    <div>category: {category}</div>
-                    <Tooltip title={"Collection visibility"} placement={'top-start'}><span><VisibilityIcon />: {collection.visibility}</span></Tooltip>
-                    <div><FavoriteIcon htmlColor='red' />:{counterFav}</div>
-                    <Tooltip title={"Number of private duplications"} placement={'top-start'}><span><DynamicFeedIcon />: {counterDup}</span></Tooltip>
-                    <Tooltip title={"Number of card within collection"} placement={'top-start'}><span><CollectionIcon />: {cardNum}</span></Tooltip>
+                <div>category: {category}</div>
+                <div style={{ display: "flex", justifyContent: "space-between" }}>
+                    <div style={{ display: "grid" }}>
+                        <Tooltip title={"Collection visibility"} placement={'top-start'}><span><VisibilityIcon />: {collection.visibility}</span></Tooltip>
+                        <div><FavoriteIcon htmlColor='red' />:{counterFav}</div>
+                    </div>
+                    <div style={{ display: "grid" }}>
+                        <Tooltip title={"Number of private duplications"} placement={'top-start'}><span><DynamicFeedIcon />: {counterDup}</span></Tooltip>
+                        <Tooltip title={"Number of card within collection"} placement={'top-start'}><span><CollectionIcon />: {cardNum}</span></Tooltip>
+                    </div>
                 </div>
                 <CardActions style={{ backgroundColor: "rgba(255, 255, 255, 0.55)", borderRadius: "1em", /* flexWrap: "wrap", */ display: "flex", flexDirection: "column" }}>
-                    <Button variant='contained' color='primary' size='large' onClick={clickF} style={{ margin: "4px 8px" }} >Enter</Button>
+                    <ButtonGroup orientation='horizontal' style={{ marginBlock: "4px" }}>
+                        <Button variant='contained' color='primary' size='large' onClick={clickF} >Enter</Button>
+                        {getBtnDuplicateByType(type)}
+                    </ButtonGroup>
                     {type === "private" && (
-                        <ButtonGroup orientation='vertical'>
-                            {btnDuplicate("Duplicate")}
-                            <Button onClick={() => openEditModal(collection)}>Edit <EditIcon /></Button>
-                            <Button onClick={deleteCollection}>Delete<DeleteForeverIcon /></Button>
-                        </ButtonGroup>
+                        <>
+                            <ButtonGroup orientation='horizontal'>
+                                <Button onClick={() => openEditModal(collection)}>Edit <EditIcon /></Button>
+                                <Button onClick={deleteCollection}>Delete<DeleteForeverIcon /></Button>
+                            </ButtonGroup>
+                        </>
                     )}
                     {type === "public" && (
-                        <ButtonGroup orientation='vertical'>
-                            {btnDuplicate("Duplicate to private")}
+                        <ButtonGroup orientation='horizontal'>
                             {
-                                isFaved ?
+                                !isOwned && (isFaved ?
                                     <Button onClick={unfavCollection}>Remove from favs <FavoriteIcon htmlColor='red' /></Button> :
-                                    <Button onClick={favCollection}>Add to Favs<FavoriteIcon htmlColor='darkgray' /></Button>
+                                    <Button onClick={favCollection}>Add to Favs<FavoriteIcon htmlColor='darkgray' /></Button>)
                             }
                         </ButtonGroup>
                     )}
                     {type === "favourite" && (
-                        <ButtonGroup orientation='vertical'>
-                            {btnDuplicate("Duplicate to private")}
+                        <ButtonGroup orientation='horizontal'>
                             <Button onClick={unfavCollection}>Remove from favs <FavoriteIcon htmlColor='red' /></Button>
                         </ButtonGroup>
                     )}

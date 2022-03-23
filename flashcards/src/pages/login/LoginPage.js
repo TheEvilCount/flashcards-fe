@@ -39,8 +39,6 @@ export default function LoginPage()
                     handleSubmit,
                     values,
                     status,
-                    errors,
-                    touched,
                     resetForm,
                     setFieldValue
                 }) => (
@@ -48,10 +46,8 @@ export default function LoginPage()
                         <Form>
                             <Card className="container">
                                 <div>
-                                    <InputTextField error={errors.email} touched={touched.email} name="email" type="email" label="E-mail" placeholder="@" />
-                                </div>
-                                <div style={{ marginTop: 10 }}>
-                                    <InputTextField error={errors.password} touched={touched.password} name="password" type="password" label="Password" placeholder="" />
+                                    <InputTextField name="email" type="email" label="E-mail" placeholder="@" />
+                                    <InputTextField name="password" type="password" label="Password" placeholder="" />
                                 </div>
                                 <FormControlLabel
                                     control={
@@ -84,7 +80,7 @@ export default function LoginPage()
                             <div>
                                 <Button type="reset" onClick={resetForm}>Cancel</Button>
                                 <span className="forgotPsw">
-                                    Forgot <NavLink to={pathConsts.resetPass}>password?</NavLink>
+                                    Lost <NavLink to={pathConsts.resetPass}>password?</NavLink>
                                 </span>
                             </div>
                         </Form>
