@@ -10,7 +10,8 @@ import { Button, Card } from '@mui/material';
 
 import useCreateCardDialog from 'components/cards/useCreateCardModal';
 import useUpdateCardDialog from 'components/cards/useUpdateCardModal';
-import { useQueryCollectionDetail } from 'api/react-query hooks/useCards';
+import { useQueryCollectionDetail } from 'api/react-query-hooks/useCards';
+import useEditCollectionDialog from 'components/collection/useEditCollectionModal';
 
 const CollectionDetailPage = () =>
 {
@@ -40,16 +41,35 @@ const CollectionDetailPage = () =>
         [openModalUpdate],
     );
 
+
+    //modal info collection (edit only private collection)
+    const [modalC, openModalC] = useEditCollectionDialog(refetch);
+    const openCollectionModal = useCallback(
+        (colData, isReadOnly) =>
+        {
+            openModalC(colData, isReadOnly);
+        },
+        [openModalC],
+    )
+
     return (
         <>
             <Card style={{ display: "inline-flex", padding: "0.1em 0.5em", width: "100%" }}>
                 <h2>Collection: {data?.title}</h2>
-                <span style={{ display: "inline-flex", alignItems: "center", marginLeft: "auto" }}><Button variant='contained' color='secondary' onClick={() => { dispatch(goBack()) }}>Go back</Button></span>
+                <span style={{ display: "inline-flex", alignItems: "center", marginLeft: "auto" }}>
+                    <Button variant='contained' color='secondary' onClick={() => { dispatch(goBack()) }}>Go back</Button>
+                </span>
             </Card>
             {modalCreate}
             {modalUpdate}
+            {modalC}
             <ErrorLoadingDataWrapper isLoading={isLoading} error={error} retryRequest={refetch}>
-                <CardList collectionDetail={data} openUpdateModal={openUpdateModal} openCreateModal={openCreateModal}></CardList>
+                <CardList
+                    collectionDetail={data}
+                    openUpdateModal={openUpdateModal}
+                    openCreateModal={openCreateModal}
+                    openCollectionModal={openCollectionModal}
+                />
             </ErrorLoadingDataWrapper>
         </>
     )

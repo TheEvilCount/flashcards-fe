@@ -1,8 +1,9 @@
 
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress } from '@mui/material';
-import { useMutationCreateCard } from 'api/react-query hooks/useCards';
+import { useMutationCreateCard } from 'api/react-query-hooks/useCards';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import cardValidation from 'validations/cardValidation';
 import InputTextField from '../InputTextField';
 
@@ -40,7 +41,6 @@ const useCreateCardDialog = (onSubmitcallback) =>
                     validationSchema={cardValidation}
                     onSubmit={(values, actions) =>
                     {
-                        console.log("submit??")
                         actions.setStatus({ message: null });//reset message
                         actions.setSubmitting(true);
 
@@ -54,10 +54,12 @@ const useCreateCardDialog = (onSubmitcallback) =>
                                 if (response.status === 201)
                                 {
                                     setOpen(false);
+                                    toast.success("Card created");
                                     onSubmitcallback();
                                 }
                                 else
                                 {
+                                    toast.error(response?.data?.message || "Unexpected error");
                                     actions.setStatus({ message: response?.data?.message || "Unexpected error" });
                                 }
                             })
@@ -65,6 +67,7 @@ const useCreateCardDialog = (onSubmitcallback) =>
                             {
                                 console.log(error)
                                 actions.setStatus({ message: "Error: " + error?.data?.message || "Unexpected error" });
+                                toast.error("Error: " + error?.data?.message || "Unexpected error");
                             })
                         actions.setSubmitting(false);
                     }}

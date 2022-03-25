@@ -1,5 +1,5 @@
-import Login from "../pages/login/LoginPage";
-import Register from "../pages/register/RegisterPage";
+import Login from "../pages/LoginPage";
+import Register from "../pages/RegisterPage";
 import HomePage from "../pages/HomePage";
 import PageNotFoundPage from "../pages/PageNotFoundPage";
 import Dashboard from "../pages/DashboardPage";
@@ -7,7 +7,7 @@ import AboutPage from "../pages/AboutPage";
 import CollectionsPage from "../pages/CollectionsPage";
 import VerifyPage from "../pages/VerifyPage";
 import CollectionDetailPage from "../pages/CollectionDetailPage";
-import Profile from "../components/profile/Profile";
+import Profile from "../pages/ProfilePage";
 
 import { pathConsts } from "./paths";
 import { useSelector } from "react-redux";
@@ -20,6 +20,8 @@ import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import PersonIcon from '@mui/icons-material/Person';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import AdminPage from "pages/AdminPage";
+import ResetPage from "pages/ResetPage";
+import LostPassPage from "pages/LostPassPage";
 
 const routes = [
     {
@@ -101,7 +103,19 @@ const routes = [
     {
         key: "reset",
         path: pathConsts.resetPass,
-        comp: () => <>Reset password page TODO</>,
+        comp: ResetPage,
+        isPrivate: false,
+        isAdmin: false,
+        showWhenNotLogged: false,
+        show: false,
+        Icon: <></>,
+        Title: () => { return (<></>) },
+        class: ""
+    },
+    {
+        key: "lost",
+        path: pathConsts.lostPass,
+        comp: LostPassPage,
         isPrivate: false,
         isAdmin: false,
         showWhenNotLogged: false,
@@ -136,6 +150,17 @@ const routes = [
         key: "collectionDetail",
         path: pathConsts.collectionDetail,
         comp: CollectionDetailPage,
+        isPrivate: true,
+        showWhenNotLogged: false,
+        show: false,
+        Icon: <></>,
+        Title: () => { return (<></>) },
+        class: ""
+    },
+    {
+        key: "collectionPlay",
+        path: pathConsts.collectionPlay,
+        comp: () => <>play</>,
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,

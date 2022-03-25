@@ -12,20 +12,26 @@ import HelpIcon from '@mui/icons-material/Help';
 import DynamicFeedIcon from '@mui/icons-material/DynamicFeed';
 import CollectionIcon from '@mui/icons-material/Collections';
 import VisibilityIcon from '@mui/icons-material/Visibility';
-import { useMutationDeleteCollection, useMutationDuplicateCollection, useMutationFavCollection, useMutationUnfavCollection } from "api/react-query hooks/useCollections";
+import { useMutationDeleteCollection, useMutationDuplicateCollection, useMutationFavCollection, useMutationUnfavCollection } from "api/react-query-hooks/useCollections";
 import { toast } from "react-toastify";
+import { useParams } from "react-router-dom";
+import { useConfirm } from 'material-ui-confirm';
 
 const Collection = (
     { collection, type, refreshCollectionsCallback, openEditModal, isFaved = false, isOwned, ...p }
 ) =>
 {
     const { id, title, counterFav, counterDup, cardNum, category, collectionColor, owner } = collection;
+
     const dispatch = useDispatch();
+    const confirm = useConfirm();
+
+    const { type: typePath } = useParams();
 
     const clickF = useCallback(() =>
     {
-        dispatch(push(`collections/${id}/cards`))
-    }, [dispatch, id])
+        dispatch(push(`./${typePath}/${id}/cards`))
+    }, [dispatch, id, typePath])
 
     const mutationDuplicateCollection = useMutationDuplicateCollection();
     const mutationDeleteCollection = useMutationDeleteCollection();
@@ -52,19 +58,23 @@ const Collection = (
 
     const deleteCollection = () =>
     {
-        mutationDeleteCollection.mutateAsync(id)
+        confirm({ description: "You cannot undo this action!" })
             .then(() =>
             {
-                toast.success("Collection deleted.");
-            })
-            .then(() =>
-            {
-                refreshCollectionsCallback();
-            })
-            .catch((error) =>
-            {
-                toast.error("Deletion error: " + error?.data?.message || error);
-                console.error(error);
+                mutationDeleteCollection.mutateAsync(id)
+                    .then(() =>
+                    {
+                        toast.success("Collection deleted.");
+                    })
+                    .then(() =>
+                    {
+                        refreshCollectionsCallback();
+                    })
+                    .catch((error) =>
+                    {
+                        toast.error("Deletion error: " + error?.data?.message || error);
+                        console.error(error);
+                    })
             })
     }
 

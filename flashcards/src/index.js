@@ -16,6 +16,8 @@ import configureStore from "./state/store";
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { CssBaseline } from '@mui/material';
 
+import { ConfirmProvider } from 'material-ui-confirm';
+
 import { ReactQueryDevtools } from 'react-query/devtools'
 
 import axios from 'axios';
@@ -77,7 +79,15 @@ ReactDOM.render(
             pauseOnHover
             theme={"colored"}
           />
-          <App />
+          <ConfirmProvider
+            defaultOptions={{
+              confirmationButtonProps: { autoFocus: true },
+              cancellationText: "Cancel",
+              confirmationText: "Ok"
+            }}
+          >
+            <App />
+          </ConfirmProvider>
           <ReactQueryDevtools initialIsOpen={false} position={'bottom-right'} />
         </QueryClientProvider>
       </PersistGate>

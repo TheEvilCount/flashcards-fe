@@ -12,9 +12,9 @@ import Collections from '../components/collection/Collections';
 import apiReqConfig from '../config/apiReqConfig';
 import ErrorLoadingDataWrapper from '../components/ErrorLoadingDataWrapper';
 import usePagination from '../hooks/usePagination';
-import useEditDialog from '../components/collection/useEditCollectionModal';
+import useEditCollectionDialog from '../components/collection/useEditCollectionModal';
 import useCreateCollectionDialog from 'components/collection/useCreateCollectionModal';
-import { KEY_COLLECTIONS, useQueryFavIdsCollections } from 'api/react-query hooks/useCollections';
+import { KEY_COLLECTIONS, useQueryFavIdsCollections } from 'api/react-query-hooks/useCollections';
 
 export const collectionDisplayTypes = {
     private: "private",
@@ -25,6 +25,7 @@ export const collectionDisplayTypes = {
 const CollectionsPage = () =>
 {
     const { type } = useParams();
+    // eslint-disable-next-line no-unused-vars
     const [qType, setqType] = useState("my");
 
     const [search, setSearch] = useState("");
@@ -95,7 +96,7 @@ const CollectionsPage = () =>
 
 
     //modal edit stuff
-    const [modal, openModal] = useEditDialog(requestGetCollections);
+    const [modal, openModal] = useEditCollectionDialog(requestGetCollections);
     const openEditModal = useCallback(
         (colData) =>
         {

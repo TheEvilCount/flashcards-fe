@@ -8,11 +8,12 @@ import React, { useState } from 'react';
 import InputTextField from '../InputTextField';
 import { ColorPicker, createColor } from "mui-color";
 
-import useCategories from 'api/react-query hooks/useCategories';
-import { useMutationCreateCollection } from 'api/react-query hooks/useCollections';
+import useCategories from 'api/react-query-hooks/useCategories';
+import { useMutationCreateCollection } from 'api/react-query-hooks/useCollections';
 import collectionValidation from 'validations/collectionValidation';
 import FormikMaterialUISelectInput from "lib/FormikMaterialUISelectInput"
 import FormikMaterialUIRadioInput from 'lib/FormikMaterialUIRadioInput';
+import { toast } from 'react-toastify';
 
 /**
  * 
@@ -63,17 +64,20 @@ const useCreateCollectionDialog = (onSubmitcallback) =>
                                 if (response.status === 201)
                                 {
                                     setOpen(false);
+                                    toast.success("Collection created");
                                     onSubmitcallback();
                                 }
                                 else
                                 {
                                     actions.setStatus({ message: response?.data?.errorMessage || "Unexpected error" });
+                                    toast.error("Error: " + response?.data?.errorMessage || "Unexpected error");
                                 }
                             })
                             .catch((error) =>
                             {
                                 console.log(error)
                                 actions.setStatus({ message: "Error: " + error?.response?.data?.errorMessage || "Unexpected error" });
+                                toast.error("Error: " + error?.response?.data?.errorMessage || "Unexpected error");
                             })
                         actions.setSubmitting(false);
                     }}

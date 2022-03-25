@@ -3,12 +3,10 @@ import { NavLink } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import { loginAction } from "state/actions"
-import { pathConsts } from '../../config/paths';
-import loginFormValidation from '../../validations/loginFormValidation';
+import { pathConsts } from '../config/paths';
 
-import { FaSpinner } from "react-icons/fa";
-
-import InputTextField from '../../components/InputTextField';
+import loginFormValidation from '../validations/loginFormValidation';
+import InputTextField from '../components/InputTextField';
 import { Field, Form, Formik } from 'formik';
 import { Button, LinearProgress, Card, FormControlLabel, Typography, Switch } from '@mui/material';
 
@@ -74,13 +72,13 @@ export default function LoginPage()
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
                             >
-                                {isSubmitting ? <span>Please wait <FaSpinner /></span> : "Login"}
+                                Login
                             </Button>
 
                             <div>
                                 <Button type="reset" onClick={resetForm}>Cancel</Button>
                                 <span className="forgotPsw">
-                                    Lost <NavLink to={pathConsts.resetPass}>password?</NavLink>
+                                    Lost <NavLink to={pathConsts.lostPass}>password?</NavLink>
                                 </span>
                             </div>
                         </Form>

@@ -4,21 +4,23 @@ import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import InputTextField from '../InputTextField';
 import { ColorPicker, createColor } from "mui-color";
-import useCategories from 'api/react-query hooks/useCategories';
+import useCategories from 'api/react-query-hooks/useCategories';
 import collectionValidation from 'validations/collectionValidation';
 import FormikMaterialUISelectInput from 'lib/FormikMaterialUISelectInput';
 import FormikMaterialUIRadioInput from 'lib/FormikMaterialUIRadioInput';
-import { useMutationPrivatizeCollection, useMutationPublishCollection, useMutationUpdateCollection } from 'api/react-query hooks/useCollections';
+import { useMutationPrivatizeCollection, useMutationPublishCollection, useMutationUpdateCollection } from 'api/react-query-hooks/useCollections';
+import { toast } from 'react-toastify';
 
 /**
  * 
  * @param {*} onSubmitcallback 
  * @returns [MyDialog(), handleClickOpen - handles open and passing data]
  */
-const useEditDialog = (onSubmitcallback) =>
+const useEditCollectionDialog = (onSubmitcallback) =>
 {
     const [open, setOpen] = useState(false);
     const [collectionData, setCollectionData] = useState({});
+    const [isReadOnly, setIsReadOnly] = useState(false);
 
     const { data: dataCategories, error: errorCategories, isLoading: isLoadingCategories } = useCategories();
 
@@ -28,8 +30,9 @@ const useEditDialog = (onSubmitcallback) =>
 
     const mutationPrivatizeCollection = useMutationPrivatizeCollection();
 
-    const handleClickOpen = (data) =>
+    const handleClickOpen = (data, isReadOnlyP = false) =>
     {
+        setIsReadOnly(isReadOnlyP);
         setCollectionData(data || {});
         setOpen(true);
     };
@@ -48,16 +51,19 @@ const useEditDialog = (onSubmitcallback) =>
                 if (response.status === 200)
                 {
                     setOpen(false);
+                    toast.success("Collection updated");
                     onSubmitcallback();
                 }
                 else
                 {
-                    alert({ message: response?.data?.errorMessage || "Unexpected error" });
+                    alert({ message: response?.data?.message || "Unexpected error" });
+                    toast.error(response?.data?.message || "Unexpected error");
                 }
             })
             .catch((error) =>
             {
-                alert({ message: "Error: " + error?.response?.data?.errorMessage || "Unexpected error" });
+                alert({ message: "Error: " + error?.data?.message || "Unexpected error" });
+                toast.error("Error: " + error?.data?.message || "Unexpected error");
             })
     }
 
@@ -73,12 +79,12 @@ const useEditDialog = (onSubmitcallback) =>
                 }
                 else
                 {
-                    alert({ message: response?.data?.errorMessage || "Unexpected error" });
+                    toast.error(response?.data?.message || "Unexpected error");
                 }
             })
             .catch((error) =>
             {
-                alert({ message: "Error: " + error?.response?.data?.errorMessage || "Unexpected error" });
+                toast.error("Error: " + error?.data?.message || "Unexpected error");
             })
     }
 
@@ -100,12 +106,16 @@ const useEditDialog = (onSubmitcallback) =>
                 }
                 else
                 {
-                    actions.setStatus({ message: response?.data?.errorMessage || "Unexpected error" });
+                    console.log("error res: " + response)
+                    actions.setStatus({ message: response?.data?.message || "Unexpected error" });
+                    toast.error(response?.data?.message || "Unexpected error");
                 }
             })
             .catch((error) =>
             {
-                actions.setStatus({ message: "Error: " + error?.response?.data?.errorMessage || "Unexpected error" });
+                console.log("error: " + error)
+                actions.setStatus({ message: "Error: " + error?.data?.message || "Unexpected error" });
+                toast.error("Error: " + error?.data?.message || "Unexpected error");
             })
     }
 
@@ -127,10 +137,7 @@ const useEditDialog = (onSubmitcallback) =>
                     {
                         actions.setStatus({ message: null });//reset message
                         actions.setSubmitting(true);
-
                         update(values, actions);
-
-                        console.log(collectionData.id, values.title, values.collectionColor.hex, values.category);//TODO
                         actions.setSubmitting(false);
 
                     }}
@@ -148,11 +155,12 @@ const useEditDialog = (onSubmitcallback) =>
                             <Form>
                                 <DialogTitle>Edit Collection</DialogTitle>
                                 <DialogContent>
-                                    <DialogContentText>
+                                    {isReadOnly && (
+                                        <DialogContentText>
+                                            You cannot edit this collection. This is olny information window.
+                                        </DialogContentText>)}
 
-                                    </DialogContentText>
-
-                                    <InputTextField error={errors.title} touched={touched.title}
+                                    <InputTextField error={errors.title} touched={touched.title} disabled={isReadOnly}
                                         name="title" type="text" label="Title" placeholder="" />
 
                                     <div className="form-group">
@@ -170,8 +178,8 @@ const useEditDialog = (onSubmitcallback) =>
                                         <DialogContentText>
                                             Please, use buttons Publish/Privatize below.
                                         </DialogContentText>
-                                        <Tooltip title="make public"><span><Button onClick={publish} disabled={values.visibility === "PUBLIC"}>Publish</Button></span></Tooltip>
-                                        <Tooltip title="make private"><span><Button onClick={privatize} disabled={values.visibility === "PRIVATE"}>Privatize</Button></span></Tooltip>
+                                        <Tooltip title="make public"><span><Button onClick={publish} disabled={values.visibility === "PUBLIC" || isReadOnly}>Publish</Button></span></Tooltip>
+                                        <Tooltip title="make private"><span><Button onClick={privatize} disabled={values.visibility === "PRIVATE" || isReadOnly}>Privatize</Button></span></Tooltip>
                                     </div>
                                     <div className="form-group">
                                         <FormikMaterialUISelectInput
@@ -185,6 +193,7 @@ const useEditDialog = (onSubmitcallback) =>
                                             })()}
                                             isLoading={isLoadingCategories}
                                             loadingError={errorCategories}
+                                            disabled={isReadOnly}
                                             fullWidth
                                             required
                                         />
@@ -199,13 +208,11 @@ const useEditDialog = (onSubmitcallback) =>
                                     {status && status.message && (
                                         <div className="message">{status.message}</div>
                                     )}
-                                    {/* <div style={{ marginTop: "2em" }}>{JSON.stringify(dataCategories) || {}}</div> */}
-                                    {/* <div style={{ marginTop: "2em" }}>{JSON.stringify(collectionData)}</div> */}
                                 </DialogContent>
                                 {isSubmitting && <LinearProgress />}
                                 <DialogActions>
                                     <Button onClick={handleClose} disabled={isSubmitting}>Cancel</Button>
-                                    <Button onClick={handleSubmit} disabled={isSubmitting}>Submit</Button>
+                                    <Button onClick={handleSubmit} disabled={isSubmitting || isReadOnly}>Submit</Button>
                                 </DialogActions>
                             </Form>
                         </>
@@ -215,4 +222,4 @@ const useEditDialog = (onSubmitcallback) =>
         );
     }
 }
-export default useEditDialog;
+export default useEditCollectionDialog;

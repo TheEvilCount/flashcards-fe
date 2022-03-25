@@ -1,13 +1,10 @@
-import useAxios from 'axios-hooks';
-import React, { useEffect, useRef } from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import { useLocation } from 'react-router-dom';
-
 import { Alert, Button, Card, CardActions, CardContent, LinearProgress, Typography } from '@mui/material';
-
 import ErrorLoadingDataWrapper from '../components/ErrorLoadingDataWrapper';
-import apiReqConfig from '../config/apiReqConfig';
 import { NavLink } from 'react-router-dom';
 import { pathConsts } from 'config/paths';
+import { useMutationResendVerifyEmail, useMutationVerifyAccount } from "api/react-query-hooks/useVerifyAccount";
 
 import { toast } from 'react-toastify';
 
@@ -20,38 +17,36 @@ const VerifyPage = () =>
     const token = new URLSearchParams(search).get("token");
     const email = new URLSearchParams(search).get("email");
 
-    const [{ loading: isLoadingVerify, error: errorVerify }, postVerify, manualCancelVerify] = useAxios(
-        apiReqConfig.auth.verify(token), { manual: true });
+    const mutationVerifyAccount = useMutationVerifyAccount(token);
+    const mutationResendEmail = useMutationResendVerifyEmail();
 
-    const [{ loading: isLoadingResend }, postResend] = useAxios(
-        apiReqConfig.auth.resend(email), { manual: true });
+    const verify = useCallback(() =>
+    {
+        mutationVerifyAccount.mutateAsync()
+            .then(() =>
+            {
+                toast.success("User account successfully verified!");
+            })
+            .catch((error) =>
+            {
+                toast.error(error.data.message || "Verification error!");
+                console.error(error);
+            });
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     useEffect(() =>
     {
-        if (token)
-            postVerify()
-                .then(() =>
-                {
-                    toast.success("User account successfully verified!");
-                })
-                .catch((error) =>
-                {
-                    toast.error(error.data.message || "Verification error!");
-                    console.error(error);
-                });
-
-        return () =>
-        {
-            manualCancelVerify();
-        }
-    }, [token, postVerify, manualCancelVerify]);
+        if (token && token.length > 10)
+            verify();
+    }, [token, verify]);
 
     const resendToastRef = useRef(null);
 
-    const resendEmail = () =>
+    const resendEmail = (email) =>
     {
-        resendToastRef.current = toast.info("Email resend pending...", { autoClose: apiReqConfig.auth.resend().timeout });
-        postResend()
+        resendToastRef.current = toast.info("Email resend pending...");
+        mutationResendEmail.mutateAsync(email)
             .then(() =>
             {
                 toast.update(resendToastRef.current, { type: "success", render: "Email resended!" })
@@ -74,22 +69,23 @@ const VerifyPage = () =>
                         </Typography>
                         <CardContent>
                             <Typography variant="body2">
-                                Now activate account clicking on verification link in sent email
+                                Now activate account clicking on verification link in sent email ({email})
                             </Typography>
                         </CardContent>
                         <CardActions>
                             <Typography variant="body2">
                                 Email not recieved?
                             </Typography>
-                            <Button color='primary' disabled={isLoadingResend} onClick={() => resendEmail()}>Resend email</Button>
-                            {isLoadingResend && <LinearProgress />}
+                            <Button color='primary' disabled={mutationResendEmail.isLoading} onClick={() => resendEmail(email)}>Resend email</Button>
+                            {mutationResendEmail.isLoading && <LinearProgress />}
                         </CardActions>
                     </Card>
                 )
             }
+            {console.log(mutationVerifyAccount.error)}
             {
                 token &&
-                <ErrorLoadingDataWrapper isLoading={isLoadingVerify} error={errorVerify?.data} retryRequest={postVerify} title={"Account Verification"}>
+                <ErrorLoadingDataWrapper isLoading={mutationVerifyAccount.isLoading} error={mutationVerifyAccount.error?.data} retryRequest={verify} title={"Account Verification"}>
                     <Alert severity='success'>Account successfully verified!<br /><NavLink to={pathConsts.login}>Login</NavLink></Alert>
                 </ErrorLoadingDataWrapper>
             }

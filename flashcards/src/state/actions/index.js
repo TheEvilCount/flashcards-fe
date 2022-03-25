@@ -5,6 +5,7 @@ import { push } from 'connected-react-router'
 import { regMsg } from "../../pages/VerifyPage";
 import usersAPI from "api/usersAPI";
 import errorParse from "helpers/errorParse";
+import { toast } from "react-toastify";
 
 export const loginAction = (payload, actions) =>
 {
@@ -54,17 +55,19 @@ export const logoutAction = () =>
                 if (response.status === 200)
                 {
                     dispatch({ type: actionTypes.LOG_OUT });
+                    toast.success("Logout successfull");
                 }
                 else
                 {
                     console.log(JSON.stringify(response));
-                    alert("logout response not 200 :" + response);
+                    dispatch({ type: actionTypes.LOG_OUT });
+                    toast.error("Cannot reach server during logout");
                 }
             })
             .catch((error) =>
             {
                 console.log("logout error: " + JSON.stringify(error));
-                alert("logout error: " + error?.message || "Unexpected error");
+                toast.error("Logout error: " + error?.message || "Unexpected error");
                 dispatch({ type: actionTypes.LOG_OUT });
             })
     }
@@ -87,15 +90,17 @@ export const preferencesChangeAction = (payload) =>
                             user: response.data
                         }
                     });
+                    toast.success("Preferencies changed!")
                 }
                 else
                 {
-                    //TODO toast
+                    toast.error("Preferencies change error!");
                     console.error("update prefs then error");
                 }
             })
             .catch((error) =>
             {
+                toast.error("Preferencies change error: " + error);
                 console.error("update prefs catch error" + error);
             });
     }
@@ -119,20 +124,18 @@ export const registerAction = (email, username, password, actions) =>
                 }
                 else
                 {
-                    //console.log(JSON.stringify(response));
-                    //console.log("registration error: " + response.data.errorMessage);
                     dispatch({ type: actionTypes.REGISTER_FAIL });
-                    console.log("res")
                     console.log(response)
-                    actions.setStatus({ message: errorParse(response.data) });//TODO add better error messages
+                    actions.setStatus({ message: errorParse(response.data) });
+                    toast.error(response.data || "Unexpected Error");
                     actions.setSubmitting(false);
                 }
             }).catch((error) =>
             {
-                console.log("err")
                 console.log(JSON.stringify(error))
-                dispatch({ type: actionTypes.REGISTER_FAIL/* , payload: { error: error } */ });
-                actions.setStatus({ message: errorParse(error.data || error) });//TODO add better error messages
+                dispatch({ type: actionTypes.REGISTER_FAIL });
+                actions.setStatus({ message: errorParse(error.data || error) });
+                toast.error(error.data || error);
                 actions.setSubmitting(false);
             });
     }

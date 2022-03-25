@@ -10,6 +10,7 @@ export const pathConsts =
     register: "/register",
     verify: "/verify",
     resetPass: "/reset",
+    lostPass: "/lost",
 
     settings: "/settings",
     profile: "/profile",
@@ -30,5 +31,6 @@ export const pathConsts =
 
 
     collectionDetail: "/collections/:type/:id/cards",
+    collectionPlay: "/collections/:type/:id/play",
     cardDetail: "/collections/:type/:id/cards/:cardId",
 };

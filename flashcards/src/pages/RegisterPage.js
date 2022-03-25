@@ -1,13 +1,12 @@
 import React from 'react';
 import { useDispatch } from "react-redux";
-import { registerAction } from "../../state/actions";
+import { registerAction } from "../state/actions";
 import { Form, Formik } from 'formik';
-import { FaSpinner } from "react-icons/fa";
-import InputTextField from '../../components/InputTextField';
-import { Typography, Button, Card } from '@mui/material';
+import InputTextField from '../components/InputTextField';
+import { LinearProgress, Typography, Button, Card } from '@mui/material';
 import { NavLink } from 'react-router-dom';
-import { pathConsts } from '../../config/paths';
-import registerFormValidation from '../../validations/registerFormValidation';
+import { pathConsts } from '../config/paths';
+import registerFormValidation from '../validations/registerFormValidation';
 
 
 export default function RegisterPage()
@@ -54,13 +53,14 @@ export default function RegisterPage()
                                     <div className="message">{status.message}</div>
                                 )
                             }
+                            {isSubmitting && <LinearProgress />}
                             <Button
                                 color="primary"
                                 type="submit"
                                 onClick={handleSubmit}
                                 disabled={isSubmitting}
                             >
-                                {isSubmitting ? <span>Please wait <FaSpinner /></span> : "Register"}
+                                Register
                             </Button>
                             <Button type="reset" onClick={() => { resetForm() }}>Cancel</Button>
                         </Form>

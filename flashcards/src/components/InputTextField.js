@@ -1,18 +1,7 @@
 //import { ErrorMessage, Field } from 'formik';
 import PropTypes from "prop-types"
-//import { FormikTextField } from 'formik-material-fields';
 import { useField } from "formik";
 import { TextField } from "@mui/material";
-
-
-/* export default function InputTextField({ name, type, label, placeholder, error, touched, required = true, ...props })
-{
-    return (
-        <div className="form-group">
-            <FormikTextField name={name} label={label} margin="normal" type={type} fullWidth required={required} {...props} />
-        </div>
-    )
-} */
 
 const InputTextField = ({ name, type = "text", label, variant = "standard", required = false, multiline = false, ...props }) =>
 {

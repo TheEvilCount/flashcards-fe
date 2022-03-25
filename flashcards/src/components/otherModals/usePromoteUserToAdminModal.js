@@ -1,7 +1,7 @@
 
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress } from '@mui/material';
-import { useMutationPromoteUser } from 'api/react-query hooks/useAdmins';
-import { useUsers } from 'api/react-query hooks/useUsers';
+import { useMutationPromoteUser } from 'api/react-query-hooks/useAdmins';
+import { useUsers } from 'api/react-query-hooks/useUsers';
 import { Form, Formik } from 'formik';
 import FormikMUIAutocomplete from 'lib/FormikMUIAutocomplete';
 import React, { useState } from 'react';

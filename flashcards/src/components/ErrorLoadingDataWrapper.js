@@ -23,7 +23,7 @@ const ErrorLoadingDataWrapper = ({ error, isLoading, children, retryRequest, tit
                         <Typography>
                             {title}
                         </Typography>
-                        <div>{"Error: " + error?.message/*  + " status: " + (error?.response?.status || error?.code || "Unexpected error") */}</div>
+                        <div>{"Error: " + (error?.message || error)}</div>
                         {retryRequest && <Button style={{ marginTop: "1em" }} variant='contained' onClick={retryRequest}>Retry</Button>}
                     </Alert>
                 }

@@ -4,10 +4,10 @@ import AddIcon from '@mui/icons-material/Add';
 import { Button, Card } from '@mui/material';
 import ErrorLoadingDataWrapper from 'components/ErrorLoadingDataWrapper';
 
-import useCategories from 'api/react-query hooks/useCategories';
+import useCategories from 'api/react-query-hooks/useCategories';
 import useCreateCategoryDialog from 'components/category/useCreateCategoryModal';
-import { useAdmins } from 'api/react-query hooks/useAdmins';
-import usePromometUserToAdminDialog from 'components/usePromoteUserToAdminModal';
+import { useAdmins } from 'api/react-query-hooks/useAdmins';
+import usePromometUserToAdminDialog from 'components/otherModals/usePromoteUserToAdminModal';
 
 
 const AdminPage = () => 

@@ -6,14 +6,18 @@ import React, { useCallback, useEffect, useState } from 'react'
 import Card from './Card';
 import "./cards.scss"
 import useIsMyUsername from "hooks/useIsMyUsername";
+import { useDispatch } from "react-redux";
+import { push } from "connected-react-router";
 
-const CardList = ({ collectionDetail, openUpdateModal, openCreateModal }) =>
+const CardList = ({ collectionDetail, openUpdateModal, openCreateModal, openCollectionModal }) =>
 {
     const { cardList, id, owner,/* title, collectionColor */ } = collectionDetail;
 
     const isOwned = useIsMyUsername(owner);
 
     const [cardListState, setCardListState] = useState(null);
+
+    const dispatch = useDispatch();
 
     useEffect(() =>
     {
@@ -49,8 +53,8 @@ const CardList = ({ collectionDetail, openUpdateModal, openCreateModal }) =>
         <>
             <CardMui style={{ marginBottom: "10px", display: "flex", padding: "6px 10px" }}>
                 <Button onClick={() => { shuffleCards() }}>Shuffle</Button>
-                <Button disabled>Play</Button>
-                <Button disabled>Info</Button>
+                <Button onClick={() => { dispatch(push("./play")) }}>Play</Button>
+                <Button onClick={() => { openCollectionModal(collectionDetail, !isOwned) }}>Info</Button>
                 {isOwned &&
                     <Fab className="fab-card-add" size={"large"} variant='circular' color="primary"
                         aria-label="add" onClick={() => openCreateModal(id)}><AddIcon /></Fab>}
@@ -69,7 +73,8 @@ CardList.propTypes = {
         owner: PropTypes.any
     }),
     openCreateModal: PropTypes.func,
-    openUpdateModal: PropTypes.func
+    openUpdateModal: PropTypes.func,
+    openCollectionModal: PropTypes.func
 }
 
 export default CardList;

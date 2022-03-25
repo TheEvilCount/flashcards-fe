@@ -2,7 +2,7 @@ import PropTypes from "prop-types"
 import { FormControl, FormHelperText, InputLabel, MenuItem, Select } from '@mui/material';
 import { useField } from 'formik';
 
-export default function FormikMaterialUISelectInput({ formikName, label, options, isLoading, loadingError, ...props })
+export default function FormikMaterialUISelectInput({ formikName, label, disabled = false, options, isLoading, loadingError, ...props })
 {
     const [field, meta] = useField(formikName);
     return (
@@ -10,6 +10,7 @@ export default function FormikMaterialUISelectInput({ formikName, label, options
             variant='standard'
             error={meta.touched && Boolean(meta.error) || Boolean(loadingError)}
             sx={{ m: 2, minWidth: 120 }}
+            disabled={disabled}
             {...props}>
             <InputLabel id={"my-mui-select-label-" + field.name}>{label}</InputLabel>
             <Select
@@ -20,7 +21,7 @@ export default function FormikMaterialUISelectInput({ formikName, label, options
                 label={label}
                 onChange={field.onChange}
                 onBlur={field.onBlur}
-                disabled={isLoading || loadingError}
+                disabled={isLoading || loadingError || disabled}
             >
                 {(() =>
                 {
@@ -42,5 +43,6 @@ FormikMaterialUISelectInput.propTypes = {
     isLoading: PropTypes.bool,
     label: PropTypes.string,
     loadingError: PropTypes.any,
-    options: PropTypes.array
+    options: PropTypes.array,
+    disabled: PropTypes.bool
 }

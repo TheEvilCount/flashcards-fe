@@ -1,8 +1,9 @@
 
 import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress } from '@mui/material';
-import { useMutationUpdateCard } from 'api/react-query hooks/useCards';
+import { useMutationUpdateCard } from 'api/react-query-hooks/useCards';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
+import { toast } from 'react-toastify';
 import cardValidation from 'validations/cardValidation';
 import InputTextField from '../InputTextField';
 
@@ -40,7 +41,6 @@ const useUpdateCardDialog = (onSubmitcallback) =>
                     validationSchema={cardValidation}
                     onSubmit={(values, actions) =>
                     {
-                        console.log("submit??")
                         actions.setStatus({ message: null });//reset message
                         actions.setSubmitting(true);
 
@@ -55,17 +55,20 @@ const useUpdateCardDialog = (onSubmitcallback) =>
                                 if (response.status === 200)
                                 {
                                     setOpen(false);
+                                    toast.success("Card updated");
                                     onSubmitcallback();
                                 }
                                 else
                                 {
                                     actions.setStatus({ message: response?.data?.message || "Unexpected error" });
+                                    toast.error(response?.data?.message || "Unexpected error");
                                 }
                             })
                             .catch((error) =>
                             {
                                 console.log(error)
                                 actions.setStatus({ message: "Error: " + error?.data?.message || "Unexpected error" });
+                                toast.error("Error: " + error?.data?.message || "Unexpected error");
                             })
                         actions.setSubmitting(false);
                     }}

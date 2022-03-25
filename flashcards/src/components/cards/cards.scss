@@ -66,7 +66,7 @@
 //Show with left turning
 .show-left {
   & > .front {
-    transform: perspective(600px) rotateY(-180deg); //TODO spin left -180deg   right 180deg
+    transform: perspective(600px) rotateY(-180deg); //spin left -180deg   right 180deg
   }
 
   & > .back {
@@ -76,7 +76,7 @@
 //Show with right turning
 .show-right {
   & > .front {
-    transform: perspective(600px) rotateY(180deg); //TODO spin left -180deg   right 180deg
+    transform: perspective(600px) rotateY(180deg); //spin left -180deg   right 180deg
   }
 
   & > .back {

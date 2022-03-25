@@ -1,10 +1,11 @@
 
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress } from '@mui/material';
-import { useMutationCreateCategory } from 'api/react-query hooks/useCategories';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, LinearProgress } from '@mui/material';
+import { useMutationCreateCategory } from 'api/react-query-hooks/useCategories';
 import InputTextField from 'components/InputTextField';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import { toast } from 'react-toastify';
+import categoryValidation from 'validations/categoryValidation';
 
 /**
  * 
@@ -34,7 +35,7 @@ const useCreateCategoryDialog = (onSubmitcallback) =>
                     initialValues={{
                         title: ""
                     }}
-                    /* validationSchema={ } */
+                    validationSchema={categoryValidation}
                     onSubmit={(values, actions) =>
                     {
                         actions.setStatus({ message: null });//reset message
@@ -59,8 +60,9 @@ const useCreateCategoryDialog = (onSubmitcallback) =>
                             })
                             .catch((error) =>
                             {
-                                console.log(error)
+                                toast.error("Error: " + error?.data?.message || "Unexpected error");
                                 actions.setStatus({ message: "Error: " + error?.data?.message || "Unexpected error" });
+                                console.log(error)
                             })
                         actions.setSubmitting(false);
                     }}
@@ -74,11 +76,7 @@ const useCreateCategoryDialog = (onSubmitcallback) =>
                             <Form>
                                 <DialogTitle>Create Card</DialogTitle>
                                 <DialogContent>
-                                    <DialogContentText>
-
-                                    </DialogContentText>
-                                    <InputTextField name="title" type="text" label="Title"
-                                        placeholder="" required />
+                                    <InputTextField name="title" type="text" label="Title" placeholder="" required />
 
                                     {status && status.message && (
                                         <div className="message">{status.message}</div>
