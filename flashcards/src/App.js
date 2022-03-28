@@ -1,6 +1,6 @@
 import './App.scss';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from "react-redux";
 import { Route, Switch, Redirect } from "react-router-dom";
 import { ConnectedRouter as Router, push } from 'connected-react-router';
@@ -11,11 +11,11 @@ import { pathConsts } from "./config/paths";
 import { history } from './state/store';
 
 import SideBar from './components/sideBar/SideBar';
-import ContentWrapper from './components/ContentWrapper';
 
 import CookieConsent from "react-cookie-consent";
 import { toast } from 'react-toastify';
 import { Button } from '@mui/material';
+import { useMediaQuery } from '@material-ui/core';
 
 export default function App()
 {
@@ -23,6 +23,14 @@ export default function App()
   const dispatch = useDispatch();
 
   const [sideBarCollapsed, setSideBarCollapsed] = useState(false);
+
+  const matches = useMediaQuery("screen and (max-width: 779px)");
+
+  useEffect(() =>
+  {
+    setSideBarCollapsed(matches);
+  }, [matches]);
+
   const handleToggleSideBar = (what) =>
   {
     setSideBarCollapsed(what);
@@ -32,53 +40,48 @@ export default function App()
     <Router history={history}>
 
       <SideBar auth={authReducer} collapsed={sideBarCollapsed} handleToggleSideBar={handleToggleSideBar} />
+      <Switch>
+        {
+          routes.map((route) => (
+            <Route exact key={("r_" + route.key)} path={route.path}>
+              {
+                route.isPrivate && !authReducer.isLogged ?
+                  (<Redirect to={pathConsts.login} />)
+                  :
+                  (
+                    ((authReducer.isLogged && route.path === pathConsts.login) || (route?.isAdmin && !authReducer.user.admin)) ?
+                      <Redirect to={pathConsts.dashboard} />
+                      :
+                      (
 
-      <div id="content" className='content'>
-        <Switch>
-          {
-            routes.map((route) => (
-              <Route exact key={("r_" + route.key)} path={route.path}>
-                {
-                  route.isPrivate && !authReducer.isLogged ?
-                    (<Redirect to={pathConsts.login} />)
-                    :
-                    (
-                      ((authReducer.isLogged && route.path === pathConsts.login) || (route?.isAdmin && !authReducer.user.admin)) ?
-                        <Redirect to={pathConsts.dashboard} />
-                        :
-                        (
-
-                          <ErrorBoundary
-                            fallbackRender={({ error, resetErrorBoundary }) => (
-                              <div role="alert" style={{ margin: "auto", marginTop: "10vh" }}>
-                                <div>Nastala chyba!</div>
-                                <pre>{error.message}</pre>
-                                <button
-                                  onClick={() =>
-                                  {
-                                    // this next line is why the fallbackRender is useful
-                                    //TODO resetComponentState()
-                                    // though you could accomplish this with a combination
-                                    // of the FallbackCallback and onReset props as well.
-                                    resetErrorBoundary()
-                                  }}
-                                >
-                                  Zkusit znovu...
-                                </button>
-                              </div>
-                            )}>
-                            <ContentWrapper>
-                              <route.comp />
-                            </ContentWrapper>
-                          </ErrorBoundary>
-                        )
-                    )
-                }
-              </Route>
-            ))
-          }
-        </Switch>
-      </div>
+                        <ErrorBoundary
+                          fallbackRender={({ error, resetErrorBoundary }) => (
+                            <div role="alert" style={{ margin: "auto", marginTop: "10vh" }}>
+                              <div>Nastala chyba!</div>
+                              <pre>{error.message}</pre>
+                              <button
+                                onClick={() =>
+                                {
+                                  // this next line is why the fallbackRender is useful
+                                  //TODO resetComponentState()
+                                  // though you could accomplish this with a combination
+                                  // of the FallbackCallback and onReset props as well.
+                                  resetErrorBoundary()
+                                }}
+                              >
+                                Zkusit znovu...
+                              </button>
+                            </div>
+                          )}>
+                          <route.comp />
+                        </ErrorBoundary>
+                      )
+                  )
+              }
+            </Route>
+          ))
+        }
+      </Switch>
       <CookieConsent
         location={"bottom"}
         buttonText={"I understand."}

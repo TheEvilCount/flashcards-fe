@@ -1,5 +1,5 @@
 import PropTypes from "prop-types"
-import { Alert, Button, Fab, Card as CardMui } from '@mui/material';
+import { Alert, Button, Card as CardMui } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 import { shuffleArray } from 'helpers/shuffleArray';
 import React, { useCallback, useEffect, useState } from 'react'
@@ -52,14 +52,14 @@ const CardList = ({ collectionDetail, openUpdateModal, openCreateModal, openColl
     return (
         <>
             <CardMui style={{ marginBottom: "10px", display: "flex", padding: "6px 10px" }}>
+                {isOwned &&
+                    <Button /* className="fab-card-add" */ variant='contained' color="primary"
+                        aria-label="add" onClick={() => openCreateModal(id)} startIcon={<AddIcon />} style={{ marginRight: "1em" }}>Create</Button>}
                 <Button onClick={() => { shuffleCards() }}>Shuffle</Button>
                 <Button onClick={() => { dispatch(push("./play")) }}>Play</Button>
                 <Button onClick={() => { openCollectionModal(collectionDetail, !isOwned) }}>Info</Button>
-                {isOwned &&
-                    <Fab className="fab-card-add" size={"large"} variant='circular' color="primary"
-                        aria-label="add" onClick={() => openCreateModal(id)}><AddIcon /></Fab>}
             </CardMui>
-            <div className="cards-wrapper">
+            <div className="cards-wrapper padded">
                 {collectionDetail && cardElements(cardListState)}
             </div>
         </>

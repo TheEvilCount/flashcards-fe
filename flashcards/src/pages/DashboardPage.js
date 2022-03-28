@@ -1,4 +1,5 @@
-import { Card, Typography } from '@mui/material';
+import { Card } from '@mui/material';
+import ContentWrapper from 'components/ContentWrapper';
 import { pathConsts } from 'config/paths';
 import React from 'react';
 import { useSelector } from 'react-redux';
@@ -10,9 +11,12 @@ const Dashboard = () =>
     const user = useSelector(state => selectors.getLoggedUser(state));
 
     return (
-        <div className="wrapperHome">
-            <div className="contentHome">
-                <Typography align={'center'} variant={'h4'} marginBottom={"2em"} marginTop={"1em"}>Dashboard</Typography>
+        <ContentWrapper padded>
+            <Card style={{ minHeight: "80vh", paddingInline: "1em" }}>
+                <div className="text-center mt-2" style={{ height: "100%" }}>
+                    <h1 className="text-center mb-3 mt-1">Dashboard</h1>
+                </div>
+
                 <div className='dashboard-container'>
                     <NavLink id='di-own' className={"dashboard-item"} to={pathConsts.collectionsMy}>
                         <Card className='decor' />
@@ -41,8 +45,8 @@ const Dashboard = () =>
                         </NavLink>
                     )}
                 </div>
-            </div>
-        </div>
+            </Card>
+        </ContentWrapper>
     )
 }
 export default Dashboard;

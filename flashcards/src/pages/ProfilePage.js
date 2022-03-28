@@ -4,8 +4,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Button, Card, CardContent } from "@mui/material"
 import { preferencesChangeAction } from 'state/actions';
 import useChangePassDialog from '../components/otherModals/useChangePassModal';
-
-
+import ContentWrapper from 'components/ContentWrapper';
 
 export default function Profile()
 {
@@ -23,11 +22,11 @@ export default function Profile()
     );
 
     return (
-        <div className="container">
+        <ContentWrapper>
             {modal}
-            <div className="text-center mt-2">
-                {/* <div style={{ wordBreak: "break-word" }}>{JSON.stringify(authReducer)}</div> */}
-                <Card>
+            {/* <div style={{ wordBreak: "break-word" }}>{JSON.stringify(authReducer)}</div> */}
+            <div style={{ maxWidth: "600px", marginInline: "auto" }}>
+                <Card className="text-center">
                     <CardContent>
                         <h1 className="text-center">Profile</h1>
                         <span>
@@ -40,7 +39,7 @@ export default function Profile()
                         <Button variant='contained' onClick={() => openModal(authReducer.user)}>Change password</Button>
                     </CardContent>
                 </Card>
-                <Card>
+                <Card className="text-center mt-1">
                     <h2>Settings</h2>
                     <h4>Left/Right card rotation</h4>
                     <label htmlFor="card-rot-ch">Right rotation</label>
@@ -55,6 +54,6 @@ export default function Profile()
                     <div className='mb-2'>&nbsp;</div>
                 </Card>
             </div>
-        </div >
+        </ContentWrapper>
     )
 }

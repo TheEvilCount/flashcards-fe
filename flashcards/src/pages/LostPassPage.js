@@ -1,5 +1,6 @@
 import { Button, Card, CardContent, FormGroup, LinearProgress, Typography } from '@mui/material';
 import { useMutationLostPass } from 'api/react-query-hooks/useLostPass';
+import ContentWrapper from 'components/ContentWrapper';
 import InputTextField from 'components/InputTextField';
 import { Form, Formik } from 'formik';
 import React from 'react'
@@ -12,7 +13,7 @@ export default function LostPassPage()
     const mutationLostPass = useMutationLostPass();
 
     return (
-        <>
+        <ContentWrapper>
             <h1 className='text-center'>Reset password</h1>
             <Card style={{ maxWidth: "400px", margin: "auto" }} sx={{ borderRadius: 2 }}>
                 <Formik
@@ -85,6 +86,6 @@ export default function LostPassPage()
                     )}
                 </Formik>
             </Card>
-        </>
+        </ContentWrapper>
     )
 }

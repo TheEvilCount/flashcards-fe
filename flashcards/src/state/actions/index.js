@@ -55,7 +55,7 @@ export const logoutAction = () =>
                 if (response.status === 200)
                 {
                     dispatch({ type: actionTypes.LOG_OUT });
-                    toast.success("Logout successfull");
+                    toast.info("User Logged out");
                 }
                 else
                 {

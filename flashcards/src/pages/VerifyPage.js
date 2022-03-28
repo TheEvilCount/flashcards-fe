@@ -7,6 +7,7 @@ import { pathConsts } from 'config/paths';
 import { useMutationResendVerifyEmail, useMutationVerifyAccount } from "api/react-query-hooks/useVerifyAccount";
 
 import { toast } from 'react-toastify';
+import ContentWrapper from 'components/ContentWrapper';
 
 export const regMsg = { key: "msg", val: "RegSucc" }
 
@@ -59,7 +60,7 @@ const VerifyPage = () =>
     }
 
     return (
-        <>
+        <ContentWrapper>
             <h1 className='text-center'>Verification Page</h1>
             {
                 msg === regMsg.val && (
@@ -89,7 +90,7 @@ const VerifyPage = () =>
                     <Alert severity='success'>Account successfully verified!<br /><NavLink to={pathConsts.login}>Login</NavLink></Alert>
                 </ErrorLoadingDataWrapper>
             }
-        </>
+        </ContentWrapper>
     );
 };
 export default VerifyPage;

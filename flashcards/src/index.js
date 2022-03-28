@@ -35,6 +35,8 @@ const queryClient = new QueryClient({
       {
         console.error("Error query: " + err.message);
       },
+      cacheTime: (1000 * 60 * 5),//cache time 5 minutes
+      refetchOnWindowFocus: false,
     },
     mutations: {
       // mutation options

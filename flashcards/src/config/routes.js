@@ -22,6 +22,7 @@ import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 import AdminPage from "pages/AdminPage";
 import ResetPage from "pages/ResetPage";
 import LostPassPage from "pages/LostPassPage";
+import PlayPage from "pages/PlayPage";
 
 const routes = [
     {
@@ -160,7 +161,7 @@ const routes = [
     {
         key: "collectionPlay",
         path: pathConsts.collectionPlay,
-        comp: () => <>play</>,
+        comp: PlayPage,
         isPrivate: true,
         showWhenNotLogged: false,
         show: false,

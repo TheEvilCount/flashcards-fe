@@ -12,6 +12,7 @@ import useCreateCardDialog from 'components/cards/useCreateCardModal';
 import useUpdateCardDialog from 'components/cards/useUpdateCardModal';
 import { useQueryCollectionDetail } from 'api/react-query-hooks/useCards';
 import useEditCollectionDialog from 'components/collection/useEditCollectionModal';
+import ContentWrapper from 'components/ContentWrapper';
 
 const CollectionDetailPage = () =>
 {
@@ -53,7 +54,7 @@ const CollectionDetailPage = () =>
     )
 
     return (
-        <>
+        <ContentWrapper>
             <Card style={{ display: "inline-flex", padding: "0.1em 0.5em", width: "100%" }}>
                 <h2>Collection: {data?.title}</h2>
                 <span style={{ display: "inline-flex", alignItems: "center", marginLeft: "auto" }}>
@@ -71,7 +72,7 @@ const CollectionDetailPage = () =>
                     openCollectionModal={openCollectionModal}
                 />
             </ErrorLoadingDataWrapper>
-        </>
+        </ContentWrapper>
     )
 };
 export default CollectionDetailPage;

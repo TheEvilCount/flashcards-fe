@@ -10,6 +10,7 @@ import { useDispatch } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import resetPassValidation from 'validations/resetPassValidation';
+import ContentWrapper from "components/ContentWrapper";
 
 export default function ResetPage()
 {
@@ -20,7 +21,7 @@ export default function ResetPage()
     const dispatch = useDispatch();
 
     return (
-        <>
+        <ContentWrapper>
             <h1 className='text-center'>Reset password</h1>
             <Card style={{ maxWidth: "400px", margin: "auto" }} sx={{ borderRadius: 2 }}>
                 <Formik
@@ -95,7 +96,7 @@ export default function ResetPage()
                     )}
                 </Formik>
             </Card>
-        </>
+        </ContentWrapper>
     )
 }
 

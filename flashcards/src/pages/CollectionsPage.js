@@ -5,7 +5,7 @@ import { goBack } from 'connected-react-router';
 import axios from 'axios';
 import { useQuery } from 'react-query';
 
-import { Pagination, TextField, Button, Fab, Card, ButtonGroup } from '@mui/material';
+import { Pagination, TextField, Button, Card, ButtonGroup } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
 
 import Collections from '../components/collection/Collections';
@@ -15,6 +15,7 @@ import usePagination from '../hooks/usePagination';
 import useEditCollectionDialog from '../components/collection/useEditCollectionModal';
 import useCreateCollectionDialog from 'components/collection/useCreateCollectionModal';
 import { KEY_COLLECTIONS, useQueryFavIdsCollections } from 'api/react-query-hooks/useCollections';
+import ContentWrapper from 'components/ContentWrapper';
 
 export const collectionDisplayTypes = {
     private: "private",
@@ -116,33 +117,37 @@ const CollectionsPage = () =>
     )
 
     return (
-        <>
-            <h2>Collections - {type}</h2>
-            <Card>
-                <ButtonGroup variant='contained' color='secondary'>
-                    <Button onClick={() => { dispatch(goBack()) }}>Go back</Button>
-                    <Button onClick={requestGetCollections}>Refresh</Button>
-                </ButtonGroup>
-
-                <Fab variant='circular' color="primary" aria-label="add" onClick={() => openCreateModal()}><AddIcon /></Fab>
-                {
-                    type === "explore" &&
-                    <TextField color='primary' label={"Search:"} onChange={(e) => { setSearch(e.target.value) }} value={search} />
-                    //TODO search by category???
-                }
+        <ContentWrapper>
+            <Card className='padded' style={{ paddingInline: "1em", paddingBottom: "8px", marginBottom: "1em" }}>
+                <h2>Collections - {type}</h2>
+                <div style={{ justifyContent: "space-between", display: "flex" }}>
+                    <Button variant='contained' color="primary" aria-label="add"
+                        onClick={() => openCreateModal()} startIcon={<AddIcon />} style={{ marginRight: "1em", height: "fit-content", alignSelf: "center" }}>Create</Button>
+                    {
+                        type === "explore" &&
+                        <TextField color='primary' label={"Search:"} onChange={(e) => { setSearch(e.target.value) }} value={search} />
+                        //TODO search by category???
+                    }
+                    <ButtonGroup variant='contained' color='secondary' style={{ height: "fit-content", alignSelf: "center" }}>
+                        <Button onClick={requestGetCollections}>Refresh</Button>
+                        <Button onClick={() => { dispatch(goBack()) }}>Go back</Button>
+                    </ButtonGroup>
+                </div>
             </Card>
             <ErrorLoadingDataWrapper isLoading={isLoadingCollections && isLoadingFavs} error={errorCollections || errorFavs} retryRequest={requestGetCollections}>
                 {modal}
                 {modalCreate}
-                <Collections favsIds={dataFavs} collections={dataCollections?.collections} displayType={getType(type)} refreshCollectionsCallback={refetchCallback} openEditModal={openEditModal} />
-                <Pagination
-                    style={{ display: "grid", placeContent: "center", marginBottom: "2em" }}
-                    color={'primary'}
-                    defaultPage={1} page={page} count={pageMax}
-                    onChange={(event, value) => setPage(value)}
-                />
+                <div className='padded'>
+                    <Collections favsIds={dataFavs} collections={dataCollections?.collections} displayType={getType(type)} refreshCollectionsCallback={refetchCallback} openEditModal={openEditModal} />
+                    <Pagination
+                        style={{ display: "grid", placeContent: "center", marginBottom: "2em" }}
+                        color={'primary'}
+                        defaultPage={1} page={page} count={pageMax}
+                        onChange={(event, value) => setPage(value)}
+                    />
+                </div>
             </ErrorLoadingDataWrapper>
-        </>
+        </ContentWrapper>
     )
 };
 export default React.memo(CollectionsPage)
