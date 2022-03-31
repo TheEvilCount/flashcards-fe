@@ -6,20 +6,30 @@ import PlayComponent from "./PlayComponent";
 
 const PlayWrapper = ({ cards, ...props }) =>
 {
-    const [currentCardIdx, setCurrentCard] = useState(0);
+    const [currentCardIdx, setCurrentCardIdx] = useState(0);
     const [isEnd, setIsEnd] = useState(false);
     const [cardsArr, setCardsArr] = useState(cards);
 
     const shuffleCards = useCallback(() =>
     {
         if (cardsArr)
+        {
             setCardsArr(shuffleArray(cards));
-    }, [cardsArr, cards])
+            restart();
+        }
+    }, [cardsArr, cards, restart])
+
+    const restart = useCallback(() =>
+    {
+        setCurrentCardIdx(0);
+        setIsEnd(false);
+
+    }, [])
 
     const next = () =>
     {
         if (currentCardIdx < cards.length - 1)
-            setCurrentCard(value => value + 1);
+            setCurrentCardIdx(value => value + 1);
         else
             setIsEnd(true);
     }
@@ -29,7 +39,7 @@ const PlayWrapper = ({ cards, ...props }) =>
         if (currentCardIdx >= 0)
         {
             if (isEnd) { setIsEnd(false); return; }
-            setCurrentCard(value => value - 1);
+            setCurrentCardIdx(value => value - 1);
         }
     }
 
@@ -44,7 +54,10 @@ const PlayWrapper = ({ cards, ...props }) =>
                 isEnd={isEnd}
                 isStart={currentCardIdx === 0 && !isEnd}
             />
-            {cardsArr?.length > 0 && <Button variant="contained" color="secondary" onClick={shuffleCards} className="mt-2">Shuffle</Button>}
+            <div className='mt-2' style={{ gap: "1em", display: "flex", justifyContent: "center" }}>
+                {cardsArr?.length > 0 && <Button variant="contained" color="secondary" onClick={shuffleCards} className="mt-2">Shuffle</Button>}
+                {currentCardIdx > 0 && <Button variant="contained" color="secondary" onClick={restart}>Restart</Button>}
+            </div>
         </div>
     );
 }

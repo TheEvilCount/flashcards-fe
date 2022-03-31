@@ -6,6 +6,7 @@
     "name": "Daniel Poustka",
     "email": "daniel.poustka@gmail.com"
   },
+  "homepage": "flashcards",
   "private": true,
   "dependencies": {
     "@emotion/react": "^11.7.1",

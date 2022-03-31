@@ -24,6 +24,15 @@ import axios from 'axios';
 import { responseInterceptorError, responseInterceptorResponse, useTimeout } from './config/axiosInterceptors';
 
 
+//remove console.* from production build
+if (process.env.NODE_ENV === 'production')
+{
+  console.log = () => { }
+  //console.error = () => { }
+  //console.warn = () => { }
+  console.debug = () => { }
+}
+
 const { store, persistor } = configureStore();
 
 const queryClient = new QueryClient({

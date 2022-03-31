@@ -37,52 +37,50 @@ const AdminPage = () =>
 
     return (
         <ContentWrapper>
-            <div className="wrapperHome" style={{ width: "100%" }}>
-                <div className="contentHome" style={{ marginInline: "auto" }}>
-                    {modalCreate}
-                    {modalPromote}
-                    <h1>Admin Page</h1>
-                    <div className='flex'>
-                        <ErrorLoadingDataWrapper isLoading={isLoadingC} error={errorC} retryRequest={refetchC}>
-                            <Card style={{ padding: "0.5em 2em 1em 2em", width: "fit-content" }}>
-                                <h3>Categories:</h3>
-                                <Card style={{ width: "fit-content", marginBottom: "10px", justifyContent: "center" }}>
-                                    <Button style={{}} fullWidth size={"large"} variant='contained' color="primary"
-                                        aria-label="add category" onClick={() => openCreateModal()}><AddIcon />Category</Button>
-                                    <div style={{ maxHeight: "50vh", overflowY: 'auto' }}>
-                                        {dataC && dataC.map((el, idx) =>
-                                        {
-                                            return <div key={"cat-" + idx} style={{ paddingInline: "3em", paddingBlock: "0.5em", borderBottom: "1px solid gray", textAlign: "center" }}>
-                                                {el.title}
-                                            </div>
-                                        })}
-                                    </div>
-                                </Card>
-
+            {modalCreate}
+            {modalPromote}
+            <Card style={{ maxWidth: "800px", marginInline: "auto", minHeight: "80vh", paddingInline: "1.5em" }}>
+                <h1 className="text-center">Admin Page</h1>
+                <div className='flex' style={{ justifyContent: "center" }}>
+                    <ErrorLoadingDataWrapper isLoading={isLoadingC} error={errorC} retryRequest={refetchC}>
+                        <Card style={{ padding: "0.5em 2em 1em 2em", width: "fit-content" }}>
+                            <h3>Categories:</h3>
+                            <Card style={{ width: "fit-content", marginBottom: "10px", justifyContent: "center" }}>
+                                <Button style={{}} fullWidth size={"large"} variant='contained' color="primary"
+                                    aria-label="add category" onClick={() => openCreateModal()}><AddIcon />Category</Button>
+                                <div style={{ maxHeight: "50vh", overflowY: 'auto' }}>
+                                    {dataC && dataC.map((el, idx) =>
+                                    {
+                                        return <div key={"cat-" + idx} style={{ paddingInline: "3em", paddingBlock: "0.5em", borderBottom: "1px solid gray", textAlign: "center" }}>
+                                            {el.title}
+                                        </div>
+                                    })}
+                                </div>
                             </Card>
-                        </ErrorLoadingDataWrapper>
-                        <ErrorLoadingDataWrapper isLoading={isLoadingA} error={errorA} retryRequest={refetchA}>
-                            <Card style={{ padding: "0.5em 2em 1em 2em", width: "fit-content" }}>
-                                <h3>Administrators:</h3>
-                                <Card style={{ width: "fit-content", marginBottom: "10px", justifyContent: "center" }}>
-                                    <Button style={{}} fullWidth size={"large"} variant='contained' color="primary"
-                                        aria-label="add category" onClick={() => openPromoteModal()}><AddIcon />Admin</Button>
-                                    <div style={{ maxHeight: "50vh", overflowY: 'auto' }}>
-                                        {dataA && dataA.map((el, idx) =>
-                                        {
-                                            return <div key={"cat-" + idx} style={{ paddingInline: "3em", paddingBlock: "0.5em", borderBottom: "1px solid gray", textAlign: "center" }}>
-                                                {el.username} - {el.email}
-                                            </div>
-                                        })}
-                                    </div>
-                                </Card>
 
+                        </Card>
+                    </ErrorLoadingDataWrapper>
+                    <ErrorLoadingDataWrapper isLoading={isLoadingA} error={errorA} retryRequest={refetchA}>
+                        <Card style={{ padding: "0.5em 2em 1em 2em", width: "fit-content" }}>
+                            <h3>Administrators:</h3>
+                            <Card style={{ width: "fit-content", marginBottom: "10px", justifyContent: "center" }}>
+                                <Button style={{}} fullWidth size={"large"} variant='contained' color="primary"
+                                    aria-label="add category" onClick={() => openPromoteModal()}><AddIcon />Admin</Button>
+                                <div style={{ maxHeight: "50vh", overflowY: 'auto' }}>
+                                    {dataA && dataA.map((el, idx) =>
+                                    {
+                                        return <div key={"cat-" + idx} style={{ paddingInline: "3em", paddingBlock: "0.5em", borderBottom: "1px solid gray", textAlign: "center" }}>
+                                            {el.username} - {el.email}
+                                        </div>
+                                    })}
+                                </div>
                             </Card>
-                        </ErrorLoadingDataWrapper>
-                    </div>
+
+                        </Card>
+                    </ErrorLoadingDataWrapper>
                 </div>
-            </div>
-        </ContentWrapper>
+            </Card>
+        </ContentWrapper >
     )
 }
 export default AdminPage; 
