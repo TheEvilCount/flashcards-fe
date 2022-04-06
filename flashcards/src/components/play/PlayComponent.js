@@ -1,6 +1,6 @@
 import PropTypes from "prop-types"
 import { Alert, AlertTitle, Button, Card, Typography } from '@mui/material';
-import CardSkeleton from 'components/cards/CardSkeleton';
+import CardSkeletonSpring from 'components/cards/CardSkeletonSpring';
 import React, { useRef } from 'react'
 
 const PlayComponent = ({ card = {}, next, prev, cardCount = 0, cardIdx, isEnd, isStart, ...props }) =>
@@ -21,11 +21,11 @@ const PlayComponent = ({ card = {}, next, prev, cardCount = 0, cardIdx, isEnd, i
                         <AlertTitle>Out of cards!</AlertTitle>
                     </Alert></Card>
                     }
-                    {!isEnd && <CardSkeleton style={{ cursor: "pointer", "--trans-time": "10s" }} ref={cardRef}
+                    {!isEnd && <CardSkeletonSpring ref={cardRef}
                         front={
                             <>
                                 <small>Question:</small>
-                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
+                                <span className="mt-1" style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
                                     <Typography style={{ whiteSpace: 'pre-line', marginBottom: "2em" }} flexWrap={'wrap'} textOverflow={'ellipsis'} overflow={'clip'}>
                                         {frontText}
                                     </Typography>
@@ -35,7 +35,7 @@ const PlayComponent = ({ card = {}, next, prev, cardCount = 0, cardIdx, isEnd, i
                         back={
                             <>
                                 <small>Answer:</small>
-                                <span style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
+                                <span className="mt-1" style={{ display: "flex", alignItems: "center", justifyContent: "center", height: "100%" }}>
                                     <Typography style={{ whiteSpace: 'pre-line', marginBottom: "2em" }} flexWrap={'wrap'} textOverflow={'ellipsis'} overflow={'clip'}>
                                         {backText}
                                     </Typography>
@@ -43,9 +43,11 @@ const PlayComponent = ({ card = {}, next, prev, cardCount = 0, cardIdx, isEnd, i
                             </>
                         }
                     />}
-                    <small>Hint: Tap card to flip</small>
-                    <div><small>Card {cardIdx + 1}/{cardCount}</small></div>
-                    {/* <MobileStepper position="static" variant="progress" steps={cardCount} activeStep={cardIdx + 1} /> */}
+                    <div className="mt-2">
+                        <small>Hint: Tap card to flip</small>
+                        <div><small>Card {cardIdx + 1}/{cardCount}</small></div>
+                        {/* <MobileStepper position="static" variant="progress" steps={cardCount} activeStep={cardIdx + 1} /> */}
+                    </div>
                 </div>
                 <div className='mt-2' style={{ gap: "1em", display: "flex", justifyContent: "center" }}>
                     <Button variant='contained' disabled={isStart} onClick={() => { prev(); cardRef.current && reset(); }}>Previous</Button>

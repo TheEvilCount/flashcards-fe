@@ -1,0 +1,14 @@
+<svg width="256" height="256" xmlns="http://www.w3.org/2000/svg">
+ <defs>
+  <linearGradient spreadMethod="pad" y2="0.78984" x2="0.13281" y1="0.04375" x1="1" id="svg_3">
+   <stop offset="0" stop-opacity="0.99609" stop-color="#9df9c7"/>
+   <stop offset="0.53125" stop-color="#11db62"/>
+   <stop offset="1" stop-opacity="0.99609" stop-color="#279921"/>
+  </linearGradient>
+ </defs>
+ <g>
+  <title>Layer 1</title>
+  <rect rx="26" id="svg_2" height="236.99999" width="237.00001" y="10.00001" x="10" stroke-width="18" stroke="#277f2b" fill="url(#svg_3)"/>
+  <text font-style="italic" font-weight="bold" transform="matrix(0.85344, 0, 0, 0.745472, -245.754, -75.965)" stroke-width="0" xml:space="preserve" text-anchor="start" font-family="'JetBrains Mono'" font-size="250" id="svg_1" y="371.41432" x="338.98952" stroke="#e5e5e5" fill="#ffffff">F</text>
+ </g>
+</svg>

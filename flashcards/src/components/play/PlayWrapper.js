@@ -10,6 +10,13 @@ const PlayWrapper = ({ cards, ...props }) =>
     const [isEnd, setIsEnd] = useState(false);
     const [cardsArr, setCardsArr] = useState(cards);
 
+
+    const restart = useCallback(() =>
+    {
+        setCurrentCardIdx(0);
+        setIsEnd(false);
+    }, [])
+
     const shuffleCards = useCallback(() =>
     {
         if (cardsArr)
@@ -18,13 +25,6 @@ const PlayWrapper = ({ cards, ...props }) =>
             restart();
         }
     }, [cardsArr, cards, restart])
-
-    const restart = useCallback(() =>
-    {
-        setCurrentCardIdx(0);
-        setIsEnd(false);
-
-    }, [])
 
     const next = () =>
     {
@@ -55,7 +55,7 @@ const PlayWrapper = ({ cards, ...props }) =>
                 isStart={currentCardIdx === 0 && !isEnd}
             />
             <div className='mt-2' style={{ gap: "1em", display: "flex", justifyContent: "center" }}>
-                {cardsArr?.length > 0 && <Button variant="contained" color="secondary" onClick={shuffleCards} className="mt-2">Shuffle</Button>}
+                {cardsArr?.length > 0 && <Button variant="contained" color="secondary" onClick={shuffleCards}>Shuffle</Button>}
                 {currentCardIdx > 0 && <Button variant="contained" color="secondary" onClick={restart}>Restart</Button>}
             </div>
         </div>
