@@ -15,7 +15,7 @@ import SideBar from './components/sideBar/SideBar';
 import CookieConsent from "react-cookie-consent";
 import { toast } from 'react-toastify';
 import { Button } from '@mui/material';
-import { useMediaQuery } from '@material-ui/core';
+import useIsMobile from 'hooks/useIsMobile';
 
 export default function App()
 {
@@ -24,7 +24,7 @@ export default function App()
 
   const [sideBarCollapsed, setSideBarCollapsed] = useState(false);
 
-  const matches = useMediaQuery("screen and (max-width: 779px)");
+  const matches = useIsMobile();
 
   useEffect(() =>
   {

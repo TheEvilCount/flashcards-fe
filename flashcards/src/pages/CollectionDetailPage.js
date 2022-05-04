@@ -7,12 +7,14 @@ import CardList from '../components/cards/CardList';
 import ErrorLoadingDataWrapper from '../components/ErrorLoadingDataWrapper';
 
 import { Button, Card } from '@mui/material';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import useCreateCardDialog from 'components/cards/useCreateCardModal';
 import useUpdateCardDialog from 'components/cards/useUpdateCardModal';
 import { useQueryCollectionDetail } from 'api/react-query-hooks/useCards';
 import useEditCollectionDialog from 'components/collection/useEditCollectionModal';
 import ContentWrapper from 'components/ContentWrapper';
+import useIsMobile from 'hooks/useIsMobile';
 
 const CollectionDetailPage = () =>
 {
@@ -53,12 +55,16 @@ const CollectionDetailPage = () =>
         [openModalC],
     )
 
+    const isMobile = useIsMobile();
+
     return (
         <ContentWrapper>
             <Card style={{ display: "inline-flex", padding: "0.1em 0.5em", width: "100%" }}>
                 <h2>Collection: {data?.title}</h2>
                 <span style={{ display: "inline-flex", alignItems: "center", marginLeft: "auto" }}>
-                    <Button variant='contained' color='secondary' onClick={() => { dispatch(goBack()) }}>Go back</Button>
+                    <Button variant='contained' color='secondary' onClick={() => { dispatch(goBack()) }}>
+                        {isMobile ? <ArrowBackIcon /> : "Go back"}
+                    </Button>
                 </span>
             </Card>
             {modalCreate}

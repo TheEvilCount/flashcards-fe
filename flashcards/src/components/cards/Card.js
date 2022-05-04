@@ -5,7 +5,7 @@ import { Button, Card as CardMui, Typography } from '@mui/material';
 import { useMutationDeleteCard } from 'api/react-query-hooks/useCards';
 import { useConfirm } from 'material-ui-confirm';
 
-const Card = ({ card, collectionId, openUpdateModal, isOwned = false }) =>
+const Card = ({ card, collectionId, openUpdateModal, isOwned = false, color }) =>
 {
     const { id, frontText, backText } = card;
 
@@ -47,10 +47,11 @@ const Card = ({ card, collectionId, openUpdateModal, isOwned = false }) =>
     }
 
     let classes = "card";
+    let borderStyle = "0 0 0 2px " + "#" + color || "FFFFFF"
 
     return (
         <div className={isVisible ? (classes + " show" + (isLeftSpin ? "-left" : "-right")) : (classes)} onClick={() => answer()}>
-            <CardMui className="front">
+            <CardMui className="front" style={{ boxShadow: borderStyle }}>
                 <Typography className='card-text' style={{ whiteSpace: 'pre-line' }} flexWrap={'wrap'} textOverflow={'ellipsis'} overflow={'clip'}>
                     {frontText}
                 </Typography>
@@ -71,7 +72,7 @@ const Card = ({ card, collectionId, openUpdateModal, isOwned = false }) =>
                 )}
             </CardMui>
 
-            <CardMui className={"back back" + (isLeftSpin ? "-left" : "-right")}>
+            <CardMui className={"back back" + (isLeftSpin ? "-left" : "-right")} style={{ boxShadow: borderStyle }}>
                 <Typography className='card-text' style={{ whiteSpace: 'pre-line' }} flexWrap={'wrap'} textOverflow={'ellipsis'} overflow={'clip'}>
                     {backText}
                 </Typography>

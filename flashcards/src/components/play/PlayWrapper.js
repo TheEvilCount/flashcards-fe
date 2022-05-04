@@ -44,7 +44,7 @@ const PlayWrapper = ({ cards, ...props }) =>
     }
 
     return (
-        <div style={{ display: "grid", justifyItems: "center", marginTop: "2em" }} {...props}>
+        <div className='padded-mobile' style={{ display: "grid", justifyItems: "center", marginTop: "2em" }} {...props}>
             <PlayComponent
                 cardIdx={currentCardIdx}
                 cardCount={cardsArr?.length || 0}

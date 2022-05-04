@@ -7,6 +7,8 @@ import { useQuery } from 'react-query';
 
 import { Pagination, TextField, Button, Card, ButtonGroup } from '@mui/material';
 import AddIcon from '@mui/icons-material/Add';
+import RefreshIcon from '@mui/icons-material/Refresh';
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 import Collections from '../components/collection/Collections';
 import apiReqConfig from '../config/apiReqConfig';
@@ -16,6 +18,7 @@ import useEditCollectionDialog from '../components/collection/useEditCollectionM
 import useCreateCollectionDialog from 'components/collection/useCreateCollectionModal';
 import { KEY_COLLECTIONS, useQueryFavIdsCollections } from 'api/react-query-hooks/useCollections';
 import ContentWrapper from 'components/ContentWrapper';
+import useIsMobile from 'hooks/useIsMobile';
 
 export const collectionDisplayTypes = {
     private: "private",
@@ -116,31 +119,39 @@ const CollectionsPage = () =>
         [openModalCreate],
     )
 
+    const isMobile = useIsMobile();
+
     return (
         <ContentWrapper>
             <Card className='padded' style={{ paddingInline: "1em", paddingBottom: "8px", marginBottom: "1em" }}>
                 <h2>Collections - {type}</h2>
                 <div style={{ justifyContent: "space-between", display: "flex" }}>
                     <Button variant='contained' color="primary" aria-label="add"
-                        onClick={() => openCreateModal()} startIcon={<AddIcon />} style={{ marginRight: "1em", height: "fit-content", alignSelf: "center" }}>Create</Button>
+                        onClick={() => openCreateModal()}
+                        startIcon={!isMobile && <AddIcon />}
+                        style={{ height: "fit-content", alignSelf: "center" }}>
+                        {
+                            isMobile ? <AddIcon /> : <span className='invisible-mobile'>Create</span>
+                        }
+                    </Button>
                     {
                         type === "explore" &&
-                        <TextField color='primary' label={"Search:"} onChange={(e) => { setSearch(e.target.value) }} value={search} />
+                        <TextField style={{ marginInline: "0.3em" }} color='primary' label={"Search:"} onChange={(e) => { setSearch(e.target.value) }} value={search} />
                         //TODO search by category???
                     }
                     <ButtonGroup variant='contained' color='secondary' style={{ height: "fit-content", alignSelf: "center" }}>
-                        <Button onClick={requestGetCollections}>Refresh</Button>
-                        <Button onClick={() => { dispatch(goBack()) }}>Go back</Button>
+                        <Button onClick={requestGetCollections}>{isMobile ? <RefreshIcon /> : "Refresh"}</Button>
+                        <Button onClick={() => { dispatch(goBack()) }}>{isMobile ? <ArrowBackIcon /> : "Go back"}</Button>
                     </ButtonGroup>
                 </div>
             </Card>
             <ErrorLoadingDataWrapper isLoading={isLoadingCollections && isLoadingFavs} error={errorCollections || errorFavs} retryRequest={requestGetCollections}>
                 {modal}
                 {modalCreate}
-                <div className='padded'>
+                <div className='padded padded-mobile'>
                     <Collections favsIds={dataFavs} collections={dataCollections?.collections} displayType={getType(type)} refreshCollectionsCallback={refetchCallback} openEditModal={openEditModal} />
                     <Pagination
-                        style={{ display: "grid", placeContent: "center", marginBottom: "2em" }}
+                        style={{ display: "grid", placeContent: "center", marginBottom: "2em", marginTop: "1em" }}
                         color={'primary'}
                         defaultPage={1} page={page} count={pageMax}
                         onChange={(event, value) => setPage(value)}

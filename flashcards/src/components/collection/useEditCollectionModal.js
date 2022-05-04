@@ -75,6 +75,7 @@ const useEditCollectionDialog = (onSubmitcallback) =>
                 if (response.status === 200)
                 {
                     setOpen(false);
+                    toast.success("Collection updated");
                     onSubmitcallback();
                 }
                 else

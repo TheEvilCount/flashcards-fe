@@ -5,7 +5,7 @@ import React from 'react';
 export default function HomePage()
 {
     return (
-        <ContentWrapper padded>
+        <ContentWrapper style={{ maxWidth: "600px", marginInline: "auto", minHeight: "80vh" }}>
             <Card style={{ maxWidth: "600px", marginInline: "auto", minHeight: "80vh" }}>
                 <div className="text-center mt-2" style={{ height: "100%" }}>
                     <h1 className="text-center">Homepage</h1>

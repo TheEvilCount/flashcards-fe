@@ -136,11 +136,14 @@ const Collection = (
     return (
         <Card {...p}
             style={{
-                background: "#" + collectionColor || "#FFFFFF",
-                marginBottom: "10px",
-                border: "1px solid black",
+                /* background: "#" + collectionColor || "#FFFFFF", */
+                margin: "10px",
+                /* border: "8px solid", */
+                /* borderColor: "#" + collectionColor || "#FFFFFF", */
                 borderRadius: "0.5em",
-                paddingInline: "8px"
+                backgroundClip: "padding-box",
+                boxShadow: "0 0 0 10px " + "#" + collectionColor || "FFFFFF",
+                paddingInline: "5px"
             }}>
             <div className="flex" style={{ justifyContent: "space-between", alignItems: "center", paddingInline: "auto" }}>
                 <Typography variant="h6" component={"h1"} textAlign={'left'} marginRight={"10px"}>{title}</Typography>
@@ -156,7 +159,6 @@ const Collection = (
                 }
             </div>
             <CardContent style={{
-                /* display: "flex", */
                 padding: "10px 5px 10px 5px",
                 justifyContent: "space-evenly"
             }}>
@@ -164,7 +166,7 @@ const Collection = (
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <div style={{ display: "grid" }}>
                         <Tooltip title={"Collection visibility"} placement={'top-start'}><span><VisibilityIcon />: {collection.visibility}</span></Tooltip>
-                        <div><FavoriteIcon htmlColor='red' />:{counterFav}</div>
+                        <div><FavoriteIcon />:{counterFav}</div>
                     </div>
                     <div style={{ display: "grid" }}>
                         <Tooltip title={"Number of private duplications"} placement={'top-start'}><span><DynamicFeedIcon />: {counterDup}</span></Tooltip>

@@ -8,16 +8,19 @@ import "./cards.scss"
 import useIsMyUsername from "hooks/useIsMyUsername";
 import { useDispatch } from "react-redux";
 import { push } from "connected-react-router";
+import useIsMobile from "hooks/useIsMobile";
 
 const CardList = ({ collectionDetail, openUpdateModal, openCreateModal, openCollectionModal }) =>
 {
-    const { cardList, id, owner,/* title, collectionColor */ } = collectionDetail;
+    const { cardList, id, owner,/* title, */collectionColor } = collectionDetail;
 
     const isOwned = useIsMyUsername(owner);
 
     const [cardListState, setCardListState] = useState(null);
 
     const dispatch = useDispatch();
+
+    const isMobile = useIsMobile();
 
     useEffect(() =>
     {
@@ -42,7 +45,7 @@ const CardList = ({ collectionDetail, openUpdateModal, openCreateModal, openColl
         if (cardList && cardList.length > 0)
         {
             return cardList.map(card =>
-                <Card key={card.id} card={card} collectionId={id} openUpdateModal={openUpdateModal} isOwned={isOwned} />);
+                <Card key={card.id} card={card} collectionId={id} openUpdateModal={openUpdateModal} isOwned={isOwned} color={collectionColor} />);
         }
         else
             return (<Alert severity='info'>No card present. Do you want create one?</Alert>)
@@ -53,13 +56,19 @@ const CardList = ({ collectionDetail, openUpdateModal, openCreateModal, openColl
         <>
             <CardMui style={{ marginBottom: "10px", display: "flex", padding: "6px 10px" }}>
                 {isOwned &&
-                    <Button /* className="fab-card-add" */ variant='contained' color="primary"
-                        aria-label="add" onClick={() => openCreateModal(id)} startIcon={<AddIcon />} style={{ marginRight: "1em" }}>Create</Button>}
+                    <Button variant='contained' color="primary"
+                        aria-label="add" onClick={() => openCreateModal(id)}
+                        startIcon={!isMobile && <AddIcon />}
+                        style={{ marginRight: "1em" }}>
+                        {
+                            isMobile ? <AddIcon /> : <span className='invisible-mobile'>Create</span>
+                        }
+                    </Button>}
                 <Button onClick={() => { shuffleCards() }}>Shuffle</Button>
                 <Button onClick={() => { dispatch(push("./play")) }}>Play</Button>
                 <Button onClick={() => { openCollectionModal(collectionDetail, !isOwned) }}>Info</Button>
             </CardMui>
-            <div className="cards-wrapper padded">
+            <div className="cards-wrapper padded padded-mobile">
                 {collectionDetail && cardElements(cardListState)}
             </div>
         </>
