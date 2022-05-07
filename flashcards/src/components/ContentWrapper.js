@@ -6,7 +6,7 @@ const ContentWrapper = ({ children, padded = false, ...p }) =>
     if (padded) classes += " padded";
 
     return (
-        <div className={classes} style={{ backgroundColor: "gray" }} {...p}>
+        <div className={classes} {...p}>
             {children}
         </div>
     );
