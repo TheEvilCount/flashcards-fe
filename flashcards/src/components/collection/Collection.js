@@ -159,8 +159,7 @@ const Collection = (
                 }
             </div>
             <CardContent style={{
-                padding: "10px 5px 10px 5px",
-                justifyContent: "space-evenly"
+                padding: "10px 5px 10px 5px"
             }}>
                 <div>category: {category}</div>
                 <div style={{ display: "flex", justifyContent: "space-between" }}>
@@ -173,7 +172,7 @@ const Collection = (
                         <Tooltip title={"Number of card within collection"} placement={'top-start'}><span><CollectionIcon />: {cardNum}</span></Tooltip>
                     </div>
                 </div>
-                <CardActions style={{ backgroundColor: "rgba(255, 255, 255, 0.55)", borderRadius: "1em", /* flexWrap: "wrap", */ display: "flex", flexDirection: "column" }}>
+                <CardActions style={{ backgroundColor: "rgba(255, 255, 255, 0.55)", borderRadius: "1em", display: "flex", flexDirection: "column", alignItems: "inherit" }}>
                     <ButtonGroup orientation='horizontal' style={{ marginBlock: "4px" }}>
                         <Button variant='contained' color='primary' size='large' onClick={clickF} >Enter</Button>
                         {getBtnDuplicateByType(type)}

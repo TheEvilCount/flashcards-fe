@@ -33,7 +33,7 @@ const CollectionsPage = () =>
     const [qType, setqType] = useState("my");
 
     const [search, setSearch] = useState("");
-    const { page, pageSize, pageMax, setPageTo: setPage, setPageMax } = usePagination(1, 6, 1);
+    const { page, pageSize, pageMax, setPageTo: setPage, setPageMax } = usePagination(1, 10, 1);
 
     const dispatch = useDispatch();
 

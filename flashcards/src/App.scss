@@ -507,6 +507,10 @@ html body .fab-card-add{
     }
   }
 
+  #adminpg-content.flex{
+    flex-flow: wrap;
+  }
+
   .cards-wrapper{
     grid-template-columns: auto;
     .card{

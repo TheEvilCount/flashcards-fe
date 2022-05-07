@@ -41,7 +41,7 @@ const AdminPage = () =>
             {modalPromote}
             <Card style={{ maxWidth: "800px", marginInline: "auto", minHeight: "80vh", paddingInline: "1.5em" }}>
                 <h1 className="text-center">Admin Page</h1>
-                <div className='flex' style={{ justifyContent: "center" }}>
+                <div id='adminpg-content' className='flex' style={{ justifyContent: "center", paddingBottom: "2em" }}>
                     <ErrorLoadingDataWrapper isLoading={isLoadingC} error={errorC} retryRequest={refetchC}>
                         <Card style={{ padding: "0.5em 2em 1em 2em", width: "fit-content" }}>
                             <h3>Categories:</h3>
