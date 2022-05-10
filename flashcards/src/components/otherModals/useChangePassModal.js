@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import InputTextField from '../InputTextField';
 import authAPI from 'api/authAPI';
 import changePassValidation from 'validations/changePassValidation';
+import errorParse from 'helpers/errorParse';
+import { toast } from 'react-toastify';
 
 /**
  * 
@@ -33,16 +35,20 @@ const useChangePassDialog = (onSubmitcallback) =>
                 if (response.status === 200)
                 {
                     setOpen(false);
+                    toast.success("Password changed");
                     onSubmitcallback && onSubmitcallback();
                 }
                 else
                 {
-                    actions.setStatus({ message: response?.data?.errorMessage || "Unexpected error" });
+                    toast.error(response?.data?.message || "Unexpected error");
+                    actions.setStatus({ message: response?.data?.message || "Unexpected error" });
                 }
             })
             .catch((error) =>
             {
-                actions.setStatus({ message: "Error: " + error?.response?.data?.errorMessage || "Unexpected error" });
+                console.log(error)
+                toast.error("Error: " + error?.data?.message || "Unexpected error");
+                actions.setStatus({ message: "Error: " + error?.data?.message || "Unexpected error" });
             })
     }
 

@@ -66,8 +66,8 @@ const useCreateCardDialog = (onSubmitcallback) =>
                             .catch((error) =>
                             {
                                 console.log(error)
-                                actions.setStatus({ message: "Error: " + error?.data?.message || "Unexpected error" });
                                 toast.error("Error: " + error?.data?.message || "Unexpected error");
+                                actions.setStatus({ message: "Error: " + error?.data?.message || "Unexpected error" });
                             })
                         actions.setSubmitting(false);
                     }}
