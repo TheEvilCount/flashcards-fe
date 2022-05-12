@@ -38,6 +38,7 @@ export default function ResetPage()
                             .then(() =>
                             {
                                 toast.success("Now you can login with your new password!");
+                                dispatch(push(pathConsts.login));
                             })
                             .catch((error) =>
                             {
@@ -46,7 +47,6 @@ export default function ResetPage()
                             });
 
                         actions.setSubmitting(false);
-                        dispatch(push(pathConsts.login))
                     }}
                 >
                     {({

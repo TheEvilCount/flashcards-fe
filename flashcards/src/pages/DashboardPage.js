@@ -21,7 +21,7 @@ const Dashboard = () =>
                     <NavLink id='di-own' className={"dashboard-item"} to={pathConsts.collectionsMy}>
                         <Card className='decor' />
                         <Card>
-                            My owned Collections
+                            My Collections
                         </Card>
                     </NavLink>
                     <NavLink id='di-fav' className={"dashboard-item"} to={pathConsts.collectionsFav}>

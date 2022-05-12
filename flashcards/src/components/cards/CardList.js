@@ -48,7 +48,7 @@ const CardList = ({ collectionDetail, openUpdateModal, openCreateModal, openColl
                 <Card key={card.id} card={card} collectionId={id} openUpdateModal={openUpdateModal} isOwned={isOwned} color={collectionColor} />);
         }
         else
-            return (<Alert severity='info'>No card present. Do you want create one?</Alert>)
+            return (<Alert severity='info'>No card present. Do you want to create one?</Alert>)
 
     }
 

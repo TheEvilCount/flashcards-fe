@@ -53,11 +53,13 @@ const PlayWrapper = ({ cards, ...props }) =>
                 prev={prev}
                 isEnd={isEnd}
                 isStart={currentCardIdx === 0 && !isEnd}
+                shuffle={shuffleCards}
+                restart={restart}
             />
-            <div className='mt-2' style={{ gap: "1em", display: "flex", justifyContent: "center" }}>
+            {/* <div className='mt-2' style={{ gap: "1em", display: "flex", justifyContent: "center" }}>
                 {cardsArr?.length > 0 && <Button variant="contained" color="secondary" onClick={shuffleCards}>Shuffle</Button>}
                 {currentCardIdx > 0 && <Button variant="contained" color="secondary" onClick={restart}>Restart</Button>}
-            </div>
+            </div> */}
         </div>
     );
 }

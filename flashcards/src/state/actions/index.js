@@ -90,17 +90,17 @@ export const preferencesChangeAction = (payload) =>
                             user: response.data
                         }
                     });
-                    toast.success("Preferencies changed!")
+                    toast.success("Preferences changed!")
                 }
                 else
                 {
-                    toast.error("Preferencies change error!");
+                    toast.error("Preferences change error!");
                     console.error("update prefs then error");
                 }
             })
             .catch((error) =>
             {
-                toast.error("Preferencies change error: " + error);
+                toast.error("Preferences change error: " + error);
                 console.error("update prefs catch error" + error);
             });
     }
