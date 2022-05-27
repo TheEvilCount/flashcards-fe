@@ -32,6 +32,11 @@ const CardList = ({ collectionDetail, openUpdateModal, openCreateModal, openColl
         }
     }, [cardList])
 
+    const removeCard = (id) =>
+    {
+        let newList = cardListState.filter(card => card.id !== id)
+        setCardListState(newList)
+    }
 
     const shuffleCards = useCallback(() =>
     {
@@ -45,7 +50,7 @@ const CardList = ({ collectionDetail, openUpdateModal, openCreateModal, openColl
         if (cardList && cardList.length > 0)
         {
             return cardList.map(card =>
-                <Card key={card.id} card={card} collectionId={id} openUpdateModal={openUpdateModal} isOwned={isOwned} color={collectionColor} />);
+                <Card key={card.id} card={card} collectionId={id} openUpdateModal={openUpdateModal} removeCardCallBack={removeCard} isOwned={isOwned} color={collectionColor} />);
         }
         else
             return (<Alert severity='info'>No card present. Do you want to create one?</Alert>)
@@ -79,7 +84,8 @@ CardList.propTypes = {
     collectionDetail: PropTypes.shape({
         cardList: PropTypes.array,
         id: PropTypes.any,
-        owner: PropTypes.any
+        owner: PropTypes.any,
+        collectionColor: PropTypes.any
     }),
     openCreateModal: PropTypes.func,
     openUpdateModal: PropTypes.func,

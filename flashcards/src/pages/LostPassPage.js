@@ -2,14 +2,17 @@ import { Button, Card, CardContent, FormGroup, LinearProgress, Typography } from
 import { useMutationLostPass } from 'api/react-query-hooks/useLostPass';
 import ContentWrapper from 'components/ContentWrapper';
 import InputTextField from 'components/InputTextField';
+import { goBack } from 'connected-react-router';
 import { Form, Formik } from 'formik';
 import React from 'react'
+import { useDispatch } from 'react-redux';
 import { toast } from 'react-toastify';
 import lostPassValidation from 'validations/lostPassValidation';
 import { InstructionCheckBox } from './ResetPage';
 
 export default function LostPassPage()
 {
+    const dispatch = useDispatch();
     const mutationLostPass = useMutationLostPass();
 
     return (
@@ -46,7 +49,9 @@ export default function LostPassPage()
                         status,
                         resetForm,
                         touched,
-                        isValid
+                        isValid,
+                        values,
+                        initialValues
                     }) => (
                         <Form>
                             <CardContent>
@@ -79,7 +84,7 @@ export default function LostPassPage()
                                     >
                                         Submit email
                                     </Button>
-                                    <Button type="reset" onClick={resetForm}>Cancel</Button>
+                                    <Button type="reset" onClick={() => { initialValues == values ? dispatch(goBack()) : resetForm() }}>Cancel</Button>
                                 </div>
                             </Card>
                         </Form>

@@ -74,7 +74,7 @@ const useCreateCategoryDialog = (onSubmitcallback) =>
                     }) => (
                         <>
                             <Form>
-                                <DialogTitle>Create Card</DialogTitle>
+                                <DialogTitle>Create Category</DialogTitle>
                                 <DialogContent>
                                     <InputTextField name="title" type="text" label="Title" placeholder="" required />
 

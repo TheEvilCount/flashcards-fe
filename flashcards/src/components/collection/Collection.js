@@ -72,7 +72,7 @@ const Collection = (
                     })
                     .catch((error) =>
                     {
-                        toast.error("Deletion error: " + error?.data?.message || error);
+                        toast.error("Deletion error: " + error?.data?.message || "Unexpected error");
                         console.error(error);
                     })
             })

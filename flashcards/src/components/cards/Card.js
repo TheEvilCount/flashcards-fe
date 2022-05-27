@@ -4,8 +4,9 @@ import { useSelector } from "react-redux";
 import { Button, Card as CardMui, Typography } from '@mui/material';
 import { useMutationDeleteCard } from 'api/react-query-hooks/useCards';
 import { useConfirm } from 'material-ui-confirm';
+import { toast } from "react-toastify";
 
-const Card = ({ card, collectionId, openUpdateModal, isOwned = false, color }) =>
+const Card = ({ card, collectionId, openUpdateModal, removeCardCallBack, isOwned = false, color }) =>
 {
     const { id, frontText, backText } = card;
 
@@ -32,16 +33,21 @@ const Card = ({ card, collectionId, openUpdateModal, isOwned = false, color }) =
                     {
                         if (response.status === 200)
                         {
-                            alert("card deleted");
+                            toast.success("Card deleted");
                         }
                         else
                         {
-                            alert(response?.data?.errorMessage || "Unexpected error");
+                            toast.error(response?.data?.errorMessage || "Unexpected error")
                         }
+                    })
+                    .then(() =>
+                    {
+                        removeCardCallBack(id)
                     })
                     .catch((error) =>
                     {
-                        alert("Error: " + error?.response?.data?.errorMessage || "Unexpected error");
+                        toast.error("Deletion error: " + error?.data?.message || "Unexpected error");
+                        console.error(error);
                     })
             })
     }
@@ -89,7 +95,9 @@ Card.propTypes = {
     }),
     collectionId: PropTypes.number,
     isOwned: PropTypes.bool,
-    openUpdateModal: PropTypes.func
+    color: PropTypes.any,
+    openUpdateModal: PropTypes.func,
+    removeCardCallBack: PropTypes.func
 }
 
 export default React.memo(Card);
